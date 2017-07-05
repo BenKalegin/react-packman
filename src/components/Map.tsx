@@ -1,19 +1,26 @@
+import { Component } from 'react';
 import * as React from 'react';
-import { Stage, Rect, Layer } from 'react-konva';
-
+import { Stage, Layer } from 'react-konva';
+import Border from "./Border";
+import Border1 = require("./Border");
+import IBorderProps = Border1.IBorderProps;
+import Rectangle from "../geometry/Rectangle";
 
 export interface IMapProps {
     width: number;
     height: number;
 }
 
-class Map extends React.Component<IMapProps, {}> {
+class Map extends Component<IMapProps, {}> {
+
     render() {
+        const borderRect = new Rectangle(0, 0, this.props.width, this.props.height);
+        const borderProps: IBorderProps = { bounds: borderRect, width: 8 };
+
         return (
             <Stage width={this.props.width} height={this.props.height}>
                 <Layer>
-                    <Rect x={11} y={11} width={this.props.width-12} height={this.props.height-12} cornerRadius={15} stroke="black" />
-                    <Rect x={19} y={19} width={150} height={150} cornerRadius={9} stroke="black" />
+                    <Border {...borderProps}/>
                 </Layer>
             </Stage>
         );
