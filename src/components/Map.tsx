@@ -5,6 +5,8 @@ import Border from "./Border";
 import Border1 = require("./Border");
 import IBorderProps = Border1.IBorderProps;
 import Rectangle from "../geometry/Rectangle";
+import {IFieldProps} from "./Field";
+import Field from "./Field";
 
 export interface IMapProps {
     width: number;
@@ -12,15 +14,17 @@ export interface IMapProps {
 }
 
 class Map extends Component<IMapProps, {}> {
-
+    private borderWidth = 8;
     render() {
         const borderRect = new Rectangle(0, 0, this.props.width, this.props.height);
-        const borderProps: IBorderProps = { bounds: borderRect, width: 8 };
-
+        const borderProps: IBorderProps = { bounds: borderRect, width: this.borderWidth };
+        const fieldRect = borderRect.inflate(-this.borderWidth);
+        const fieldProps: IFieldProps = {bounds: fieldRect, aisles: [[new Rectangle(40, 40, 40, 40)]] }
         return (
             <Stage width={this.props.width} height={this.props.height}>
                 <Layer>
-                    <Border {...borderProps}/>
+                    <Border {...borderProps} />
+                    <Field {...fieldProps} />
                 </Layer>
             </Stage>
         );

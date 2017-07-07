@@ -1,8 +1,8 @@
-import {Point} from './Point';
+import Point from './Point';
 
 export default class Rectangle {
-    private p1: Point;
-    private p2: Point;
+    readonly p1: Point;
+    readonly p2: Point;
 
     constructor(x: number, y: number, dx: number, dy: number) {
         this.p1 = new Point(x, y);
