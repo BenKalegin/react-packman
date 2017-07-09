@@ -1,24 +1,53 @@
 import { Component } from 'react';
 import * as React from 'react';
+import Point from '../geometry/Point';
+import { Group } from 'react-konva';
+import {ICellProps} from "./Cell";
+import Cell  from "./Cell";
 import Rectangle from '../geometry/Rectangle';
-import { Group, Rect } from 'react-konva';
-import Aisle from './Aisle';
-import { IAisleProps } from './Aisle';
+
+export enum CellKind {
+    Impassable,
+    Noscore,
+    Score,
+    Gate,
+    GhostsOnly,
+    Fruit
+}
 
 export interface IFieldProps {
-    bounds: Rectangle;
-    aisles: Rectangle[][];
+    gridOffset: Point,
+    gridSize: Point,
+    cellSize: Point,
+    cells: CellKind[][];
 }
 
 export default class Field extends Component<IFieldProps, {}> {
 
     render(): any {
-        let bounds = this.props.bounds;
-        const aisleProps: IAisleProps = { rects: this.props.aisles[0] };
+        // const aisleProps: IWallProps = { rects: this.props.aisles[0] };
+        const rows = this.props.cells;
+        const {x, y} = this.props.gridOffset;
+        const dx = this.props.cellSize.x;
+        const dy = this.props.cellSize.y;
+
+        let cells = new Array<ICellProps>();
+        for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+            const row = rows[rowIndex];
+            for (let cellIndex = 0; cellIndex < row.length; cellIndex++) {
+                const kind: CellKind = row[cellIndex];
+                var cell: ICellProps = {
+                    kind: kind,
+                    bounds: new Rectangle(x + dx * cellIndex, y + dy * rowIndex, dx, dy)
+                };
+                cells.push(cell);
+            }
+        }
+
+
         return (
             <Group>
-                <Rect x={bounds.x} y={bounds.y} width={bounds.dx} height={bounds.dy} cornerRadius={8} fill="darkgray" />
-                {this.props.aisles.map(a => <Aisle {...aisleProps}/>)}
+                {cells.map(c => c.kind === CellKind.Impassable ? null: <Cell {...c}/>)}
             </Group>
         );
     }

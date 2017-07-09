@@ -17,8 +17,8 @@ export class AppModel implements IAppProps {
     constructor(caption: string) {
         this.caption = caption;
         this.map = new MapModel();
-        this.map.width = 800;
-        this.map.height = 800;
+        this.map.width = 788;
+        this.map.height = 840;
     }
 }
 
