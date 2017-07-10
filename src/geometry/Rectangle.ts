@@ -1,6 +1,6 @@
-import Point from './Point';
+import { Point } from './Point';
 
-export default class Rectangle {
+export class Rectangle {
     readonly p1: Point;
     readonly p2: Point;
 

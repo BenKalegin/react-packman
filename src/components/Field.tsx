@@ -1,10 +1,12 @@
 import { Component } from 'react';
 import * as React from 'react';
-import Point from '../geometry/Point';
+import { Point} from '../geometry';
 import { Group } from 'react-konva';
-import {ICellProps} from "./Cell";
-import Cell  from "./Cell";
-import Rectangle from '../geometry/Rectangle';
+import {ICellProps} from './Cell';
+import Cell from './Cell';
+import Wall from './Wall';
+import { IWallProps } from './Wall';
+import WallAggregator from '../geometry/WallAggregator';
 
 export enum CellKind {
     Impassable,
@@ -27,9 +29,6 @@ export default class Field extends Component<IFieldProps, {}> {
     render(): any {
         // const aisleProps: IWallProps = { rects: this.props.aisles[0] };
         const rows = this.props.cells;
-        const {x, y} = this.props.gridOffset;
-        const dx = this.props.cellSize.x;
-        const dy = this.props.cellSize.y;
 
         let cells = new Array<ICellProps>();
         for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
@@ -38,15 +37,23 @@ export default class Field extends Component<IFieldProps, {}> {
                 const kind: CellKind = row[cellIndex];
                 var cell: ICellProps = {
                     kind: kind,
-                    bounds: new Rectangle(x + dx * cellIndex, y + dy * rowIndex, dx, dy)
+                    gridPos: new Point(cellIndex, rowIndex),
+                    cellSize: this.props.cellSize,
+                    gridOffset: this.props.gridOffset
                 };
                 cells.push(cell);
             }
         }
-
-
+        var walls: IWallProps[] = WallAggregator.aggregate(
+            cells.filter(c => c.kind === CellKind.Impassable).map(c => { return c.gridPos; }))
+            .map(ps => { return {
+                cellSize: this.props.cellSize,
+                gridOffset: this.props.gridOffset,
+                points: ps
+            } });
         return (
             <Group>
+                {walls.map(w => <Wall {...w}/>)}
                 {cells.map(c => c.kind === CellKind.Impassable ? null: <Cell {...c}/>)}
             </Group>
         );

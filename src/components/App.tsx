@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './App.css';
-import Map from "./Map";
-import Index = require("../index");
+import Map from './Map';
+import Index = require('../index');
 import IAppProps = Index.IAppProps;
 
 class App extends React.Component<IAppProps, any> {

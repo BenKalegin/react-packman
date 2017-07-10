@@ -2,12 +2,10 @@ import { Component } from 'react';
 import * as React from 'react';
 import { Stage, Layer } from 'react-konva';
 import Border from "./Border";
-import Border1 = require("./Border");
-import IBorderProps = Border1.IBorderProps;
-import Rectangle from "../geometry/Rectangle";
-import Point from "../geometry/Point";
-import { IFieldProps, CellKind} from "./Field";
-import Field from "./Field";
+import { IBorderProps } from './Border';
+import { Rectangle, Point } from '../geometry';
+import { IFieldProps, CellKind} from './Field';
+import Field from './Field';
 
 export interface IMapProps {
     width: number;

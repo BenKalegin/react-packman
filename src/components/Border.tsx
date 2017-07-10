@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import * as React from 'react';
 import { Group, Rect } from 'react-konva';
-import Rectangle from '../geometry/Rectangle';
+import { Rectangle } from '../geometry';
 
 export interface IBorderProps {
     bounds: Rectangle;
@@ -26,8 +26,20 @@ class Border extends Component<IBorderProps, {}> {
     render(): any {
         return (
             <Group>
-                <Rect x={this.outer.x} y={this.outer.y} width={this.outer.dx} height={this.outer.dy} cornerRadius={this.outerRadius} stroke="black" />
-                <Rect x={this.inner.x} y={this.inner.y} width={this.inner.dx} height={this.inner.dy} cornerRadius={9} stroke="black" />
+                <Rect
+                    x={this.outer.x}
+                    y={this.outer.y}
+                    width={this.outer.dx}
+                    height={this.outer.dy}
+                    cornerRadius={this.outerRadius}
+                    stroke="black" />
+                <Rect
+                    x={this.inner.x}
+                    y={this.inner.y}
+                    width={this.inner.dx}
+                    height={this.inner.dy}
+                    cornerRadius={9}
+                    stroke="black" />
             </Group>
         );
     }
