@@ -29,7 +29,23 @@ export default class Wall extends Component<IWallProps, {}> {
         const {x,y} = this.props.gridOffset;
         const dx = this.props.cellSize.x;
         const dy = this.props.cellSize.y;
-        const rects = this.props.points.map(p => new Rectangle(x + dx * p.x, y + dy * p.y, dx, dy));
+        const rects = this.props.points.map(p => {
+            let rectangle = new Rectangle(x + dx * p.x, y + dy * p.y, dx, dy);
+            if (!this.props.points.some(p1 => p1.y === p.y && p1.x === p.x - 1)) {
+                rectangle.p1.x += dx / 2;
+            }
+            if (!this.props.points.some(p1 => p1.y === p.y && p1.x === p.x + 1)) {
+                rectangle.p2.x -= dx / 2;
+            }
+            if (!this.props.points.some(p1 => p1.x === p.x && p1.y === p.y - 1)) {
+                rectangle.p1.y += dy / 2;
+            }
+            if (!this.props.points.some(p1 => p1.x === p.x && p1.y === p.y + 1)) {
+                rectangle.p2.y -= dy / 2;
+            }
+            return rectangle;
+        });
+        
         const randomColor = this.getRandomColor();
         const props = rects.map(r => {
             return {
