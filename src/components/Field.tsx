@@ -54,7 +54,7 @@ export default class Field extends Component<IFieldProps, {}> {
         return (
             <Group>
                 {walls.map(w => <Wall {...w}/>)}
-                {cells.map(c => c.kind === CellKind.Impassable ? null: <Cell {...c}/>)}
+                {cells.map(c => c.kind === CellKind.Score  || c.kind === CellKind.Fruit ? <Cell {...c}/>: null)}
             </Group>
         );
     }

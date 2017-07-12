@@ -17,7 +17,7 @@ export default class WallAggregator {
                 if (distance === 1) {
                     result.push(p);
                     remaining.splice(i, 1);
-                } else if (distance > lastDistance + 13) {
+                } else if (distance > lastDistance + 38) {
                     // optimization: we are going away of our point so stop looking. Not sure this is correct.
                     break;
                 } else

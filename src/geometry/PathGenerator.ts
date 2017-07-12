@@ -20,7 +20,7 @@ export class PathGenerator {
     }
 
     static outlinePoints(points: Point[], gridOffset: Point, cellSize: Point): string {
-
+            
         // remove interim vertical points
         // sort by x then y
         points.sort((p1, p2) => (p1.x - p2.x) * 1000 + (p1.y - p2.y));
@@ -48,6 +48,8 @@ export class PathGenerator {
             else
                 i++;
         }
-        return "";
+
+        let result = "M ";
+        return result;
     }
 }

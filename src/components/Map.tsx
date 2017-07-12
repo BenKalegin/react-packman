@@ -19,16 +19,18 @@ class Map extends Component<IMapProps, {}> {
         const borderRect = new Rectangle(0, 0, this.props.width, this.props.height);
         const borderProps: IBorderProps = { bounds: borderRect, width: this.borderWidth };
         const fieldRect = borderRect.inflate(-this.borderWidth);
-        const gridSize = new Point(26, 28);
+        const gridSize = new Point(26, 29);
         const _ = CellKind.Impassable; 
         // ReSharper disable once InconsistentNaming
         const X = CellKind.Score;
         const p = CellKind.Noscore;
         const g = CellKind.Gate;
         const o = CellKind.GhostsOnly;
+        const f = CellKind.Fruit;
         const cells = [
             [X, X, X, X, X, X, X, X, X, X, X, X, _, _, X, X, X, X, X, X, X, X, X, X, X, X],
             [X, _, _, _, _, X, _, _, _, _, _, X, _, _, X, _, _, _, _, _, X, _, _, _, _, X],
+            [f, _, _, _, _, X, _, _, _, _, _, X, _, _, X, _, _, _, _, _, X, _, _, _, _, f],
             [X, _, _, _, _, X, _, _, _, _, _, X, _, _, X, _, _, _, _, _, X, _, _, _, _, X],
             [X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X],
             [X, _, _, _, _, X, _, _, X, _, _, _, _, _, _, _, _, X, _, _, X, _, _, _, _, X],
@@ -47,7 +49,7 @@ class Map extends Component<IMapProps, {}> {
             [_, _, _, _, _, X, _, _, p, _, _, _, _, _, _, _, _, p, _, _, X, _, _, _, _, _],
             [X, X, X, X, X, X, X, X, X, X, X, X, _, _, X, X, X, X, X, X, X, X, X, X, X, X],
             [X, _, _, _, _, X, _, _, _, _, _, X, _, _, X, _, _, _, _, _, _, _, _, _, _, X],
-            [X, _, _, _, _, X, _, _, _, _, _, X, _, _, X, _, _, _, _, _, _, _, _, _, _, X],
+            [f, _, _, _, _, X, _, _, _, _, _, X, _, _, X, _, _, _, _, _, _, _, _, _, _, f],
             [X, X, X, _, _, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, _, _, X, X, X],
             [_, _, X, _, _, X, _, _, X, _, _, _, _, _, _, _, _, X, _, _, X, _, _, X, _, _],
             [_, _, X, _, _, X, _, _, X, _, _, _, _, _, _, _, _, X, _, _, X, _, _, X, _, _],
@@ -59,7 +61,7 @@ class Map extends Component<IMapProps, {}> {
         const fieldProps: IFieldProps = {
             gridOffset: borderRect.p1,
             gridSize: gridSize,
-            cellSize: new Point(fieldRect.dx / gridSize.x, fieldRect.dy / gridSize.y),
+            cellSize: new Point(Math.round(fieldRect.dx / gridSize.x), Math.round(fieldRect.dy / gridSize.y)),
             cells: cells
         }
         return (
