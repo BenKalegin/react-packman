@@ -3,9 +3,14 @@ import { Rectangle } from '.';
 export class Point {
     constructor(public x: number, public y: number) { }
 
-    public offset(dx: number, dy: number) {
-        this.x += dx;
-        this.y += dy;
+    public offset(by: Point): Point {
+        return new Point(this.x + by.x, this.y + by.y);
+    }
+
+    public scale(by: Point | number): Point {
+        if (typeof (by) === "number")
+            return new Point(this.x * by, this.y * by);
+        return new Point(this.x * by.x, this.y * by.y);
     }
 
     public manhattanDistanceTo(p: Point): number {

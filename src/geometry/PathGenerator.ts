@@ -13,6 +13,14 @@ export class PathGenerator {
         );
     }
 
+    public static pacman(position: Point, radius: number, angle: number) {
+        let xStart = position.x + radius * Math.cos(angle);
+        let yStart = radius * Math.sin(angle);
+        let mouth1 = new Point(xStart, position.y - yStart);
+        let mouth2 = new Point(xStart, position.y + yStart);
+        
+        return `M ${mouth1.x} ${mouth1.y} A ${radius} ${radius}, 0, 1, 0, ${mouth2.x} ${mouth2.y} L ${position.x} ${position.y} Z`;
+    }
 
     public static mergeRectangles(rects: Rectangle[]): string {
         const outline = this.outlineRects(rects);

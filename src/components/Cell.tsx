@@ -23,7 +23,12 @@ export default class Cell extends Component<ICellProps, {}> {
             dy);
 
         return (
-            <Circle x={bounds.x + bounds.dx / 2} y={bounds.y + bounds.dy / 2} fill="darkgray" stroke="darkgray" radius={this.props.kind === CellKind.Fruit ? bounds.dx / 3 : bounds.dx / 10}/>
+            <Circle
+                x={bounds.x + bounds.dx / 2}
+                y={bounds.y + bounds.dy / 2}
+                fill="darkgray"
+                stroke="darkgray"
+                radius={this.props.kind === CellKind.Fruit ? bounds.dx / 3 : bounds.dx / 10} />
         );
     }
 }

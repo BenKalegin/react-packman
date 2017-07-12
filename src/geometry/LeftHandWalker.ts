@@ -1,11 +1,4 @@
-import {Point} from '.';
-
-enum Direction {
-    None,
-    Up,
-    Left,
-    Down
-}
+import {Point, Direction} from '.';
 
 class ProximityIndex {
     private xIndex: number[];
@@ -59,7 +52,7 @@ export class LeftHandWalker
         const topLeft = index.getTopLeft();
         result.push(points[topLeft]);
 
-        let direction = Direction.Down;
+        //let direction = Direction.Down;
         //if (index.hasAdjacent(direction))
     };
 }

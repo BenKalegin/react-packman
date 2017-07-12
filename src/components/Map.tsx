@@ -23,10 +23,11 @@ class Map extends Component<IMapProps, {}> {
         const _ = CellKind.Impassable; 
         // ReSharper disable once InconsistentNaming
         const X = CellKind.Score;
-        const p = CellKind.Noscore;
+        const n = CellKind.Noscore;
         const g = CellKind.Gate;
         const o = CellKind.GhostsOnly;
         const f = CellKind.Fruit;
+        const p = CellKind.Pacman;
         const cells = [
             [X, X, X, X, X, X, X, X, X, X, X, X, _, _, X, X, X, X, X, X, X, X, X, X, X, X],
             [X, _, _, _, _, X, _, _, _, _, _, X, _, _, X, _, _, _, _, _, X, _, _, _, _, X],
@@ -38,15 +39,15 @@ class Map extends Component<IMapProps, {}> {
             [X, X, X, X, X, X, _, _, X, X, X, X, _, _, X, X, X, X, _, _, X, X, X, X, X, X],
             [_, _, _, _, _, X, _, _, _, _, _, X, _, _, X, _, _, _, _, _, X, _, _, _, _, _],
             [_, _, _, _, _, X, _, _, _, _, _, X, _, _, X, _, _, _, _, _, X, _, _, _, _, _],
-            [_, _, _, _, _, X, _, _, p, p, p, p, g, g, p, p, p, p, _, _, X, _, _, _, _, _],
-            [_, _, _, _, _, X, _, _, p, _, _, _, _, _, _, _, _, p, _, _, X, _, _, _, _, _],
-            [_, _, _, _, _, X, _, _, p, _, o, o, o, o, o, o, _, p, _, _, X, _, _, _, _, _],
-            [p, p, p, p, p, X, p, p, p, _, o, o, o, o, o, o, _, p, p, p, X, p, p, p, p, p],
-            [_, _, _, _, _, X, _, _, p, _, o, o, o, o, o, o, _, p, _, _, X, _, _, _, _, _],
-            [_, _, _, _, _, X, _, _, p, _, _, _, _, _, _, _, _, p, _, _, X, _, _, _, _, _],
-            [_, _, _, _, _, X, p, p, p, p, p, p, p, p, p, p, p, p, p, p, X, _, _, _, _, _],
-            [_, _, _, _, _, X, _, _, p, _, _, _, _, _, _, _, _, p, _, _, X, _, _, _, _, _],
-            [_, _, _, _, _, X, _, _, p, _, _, _, _, _, _, _, _, p, _, _, X, _, _, _, _, _],
+            [_, _, _, _, _, X, _, _, n, n, n, n, g, g, n, n, n, n, _, _, X, _, _, _, _, _],
+            [_, _, _, _, _, X, _, _, n, _, _, _, _, _, _, _, _, n, _, _, X, _, _, _, _, _],
+            [_, _, _, _, _, X, _, _, n, _, o, o, o, o, o, o, _, n, _, _, X, _, _, _, _, _],
+            [n, n, n, n, n, X, n, n, n, _, o, o, o, o, o, o, _, n, n, n, X, n, n, n, n, n],
+            [_, _, _, _, _, X, _, _, n, _, o, o, o, o, o, o, _, n, _, _, X, _, _, _, _, _],
+            [_, _, _, _, _, X, _, _, n, _, _, _, _, _, _, _, _, n, _, _, X, _, _, _, _, _],
+            [_, _, _, _, _, X, n, n, n, n, n, n, p, p, n, n, n, n, n, n, X, _, _, _, _, _],
+            [_, _, _, _, _, X, _, _, n, _, _, _, _, _, _, _, _, n, _, _, X, _, _, _, _, _],
+            [_, _, _, _, _, X, _, _, n, _, _, _, _, _, _, _, _, n, _, _, X, _, _, _, _, _],
             [X, X, X, X, X, X, X, X, X, X, X, X, _, _, X, X, X, X, X, X, X, X, X, X, X, X],
             [X, _, _, _, _, X, _, _, _, _, _, X, _, _, X, _, _, _, _, _, _, _, _, _, _, X],
             [f, _, _, _, _, X, _, _, _, _, _, X, _, _, X, _, _, _, _, _, _, _, _, _, _, f],
