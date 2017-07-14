@@ -5,11 +5,8 @@ import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 import Map = require("./components/Map");
 import IMapProps = Map.IMapProps;
-
-export interface IAppProps {
-    readonly caption: string;
-    map: IMapProps;
-}
+import { IAppProps } from './components/App';
+//import { Store, createStore } from 'redux';
 
 export class AppModel implements IAppProps {
     readonly caption: string;
@@ -26,7 +23,12 @@ class MapModel implements IMapProps {
     width: number;
     height: number;
 }
+
 var model = new AppModel('react-pacman');
+
+
+//const store: Store<any> = createStore(rootReducer, initialState);
+
 
 ReactDOM.render(
   <App {...model}/>,

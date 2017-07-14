@@ -59,11 +59,11 @@ export default class Field extends Component<IFieldProps, {}> {
         const pacmanCells = cells.filter(c => c.kind === CellKind.Pacman);
         const pacmanInitPos = pacmanCells.reduce((a, c) => a.offset(c.gridPos), new Point(0, 0)).scale(new Point(1 / pacmanCells.length, 1 / pacmanCells.length));
         const packman: IPacmanProps = {
-            angle: 60,
             direction: Direction.Right,
             gridOffset: this.props.gridOffset,
             cellSize: this.props.cellSize,
-            position: pacmanInitPos
+            position: pacmanInitPos,
+            eatAnimation: true
         };
 
         return (

@@ -4,16 +4,74 @@ import { Point, Direction } from '../geometry';
 import { Arc } from 'react-konva';
 
 export interface IPacmanProps {
-    angle: number;
     direction: Direction;
     cellSize: Point;
     position: Point;
     gridOffset: Point;
+    eatAnimation: boolean;
 }
 
-export default class Pacman extends Component<IPacmanProps, {}> {
+interface IPacmanState {
+    animationTick: number;
+    mouthAngle: number;
+}
+
+export default class Pacman extends Component<IPacmanProps, IPacmanState> {
+
+    private timer: number;
+    private renderedTick = 0;
+    private tickCounter = 0;
+
     constructor(props: IPacmanProps) {
         super(props);
+        this.state = {
+            animationTick: 0,
+            mouthAngle: 90
+        };
+    }
+
+    componentWillMount() {
+        if (!this.props.eatAnimation) {
+            return;
+        }
+
+
+        const clock = () => {
+            this.timer = window.setTimeout(() => {
+                this.tickCounter++;
+                const animationSpan = 10; 
+                let angle = 90 * Math.abs(this.tickCounter % animationSpan - animationSpan / 2) / (animationSpan / 2);
+                // prevent flicking when angle reaches 0
+                if (angle <= 0)
+                    angle = 0.1;
+                this.setState({
+                    animationTick: this.tickCounter,
+                    mouthAngle: angle
+                });
+                clock();
+            }, 30);
+        };
+
+        clock();
+    }
+
+    componentWillUnmount() {
+        if (!this.props.eatAnimation) {
+            return;
+        }
+        clearTimeout(this.timer);
+    }
+
+    shouldComponentUpdate(nextProps: Readonly<IPacmanProps>, nextState: Readonly<IPacmanState>, nextContext: any): boolean{
+        if (this.props.eatAnimation) { 
+            if (this.renderedTick !== this.state.animationTick) {
+                if (this.state.animationTick > 0)
+                    this.renderedTick = this.state.animationTick;
+                return true;
+            }
+            return false; 
+        }
+        return false;
     }
 
     render(): any {
@@ -33,14 +91,12 @@ export default class Pacman extends Component<IPacmanProps, {}> {
             }
         }
 
-        const rotation = calcRotation(this.props.direction) + this.props.angle / 2; 
+        const rotation = calcRotation(this.props.direction) + this.state.mouthAngle / 2; 
         return (
             <Arc
                 x={absPos.x}
                 y={absPos.y}
-                width={this.props.cellSize.x}
-                height={this.props.cellSize.y}
-                angle={-this.props.angle}
+                angle={-this.state.mouthAngle}
                 rotation={rotation}
                 innerRadius={0}
                 outerRadius={this.props.cellSize.y / 2}
