@@ -1,37 +1,19 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { IAppProps } from './components/App';
 import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
-import Map = require("./components/Map");
-import IMapProps = Map.IMapProps;
-import { IAppProps } from './components/App';
-//import { Store, createStore } from 'redux';
+import { Store, createStore } from 'redux';
+import createProvider from "./reducers/Provider";
+import { rootReducer } from "./reducers";
 
-export class AppModel implements IAppProps {
-    readonly caption: string;
-    readonly map: Map.IMapProps;
-    constructor(caption: string) {
-        this.caption = caption;
-        this.map = new MapModel();
-        this.map.width = 788;
-        this.map.height = 840;
-    }
-}
+const store: Store<IAppProps> = createStore<IAppProps>(rootReducer);
 
-class MapModel implements IMapProps {
-    width: number;
-    height: number;
-}
-
-var model = new AppModel('react-pacman');
-
-
-//const store: Store<any> = createStore(rootReducer, initialState);
-
-
-ReactDOM.render(
-  <App {...model}/>,
-  document.getElementById('root') as HTMLElement
+const Provider = createProvider<IAppProps>();
+const AppContainer: React.StatelessComponent<any> = () => (
+    <Provider store={store} target={App} />
 );
+
+ReactDOM.render(<AppContainer/>, document.getElementById('root') as HTMLElement);
 registerServiceWorker();

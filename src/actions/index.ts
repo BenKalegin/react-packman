@@ -1,11 +1,14 @@
-export const START_ROUND = "START_ROUND";
+export const START_ROUND_ACTION = "START_ROUND";
+export const ANIMATION_STEP_ACTION = "ANIMATION_STEP";
 
-export interface IAction {
-    type: string;
+export interface IStartRoundAction 
+{
+    type: typeof START_ROUND_ACTION;
+} 
+
+export interface IAnimatedStepAction {
+    type: typeof ANIMATION_STEP_ACTION;
+    tick: number;
 }
 
-export class StartRoundAction implements IAction
-{
-    type: string = START_ROUND;
-
-} 
+export type Action = IStartRoundAction | IAnimatedStepAction;
