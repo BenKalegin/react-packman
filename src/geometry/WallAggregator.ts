@@ -1,6 +1,6 @@
 import { Point } from './Point';
 
-export default class WallAggregator {
+export class WallAggregator {
     public static aggregate(cells: Point[]): Point[][] {
 
         // sort by x+y so we had better chance to have connected neighbours

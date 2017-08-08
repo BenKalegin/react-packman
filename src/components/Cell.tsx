@@ -1,18 +1,18 @@
 import { Component } from 'react';
 import * as React from 'react';
-import { CellKind } from './Field';
-import { Point, Rectangle } from '../geometry';
+import { CellKind } from '../model';
+import { Rectangle, Point } from '../geometry';
 import { Circle } from 'react-konva';
 
 
-export interface ICellProps {
-    kind: CellKind;
-    gridPos: Point;
-    cellSize: Point;
-    gridOffset: Point;
+export type CellProps = {
+  kind: CellKind;
+  gridPos: Point;
+  cellSize: Point;
+  gridOffset: Point;
 }
 
-export default class Cell extends Component<ICellProps, {}> {
+export default class Cell extends Component<CellProps, {}> {
     render(): any {
         const gridPos = this.props.gridPos;
         let dx = this.props.cellSize.x;

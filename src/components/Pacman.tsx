@@ -1,61 +1,75 @@
-import { Component } from 'react';
 import * as React from 'react';
+import * as redux from 'redux';
 import { Point, Direction } from '../geometry';
 import { Arc } from 'react-konva';
+import { connect } from 'react-redux';
+import { Store } from '../model';
 
-export interface IPacmanProps {
-    direction: Direction;
-    cellSize: Point;
-    position: Point;
-    gridOffset: Point;
-    eatAnimation: boolean;
+
+type ConnectedState = {
+  cellSize: Point;
+  position: Point;
+  gridOffset: Point;
+  mouthAngle: number;
+  direction: Direction;
 }
 
-export default class Pacman extends Component<IPacmanProps> {
+type ConnectedDispatch = {
+}
 
-    private renderedTick = 0;
+type OwnProps = {
+}
 
-//    shouldComponentUpdate(nextProps: Readonly<IPacmanProps>, nextState: Readonly<any>, nextContext: any): boolean{
-//        if (this.props.eatAnimation) { 
-//            if (this.renderedTick !== this.state.animationTick) {
-//                if (this.state.animationTick > 0)
-//                    this.renderedTick = this.state.animationTick;
-//                return true;
-//            }
-//            return false; 
-//        }
-//        return false;
-//    }
+type OwnState = {
+}
 
-    render(): any {
-        const absPos = this.props.position.scale(this.props.cellSize).offset(this.props.gridOffset).offset(this.props.cellSize.scale(.5));
+const mapStateToProps = (state: Store.All, ownProps: OwnProps): ConnectedState => ({
+  cellSize: state.maze.cellSize,
+  gridOffset: state.maze.gridOffset,
+  position: state.pacman.position,
+  direction: state.pacman.direction,
+  mouthAngle: state.pacman.mouthAngle
 
-        const calcRotation = (dir: Direction) => {
-            switch (dir) {
-            case Direction.Up:
-                return -90;
-            case Direction.Down:
-                return 90;
-            case Direction.Left:
-                return 180;
-            case Direction.Right:
-            default:
-                return 0;
-            }
-        }
+});
 
-        const rotation = calcRotation(this.props.direction) + this.props.mouthAngle / 2; 
-        return (
-            <Arc
-                x={absPos.x}
-                y={absPos.y}
-                angle={-this.state.mouthAngle}
-                rotation={rotation}
-                innerRadius={0}
-                outerRadius={this.props.cellSize.y / 2}
-                fill="yellow"
-                stroke="red"
-            />
-        );
+const mapDispatchToProps = (dispatch: redux.Dispatch<Store.All>): ConnectedDispatch => ({
+});
+
+
+class PacmanView extends React.Component<ConnectedState, OwnState> {
+
+  render() {
+    const props = this.props;
+    const absPos = props.position.scale(props.cellSize).offset(props.gridOffset).offset(props.cellSize.scale(.5));
+
+    const calcRotation = (dir: Direction) => {
+      switch (dir) {
+      case Direction.Up:
+        return -90;
+      case Direction.Down:
+        return 90;
+      case Direction.Left:
+        return 180;
+      case Direction.Right:
+      default:
+        return 0;
+      }
     }
+
+    const rotation = calcRotation(props.direction) + props.mouthAngle / 2;
+    return (
+      <Arc
+        x={absPos.x}
+        y={absPos.y}
+        angle={-props.mouthAngle}
+        rotation={rotation}
+        innerRadius={0}
+        outerRadius={props.cellSize.y / 2}
+        fill="yellow"
+        stroke="red"/>
+    );
+  }
 }
+
+export const Pacman: React.ComponentClass<OwnProps> =
+  connect(mapStateToProps, mapDispatchToProps)(PacmanView);

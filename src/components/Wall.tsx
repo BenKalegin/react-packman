@@ -3,15 +3,15 @@ import * as React from 'react';
 import { Point, Rectangle, PathGenerator } from '../geometry';
 import { Rect, Group } from 'react-konva';
 
-export interface IWallProps {
+export type WallProps = {
     points: Point[];
     cellSize: Point;
     gridOffset: Point;
 }
 
-export default class Wall extends Component<IWallProps, {}> {
+export default class Wall extends Component<WallProps, {}> {
     private path: string;
-    constructor(props: IWallProps) {
+    constructor(props: WallProps) {
         super(props);
         this.path = PathGenerator.outlinePoints(props.points, props.gridOffset, props.cellSize);
     }

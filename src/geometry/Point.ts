@@ -17,6 +17,9 @@ export class Point {
         return Math.abs(p.x - this.x) + Math.abs(p.y - this.y);
     }
 
+    public toRectangle(): Rectangle {
+      return new Rectangle(0, 0, this.x, this.y);
+    }
     public static boundingRect(points: Point[]) {
         const bigNumber = 100000;
         const edgePoints = points.reduce((bounds, p) => {

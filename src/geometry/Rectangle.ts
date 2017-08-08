@@ -17,4 +17,8 @@ export class Rectangle {
     inflate(delta: number): Rectangle {
         return new Rectangle(this.x - delta, this.y - delta, this.dx + delta + delta, this.dy + delta + delta);
     }
+
+    moveBy(delta: Point): Rectangle {
+        return new Rectangle(this.x + delta.x, this.y + delta.y, this.dx, this.dy);
+    }
 }

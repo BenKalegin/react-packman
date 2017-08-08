@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
 import { pacmanReducer } from './Pacman';
-import { IAppProps } from "../components/App";
+import { Store } from '../model';
 
-export const rootReducer = combineReducers<IAppProps>({pacman: pacmanReducer});
+export const rootReducer = combineReducers<Store.All>({pacman: pacmanReducer});

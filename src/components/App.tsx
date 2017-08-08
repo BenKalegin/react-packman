@@ -1,23 +1,14 @@
 import * as React from 'react';
-import { Component } from 'react';
 import './App.css';
-import Map from './Map';
-import { IMapProps} from './Map';
+import { Maze } from './Maze';
+import { Store } from '../model';
 
-export interface IAppProps {
-    readonly caption: string;
-    map: IMapProps;
-}
-
-class App extends Component<IAppProps, any> {
-    constructor(props: IAppProps) {
-        super(props);
-        }
+class App extends React.Component<Store.All, any> {
 
     render() {
         return (
             <div className="App">
-                <Map {...this.props.map}/>
+                <Maze {...this.props}/>
                 <br />
             </div>
         );
