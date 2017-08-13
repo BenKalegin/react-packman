@@ -49,7 +49,7 @@ export namespace Store {
     const gridSize = new Point(26, 29);
 
     const pacman: Pacman = {
-      eatAnimation: false,
+      eatAnimation: true,
       mouthAngle: 90,
       direction: Direction.Right,
       position: def.pacmanInitPos

@@ -41,9 +41,11 @@ class AppView extends React.Component<OwnProps & ConnectedDispatch, OwnState> {
   startTicker = () => {
     let ticker = () => {
       /*if (this.state.tickerStarted)*/ {
-        this.props.animatedStep();
+        if (tick < 1000){
+          this.props.animatedStep();
 
-        window.requestAnimationFrame(ticker);
+          window.requestAnimationFrame(ticker);
+        }
         // setTimeout(ticker, 500);
       }
     };
@@ -67,7 +69,7 @@ class AppView extends React.Component<OwnProps & ConnectedDispatch, OwnState> {
   render() {
     return (
       <div className="App">
-        <Maze {...this.props}/>
+        <Maze/>
         <br/>
       </div>
     );
