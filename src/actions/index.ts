@@ -1,5 +1,8 @@
+import { Direction } from '../geometry';
+
 export const START_ROUND_ACTION = "START_ROUND";
 export const ANIMATION_STEP_ACTION = "ANIMATION_STEP";
+export const CHANGE_DIRECTION_ACTION = "CHANGE_DIR";
 
 export type StartRoundAction = 
 {
@@ -11,6 +14,12 @@ export type AnimatedStepAction  = {
     tick: number;
 }
 
+export type ChangeDirectionAction = {
+  type: typeof CHANGE_DIRECTION_ACTION;
+  direction: Direction;
+}
+
+
 export function animatedStepAction(tick: number): AnimatedStepAction {
   return {
     type: ANIMATION_STEP_ACTION,
@@ -18,4 +27,12 @@ export function animatedStepAction(tick: number): AnimatedStepAction {
   };
 }
 
-export type Action = StartRoundAction | AnimatedStepAction;
+export function changeDirectionAction(direction: Direction): ChangeDirectionAction {
+  return {
+    type: CHANGE_DIRECTION_ACTION,
+    direction
+  };
+}
+
+
+export type Action = StartRoundAction | AnimatedStepAction | ChangeDirectionAction;

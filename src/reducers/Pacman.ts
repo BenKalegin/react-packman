@@ -1,4 +1,4 @@
-import { Action, ANIMATION_STEP_ACTION } from "../actions";
+import { Action, ANIMATION_STEP_ACTION, CHANGE_DIRECTION_ACTION } from "../actions";
 import { Store } from "../model";
 
 
@@ -20,6 +20,13 @@ export function pacmanReducer(state: Store.Pacman = Store.initial().pacman, acti
       result.mouthAngle = angle;
     }
     return result;
+
+  case CHANGE_DIRECTION_ACTION:
+      // todo make some tolerance here
+      return {
+      ...state,
+      direction: action.direction
+    };
 
 
   default:

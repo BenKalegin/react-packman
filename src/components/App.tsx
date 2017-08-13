@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import './App.css';
 import { Maze } from './Maze';
 import { Store } from '../model';
-import { animatedStepAction } from '../actions/index';
-
+import { animatedStepAction, changeDirectionAction } from '../actions/index';
+import { Direction } from '../geometry/';
 type OwnProps = Store.All;
 
 type OwnState = {
@@ -13,6 +13,7 @@ type OwnState = {
 
 type ConnectedDispatch = {
   animatedStep: () => void;
+  changeDirection: (direction: Direction) => void;
 };
 
 const mapStateToProps = (state: Store.All, ownProps: OwnProps): Store.All => (state);
@@ -21,26 +22,74 @@ let tick = 0;
 function mapDispatchToProps(dispatch: redux.Dispatch<Store.All>): ConnectedDispatch
 {
   return {
-    animatedStep: () => dispatch(animatedStepAction(++tick))
+    animatedStep: () => dispatch(animatedStepAction(++tick)),
+    changeDirection: (direction) => dispatch(changeDirectionAction(direction)) 
   }
 };
 
 class AppView extends React.Component<OwnProps & ConnectedDispatch, OwnState> {
+  tickerStarted: boolean;
 
-  unsubscribe: () => void;
+  addKeyboardListeners(): void {
+      window.addEventListener('keydown', (e) => this.keydown(e));
+      window.addEventListener('keyup', (e) => this.keyup(e));
+  }
+
+  removeKeyboardListeners(): void {
+    window.removeEventListener('keydown', this.keydown);
+    window.removeEventListener('keyup', this.keyup);
+  }
+
 
   componentDidMount() {
     this.startTicker();
-    // this.unsubscribe = store.subscribe(() => this.forceUpdate());
+    this.addKeyboardListeners();
   }
 
   componentWillUnmount() {
-    this.unsubscribe();
+    this.stopTicker();
+    this.removeKeyboardListeners();
   }
 
+  keydown(event: KeyboardEvent) : void {
+    let key = event.key;
+
+    switch (key) {
+    case 'ArrowRight':
+      this.props.changeDirection(Direction.Right);
+      break;
+    case 'ArrowLeft':
+      this.props.changeDirection(Direction.Left);
+      break;
+    case 'ArrowDown':
+      this.props.changeDirection(Direction.Down);
+      break;
+    case 'ArrowUp':
+      this.props.changeDirection(Direction.Up);
+      break;
+    //case 'U+0020':
+    default:
+      // no op
+    }
+  }
+
+  keyup(event: KeyboardEvent) {
+    let key = event.key;
+
+    switch (key) {
+    default:
+      // no op
+    }
+  }
+
+  stopTicker = () => {
+    this.tickerStarted = false;
+  }
   startTicker = () => {
+    this.tickerStarted = true;
+
     let ticker = () => {
-      /*if (this.state.tickerStarted)*/ {
+      if (this.tickerStarted) {
         if (tick < 1000){
           this.props.animatedStep();
 

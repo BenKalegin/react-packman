@@ -1,6 +1,5 @@
 import { initializeMaze, defaultMaze } from './mazeDefinition';
 import { Direction, Point } from '../geometry';
-
 export enum CellKind {
   Impassable,
   Noscore,

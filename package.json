@@ -13,7 +13,8 @@
     "react-dom": "^15.6.1",
     "react-konva": "github:lavrton/react-konva",
     "react-redux": "^5.0.5",
-    "react-scripts-ts": "2.3.2"
+    "react-scripts-ts": "2.3.2",
+    "redux-shortcuts": "0.0.3"
   },
   "devDependencies": {
     "@types/redux": "^3.6.0",

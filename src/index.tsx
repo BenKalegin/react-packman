@@ -12,6 +12,7 @@ let devtools: any = window['devToolsExtension'] ? window['devToolsExtension']() 
 
 const store = devtools(redux.createStore)(rootReducer,Store.initial());
 
+
 const Provider = createProvider<Store.All>();
 const AppContainer: React.StatelessComponent<{}> = () => (
     <Provider store={store} target={App} />
