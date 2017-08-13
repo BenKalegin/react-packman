@@ -47,8 +47,9 @@ export default class Wall extends Component<WallProps, {}> {
         });
         
         const randomColor = this.getRandomColor();
-        const props = rects.map(r => {
-            return {
+        const props = rects.map((r,i) => {
+          return {
+                key: i,
                 x: r.x,
                 y: r.y,
                 width: r.dx,

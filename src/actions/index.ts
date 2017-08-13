@@ -1,14 +1,21 @@
 export const START_ROUND_ACTION = "START_ROUND";
 export const ANIMATION_STEP_ACTION = "ANIMATION_STEP";
 
-export interface IStartRoundAction 
+export type StartRoundAction = 
 {
     type: typeof START_ROUND_ACTION;
 } 
 
-export interface IAnimatedStepAction {
+export type AnimatedStepAction  = {
     type: typeof ANIMATION_STEP_ACTION;
     tick: number;
 }
 
-export type Action = IStartRoundAction | IAnimatedStepAction;
+export function animatedStepAction(tick: number): AnimatedStepAction {
+  return {
+    type: ANIMATION_STEP_ACTION,
+    tick: tick
+  };
+}
+
+export type Action = StartRoundAction | AnimatedStepAction;

@@ -26,3 +26,10 @@ export function pacmanReducer(state: Store.Pacman = Store.initial().pacman, acti
     return state;
   }
 }
+
+export function mazeReducer(state: Store.Maze = Store.initial().maze, action: Action): Store.Maze {
+  switch (action.type) {
+  default:
+    return state;
+  }
+}

@@ -9,8 +9,7 @@ export enum CellKind {
   GhostsOnly,
   Fruit,
   Pacman
-}
-
+};
 
 export namespace Store {
 
@@ -18,17 +17,17 @@ export namespace Store {
     eatAnimation: boolean,
     mouthAngle: number,
     direction: Direction,
-    position: Point
-  }
+    position: Point;
+  };
 
   export type Wall = {
     points: Point[];
-  }
+  };
 
   export type Pass = {
     kind: CellKind;
     gridPos: Point;
-  }
+  };
 
   export type Maze = {
     borderWidth: number;
@@ -37,15 +36,12 @@ export namespace Store {
     walls: Wall[];
     gridSize: Point;
     gridOffset: Point;
-  }
-
+  };
 
   export type All = {
     pacman: Pacman,
-    maze: Maze
-  }
-
-
+    maze: Maze;
+  };
   export function initial(): All {
     const def = initializeMaze(defaultMaze());
     const borderWidth = 8;

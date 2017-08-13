@@ -36,14 +36,16 @@ class MazeView extends React.Component<ConnectedState & ConnectedDispatch & OwnP
     const bounds = maze.gridSize.scale(maze.cellSize).toRectangle().inflate(maze.borderWidth).moveBy(new Point(maze.borderWidth, maze.borderWidth));
     const borderProps: BorderProps = { bounds: bounds, width: maze.borderWidth };
     const fieldRect = bounds.inflate(-maze.borderWidth);
-    const walls : WallProps[] = maze.walls.map(w => {
+    const walls : WallProps[] = maze.walls.map((w,i) => {
       return {
+        key: i,
         points: w.points,
         cellSize: maze.cellSize,
         gridOffset: fieldRect.p1
     }});
-    const passes : CellProps[] = maze.passes.map(w => {
+    const passes : CellProps[] = maze.passes.map((w,i) => {
       return {
+        key: i,
         kind: w.kind,
         gridPos: w.gridPos,
         cellSize: maze.cellSize,

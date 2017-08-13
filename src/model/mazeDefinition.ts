@@ -40,10 +40,9 @@ export const defaultMaze: () => CellKind[][] = () => {
     [X, _, _, _, _, _, _, _, _, _, _, X, _, _, X, _, _, _, _, _, _, _, _, _, _, X],
     [X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X]
   ];
-}
+};
 
-export function initializeMaze(rows: CellKind[][])
-{
+export function initializeMaze(rows: CellKind[][]) {
   const cells = new Array<Store.Pass>();
 
   for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
