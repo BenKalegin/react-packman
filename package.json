@@ -14,7 +14,8 @@
     "react-konva": "github:lavrton/react-konva",
     "react-redux": "^5.0.5",
     "react-scripts-ts": "2.3.2",
-    "redux-shortcuts": "0.0.3"
+    "redux-shortcuts": "0.0.3",
+    "reselect": "^3.0.1"
   },
   "devDependencies": {
     "@types/redux": "^3.6.0",

@@ -1,4 +1,4 @@
-import { Rectangle } from '.';
+import { Rectangle, Direction } from '.';
 
 export class Point {
     constructor(public x: number, public y: number) { }
@@ -35,4 +35,21 @@ export class Point {
         }, { x0: bigNumber, y0: bigNumber, x1: -bigNumber, y1: -bigNumber });
         return new Rectangle(edgePoints.x0, edgePoints.y0, edgePoints.x1 - edgePoints.x0, edgePoints.y1 - edgePoints.y0);
     }
+
+    public static vector(towards: Direction): Point {
+      switch (towards) {
+      case Direction.Right:
+        return new Point(1, 0);
+      case Direction.Left:
+        return new Point(-1, 0);
+      case Direction.Up:
+        return new Point(0, -1);
+      case Direction.Down:
+        return new Point(0, 1);
+      default:
+        return new Point(0, 0);
+      }
+    }
+
+
 }

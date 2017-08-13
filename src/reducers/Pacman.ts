@@ -1,13 +1,15 @@
 import { Action, ANIMATION_STEP_ACTION, CHANGE_DIRECTION_ACTION } from "../actions";
 import { Store } from "../model";
+import { IMazePath } from "../model/derivatives";
+import { Point, Direction } from "../geometry";
 
-
-export function pacmanReducer(state: Store.Pacman = Store.initial().pacman, action: Action): Store.Pacman {
+export function pacmanReducer(state: Store.Pacman = Store.initial().pacman, action: Action, mazePath: IMazePath): Store.Pacman {
   switch (action.type) {
   case ANIMATION_STEP_ACTION:
     const tick: number = action.tick;
     let result = {
       ...state,
+      position: state.position,
       mouthAngle: state.mouthAngle
     };
 
@@ -19,13 +21,26 @@ export function pacmanReducer(state: Store.Pacman = Store.initial().pacman, acti
         angle = 0.1;
       result.mouthAngle = angle;
     }
+
+    if (state.moving) {
+      var newPos = state.position.offset(Point.vector(state.direction).scale(state.speed));
+      if (mazePath.canEnter(newPos))
+        result.position = newPos;
+      else
+        result.moving = false;
+    }
     return result;
 
   case CHANGE_DIRECTION_ACTION:
-      // todo make some tolerance here
-      return {
+    // ignore if key matches current direction
+    if (action.direction === state.direction && state.moving === true)
+      return state;
+
+    const direction = action.direction;
+    return {
       ...state,
-      direction: action.direction
+      direction: direction,
+      moving: direction != Direction.None
     };
 
 

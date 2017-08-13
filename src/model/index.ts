@@ -14,8 +14,10 @@ export namespace Store {
 
   export type Pacman = {
     eatAnimation: boolean,
+    moving: boolean,
     mouthAngle: number,
     direction: Direction,
+    speed: number,
     position: Point;
   };
 
@@ -41,6 +43,7 @@ export namespace Store {
     pacman: Pacman,
     maze: Maze;
   };
+
   export function initial(): All {
     const def = initializeMaze(defaultMaze());
     const borderWidth = 8;
@@ -51,7 +54,9 @@ export namespace Store {
       eatAnimation: true,
       mouthAngle: 90,
       direction: Direction.Right,
-      position: def.pacmanInitPos
+      position: def.pacmanInitPos,
+      moving: false,
+      speed: 0.2
     };
     const maze: Maze = {
       cellSize: cellSize,
