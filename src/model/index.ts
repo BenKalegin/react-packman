@@ -47,7 +47,7 @@ export namespace Store {
   export function initial(): All {
     const def = initializeMaze(defaultMaze());
     const borderWidth = 8;
-    const cellSize = new Point(32, 32);
+    const cellSize = new Point(30, 30);
     const gridSize = new Point(26, 29);
 
     const pacman: Pacman = {

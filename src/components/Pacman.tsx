@@ -40,7 +40,7 @@ class PacmanView extends React.Component<ConnectedState, OwnState> {
 
   render() {
     const props = this.props;
-    const absPos = props.position.scale(props.cellSize).offset(props.gridOffset).offset(props.cellSize.scale(.5));
+    const absPos = props.position.scale(props.cellSize).offset(props.gridOffset).offset(props.cellSize.scale(.58));
 
     const calcRotation = (dir: Direction) => {
       switch (dir) {

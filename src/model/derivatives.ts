@@ -17,19 +17,19 @@ export class MazePath implements IMazePath {
   private cells = new Map<number, Cell>();
 
   private sparseHash(point: Point) : number {
-    return Math.round(point.y) * MazePath.hashFactor + Math.round(point.x);
+    return Math.floor(Math.round(point.y * 1000) / 1000) * MazePath.hashFactor + Math.floor(Math.round(point.x * 1000) / 1000);
   }
 
   constructor(model: Store.Maze) {
     model.passes
       .map(p => this.sparseHash(p.gridPos))
-      .forEach(p => this.cells[p] = new Cell());
+      .forEach(p => this.cells.set(p, new Cell()));
 
-    this.cells.forEach((cell, hash) => {
+    this.cells.forEach((cell, hash, map) => {
         const setNeighbour = (direction: Direction, hashDelta: number) => {
-        const neighbour = this.cells[hash + hashDelta];
+        const neighbour = this.cells.get(hash + hashDelta);
         if (neighbour)
-          cell.neighbours[direction] = neighbour;
+          cell.neighbours.set(direction, neighbour);
         
       }
 
@@ -42,12 +42,13 @@ export class MazePath implements IMazePath {
 
   hasNeighbour(point: Point, direction: Direction): boolean {
     const hash = this.sparseHash(point);
-    return this.cells[hash].neighbours[direction] != null;
+    const cell = this.cells.get(hash);
+    return cell != null && cell.neighbours.get(direction) != null;
   }
 
   canEnter(point: Point): boolean {
     const hash = this.sparseHash(point);
-    return this.cells[hash] != null;
+    return this.cells.get(hash) != null;
   }
 
 }

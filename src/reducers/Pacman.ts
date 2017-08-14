@@ -23,8 +23,10 @@ export function pacmanReducer(state: Store.Pacman = Store.initial().pacman, acti
     }
 
     if (state.moving) {
-      var newPos = state.position.offset(Point.vector(state.direction).scale(state.speed));
-      if (mazePath.canEnter(newPos))
+      const newPos = state.position.offset(Point.vector(state.direction).scale(state.speed));
+      if ((state.direction === Direction.Right || state.direction === Direction.Down) && mazePath.hasNeighbour(newPos, state.direction) ||
+          (state.direction === Direction.Left || state.direction === Direction.Up) && mazePath.canEnter(newPos)
+        )
         result.position = newPos;
       else
         result.moving = false;
@@ -34,6 +36,10 @@ export function pacmanReducer(state: Store.Pacman = Store.initial().pacman, acti
   case CHANGE_DIRECTION_ACTION:
     // ignore if key matches current direction
     if (action.direction === state.direction && state.moving === true)
+      return state;
+
+    // ignore movements to walls
+    if (!mazePath.hasNeighbour(state.position, action.direction))
       return state;
 
     const direction = action.direction;

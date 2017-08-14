@@ -90,7 +90,7 @@ class AppView extends React.Component<OwnProps & ConnectedDispatch, OwnState> {
 
     let ticker = () => {
       if (this.tickerStarted) {
-        if (tick < 1000){
+        if (tick < 10000){
           this.props.animatedStep();
 
           window.requestAnimationFrame(ticker);
