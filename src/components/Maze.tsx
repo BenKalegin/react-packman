@@ -7,6 +7,7 @@ import Border from './Border';
 import Wall from './Wall';
 import Cell from './Cell';
 import { Pacman } from './Pacman';
+import { Ghost } from './Ghost';
 import { Store } from '../model';
 import { Point } from '../geometry';
 
@@ -61,7 +62,8 @@ class MazeView extends React.Component<ConnectedState & ConnectedDispatch & OwnP
         </Layer>
         <Layer>
           {passes.map(c => <Cell {...c} />)}
-          <Pacman/>
+          <Pacman />
+          {[0,1,2,3].map(i => <Ghost index={i} />)}
         </Layer>
       </Stage>
     );

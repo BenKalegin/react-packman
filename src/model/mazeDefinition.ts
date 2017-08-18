@@ -73,9 +73,20 @@ export function initializeMaze(rows: CellKind[][]) {
   const pacmanCells = cells.filter(c => c.kind === CellKind.Pacman);
   const pacmanInitPos = pacmanCells.reduce((a, c) => a.offset(c.gridPos), new Point(0, 0))
     .scale(new Point(1 / pacmanCells.length, 1 / pacmanCells.length));
+
+
+  const ghostCells = cells.filter(c => c.kind === CellKind.GhostsOnly);
+  const ghostX = Math.min(...ghostCells.map(c => c.gridPos.x));
+  const ghostY = Math.min(...ghostCells.map(c => c.gridPos.y));
+  const ghostInitPos = [0, 1, 2, 3].map(i => new Point(ghostX + i, ghostY));
+
+
+    pacmanCells.reduce((a, c) => a.offset(c.gridPos), new Point(0, 0))
+    .scale(new Point(1 / pacmanCells.length, 1 / pacmanCells.length));
   return {
     passes,
     walls,
-    pacmanInitPos
+    pacmanInitPos,
+    ghostInitPos
   }
 }

@@ -21,6 +21,13 @@ export namespace Store {
     position: Point;
   };
 
+  export type Ghost = {
+    moving: boolean,
+    direction: Direction,
+    speed: number,
+    position: Point;
+  };
+
   export type Wall = {
     points: Point[];
   };
@@ -41,6 +48,7 @@ export namespace Store {
 
   export type All = {
     pacman: Pacman,
+    ghosts: Ghost[],
     maze: Maze;
   };
 
@@ -64,12 +72,21 @@ export namespace Store {
       passes: def.passes,
       walls: def.walls,
       gridSize: gridSize,
-      gridOffset: new Point(borderWidth/2, borderWidth / 2)
+      gridOffset: new Point(borderWidth / 2, borderWidth / 2)
+    };
 
-  };
+    const ghosts = [0, 1, 2, 3].map(i => {
+      return {
+        moving: false,
+        direction: Direction.None,
+        speed: 0.2,
+        position: def.ghostInitPos[i]
+      }});
+    
     return {
       pacman: pacman,
-      maze: maze
+      maze: maze,
+      ghosts: ghosts
     }
   }
 }
