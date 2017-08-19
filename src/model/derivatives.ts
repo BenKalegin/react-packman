@@ -1,12 +1,17 @@
 import { Store } from "./index";
 import { Direction, Point } from "../geometry";
+import { CellKind } from '.';
 
 class Cell {
+  ghostsOnly: boolean;
   neighbours = new Map<Direction, Cell>();  
+  public constructor(kind :CellKind) {
+    this.ghostsOnly = kind === CellKind.GhostsOnly || kind === CellKind.Gate;
+  }
 }
 
 export interface IMazePath {
-  hasNeighbour(point: Point, direction: Direction) : boolean;    
+  hasNeighbour(point: Point, direction: Direction, pacman: boolean) : boolean;    
   canEnter(point: Point): boolean;    
 };
 
@@ -21,9 +26,7 @@ export class MazePath implements IMazePath {
   }
 
   constructor(model: Store.Maze) {
-    model.passes
-      .map(p => this.sparseHash(p.gridPos))
-      .forEach(p => this.cells.set(p, new Cell()));
+    model.passes.forEach(p => this.cells.set(this.sparseHash(p.gridPos), new Cell(p.kind)));
 
     this.cells.forEach((cell, hash, map) => {
         const setNeighbour = (direction: Direction, hashDelta: number) => {
@@ -40,15 +43,19 @@ export class MazePath implements IMazePath {
     });
   }
 
-  hasNeighbour(point: Point, direction: Direction): boolean {
+  hasNeighbour(point: Point, direction: Direction, pacman: boolean): boolean {
     const hash = this.sparseHash(point);
     const cell = this.cells.get(hash);
-    return cell != null && cell.neighbours.get(direction) != null;
+    if (cell != null) {
+      const neighbour = cell.neighbours.get(direction);
+      return neighbour != null && (!neighbour.ghostsOnly || !pacman);
+    }
+    return false;
   }
 
   canEnter(point: Point): boolean {
     const hash = this.sparseHash(point);
-    return this.cells.get(hash) != null;
+    const cell = this.cells.get(hash);
+    return cell != null && !cell.ghostsOnly;
   }
-
 }

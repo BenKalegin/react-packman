@@ -77,7 +77,7 @@ export namespace Store {
 
     const ghosts = [0, 1, 2, 3].map(i => {
       return {
-        moving: false,
+        moving: true,
         direction: Direction.None,
         speed: 0.2,
         position: def.ghostInitPos[i]

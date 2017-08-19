@@ -7,6 +7,11 @@ export class Point {
     return new Point(this.x + by.x, this.y + by.y);
   }
 
+  public equals(to: Point): boolean {
+    return this.x == to.x && this.y == to.y;
+  }
+
+
   public scale(by: Point | number): Point {
     if (typeof (by) === "number")
       return new Point(this.x * by, this.y * by);

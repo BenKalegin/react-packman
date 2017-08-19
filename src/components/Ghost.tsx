@@ -33,7 +33,7 @@ class GhostView extends React.Component<ConnectedState & OwnProps, {}> {
 
   render() {
     const props = this.props;
-    const absPos = props.position.scale(props.cellSize).offset(props.gridOffset).offset(props.cellSize.scale(.58));
+    const absPos = props.position.scale(props.cellSize).offset(props.gridOffset).offset(props.cellSize.scale(.15));
     //const data = `M ${mouth1.x} ${mouth1.y} A ${radius} ${radius}, 0, 1, 0, ${mouth2.x} ${mouth2.y} L ${position.x} ${position.y} Z`;
 
 //    ctx.fillStyle = 'black';
@@ -46,7 +46,7 @@ class GhostView extends React.Component<ConnectedState & OwnProps, {}> {
 //    ctx.fill();
 
     return (
-      <Group x={absPos.x} y={absPos.y} width={20}>
+      <Group x={absPos.x} y={absPos.y}>
       <Path data="M0 28 L0 14 C0 6 6 0 14 0 C22 0 28 6 28 14 L28 28 L23.333 23.333 L18.666 28 L14 23.333 L9.333 28 L4.666 23.333 L0 28"
         fill="yellow"
         stroke="black" />

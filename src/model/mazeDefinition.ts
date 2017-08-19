@@ -65,6 +65,8 @@ export function initializeMaze(rows: CellKind[][]) {
     });
 
   const passes = cells.filter(c =>
+    c.kind === CellKind.GhostsOnly ||
+    c.kind === CellKind.Gate ||
     c.kind === CellKind.Score ||
     c.kind === CellKind.Fruit ||
     c.kind === CellKind.Pacman ||
