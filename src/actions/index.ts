@@ -3,6 +3,7 @@ import { Direction } from '../geometry';
 export const START_ROUND_ACTION = "START_ROUND";
 export const ANIMATION_STEP_ACTION = "ANIMATION_STEP";
 export const CHANGE_DIRECTION_ACTION = "CHANGE_DIR";
+export const PAUSE_COMMAND_ACTION = "PAUSE";
 
 export type StartRoundAction = 
 {
@@ -17,6 +18,10 @@ export type AnimatedStepAction  = {
 export type ChangeDirectionAction = {
   type: typeof CHANGE_DIRECTION_ACTION;
   direction: Direction;
+}
+
+export type PauseCommandAction = {
+  type: typeof PAUSE_COMMAND_ACTION;
 }
 
 
@@ -34,5 +39,11 @@ export function changeDirectionAction(direction: Direction): ChangeDirectionActi
   };
 }
 
+export function pauseCommandAction(): PauseCommandAction {
+  return {
+    type: PAUSE_COMMAND_ACTION,
+  };
+}
 
-export type Action = StartRoundAction | AnimatedStepAction | ChangeDirectionAction;
+
+export type Action = StartRoundAction | AnimatedStepAction | ChangeDirectionAction | PauseCommandAction;

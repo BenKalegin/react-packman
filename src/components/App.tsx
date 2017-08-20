@@ -4,31 +4,39 @@ import { connect } from 'react-redux';
 import './App.css';
 import { Maze } from './Maze';
 import { Store } from '../model';
-import { animatedStepAction, changeDirectionAction } from '../actions/index';
+import { animatedStepAction, changeDirectionAction, pauseCommandAction } from '../actions/index';
 import { Direction } from '../geometry/';
 type OwnProps = Store.All;
 
 type OwnState = {
 };
 
+type ConnectedState = {
+  paused: boolean;
+}
+
 type ConnectedDispatch = {
   animatedStep: () => void;
   changeDirection: (direction: Direction) => void;
+  pause: () => void;
 };
 
-const mapStateToProps = (state: Store.All, ownProps: OwnProps): Store.All => (state);
+const mapStateToProps = (state: Store.All, ownProps: OwnProps): ConnectedState => ({
+  paused: state.game.paused
+});
 
 let tick = 0;
 function mapDispatchToProps(dispatch: redux.Dispatch<Store.All>): ConnectedDispatch
 {
   return {
     animatedStep: () => dispatch(animatedStepAction(++tick)),
-    changeDirection: (direction) => dispatch(changeDirectionAction(direction)) 
+    changeDirection: (direction) => dispatch(changeDirectionAction(direction)),
+    pause: () => dispatch(pauseCommandAction())
   }
 };
 
-class AppView extends React.Component<OwnProps & ConnectedDispatch, OwnState> {
-  tickerStarted: boolean;
+class AppView extends React.Component<OwnProps & ConnectedDispatch & ConnectedState, OwnState> {
+  tickerStarted: boolean; 
 
   addKeyboardListeners(): void {
       window.addEventListener('keydown', (e) => this.keydown(e));
@@ -67,9 +75,9 @@ class AppView extends React.Component<OwnProps & ConnectedDispatch, OwnState> {
     case 'ArrowUp':
       this.props.changeDirection(Direction.Up);
       break;
-    //case 'U+0020':
-    default:
-      // no op
+    case ' ':
+      this.props.pause();
+      break;
     }
   }
 
@@ -89,21 +97,17 @@ class AppView extends React.Component<OwnProps & ConnectedDispatch, OwnState> {
     this.tickerStarted = true;
 
     let ticker = () => {
+
       if (this.tickerStarted) {
-        if (tick < 10000){
+        if (!this.props.paused)
           this.props.animatedStep();
 
-          window.requestAnimationFrame(ticker);
-        }
-        // setTimeout(ticker, 500);
+        window.requestAnimationFrame(ticker);
       }
     };
 
-    /*if (!store.getState().tickerStarted)*/ {
-      console.log("Starting ticker");
-      //store.dispatch(tickerStarted());
-      ticker();
-    }
+    ticker();
+
   }
 //  startPacmanChomp = () => {
 //    const { store } = this.context; //todo make typed and move to member

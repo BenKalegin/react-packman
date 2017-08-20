@@ -46,9 +46,14 @@ export namespace Store {
     gridOffset: Point;
   };
 
+  export type Game = {
+    paused: boolean;  
+  }
+
   export type All = {
     pacman: Pacman,
     ghosts: Ghost[],
+    game: Game,
     maze: Maze;
   };
 
@@ -82,11 +87,16 @@ export namespace Store {
         speed: 0.2,
         position: def.ghostInitPos[i]
       }});
-    
+
+    const game: Game = {
+      paused: false  
+    }
+
     return {
       pacman: pacman,
       maze: maze,
-      ghosts: ghosts
+      ghosts: ghosts,
+      game: game
     }
   }
 }
