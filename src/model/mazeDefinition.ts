@@ -89,6 +89,6 @@ export function initializeMaze(rows: CellKind[][]) {
     passes,
     walls,
     pacmanInitPos,
-    ghostInitPos
+    ghostInitPos,
   }
 }

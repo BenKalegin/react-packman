@@ -22,8 +22,12 @@ export class Point {
     return Math.abs(p.x - this.x) + Math.abs(p.y - this.y);
   }
 
-  public toRectangle(): Rectangle {
+  public asRectangleSize(): Rectangle {
     return new Rectangle(0, 0, this.x, this.y);
+  }
+
+  public toRectangle(size: Point): Rectangle {
+    return new Rectangle(this.x, this.y, size.x, size.y);
   }
 
   public static boundingRect(points: Point[]) {

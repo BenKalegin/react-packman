@@ -7,7 +7,7 @@ function getRandomInt(max: number) {
   return Math.floor(Math.random() * max);
 }
 
-export function ghostReducer(states: Store.Ghost[] = Store.initial().ghosts, action: Action, mazePath: IMazePath): Store.Ghost[] {
+export function ghostReducer(states: Store.Ghost[] = Store.initial().heat.ghosts, action: Action, mazePath: IMazePath): Store.Ghost[] {
   switch (action.type) {
     case ANIMATION_STEP_ACTION:
       let results = new Array<Store.Ghost>(states.length);

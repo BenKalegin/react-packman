@@ -1,5 +1,6 @@
 import { initializeMaze, defaultMaze } from './mazeDefinition';
 import { Direction, Point } from '../geometry';
+
 export enum CellKind {
   Impassable,
   Noscore,
@@ -47,14 +48,25 @@ export namespace Store {
   };
 
   export type Game = {
-    paused: boolean;  
+    maze: Maze;
+    score: number;
+    paused: boolean;
+  }
+
+  export type Round = {
+    dots: Point[];
+    pellets: Point[];
+  }
+
+  export type Heat = {
+    pacman: Pacman,
+    ghosts: Ghost[],
   }
 
   export type All = {
-    pacman: Pacman,
-    ghosts: Ghost[],
     game: Game,
-    maze: Maze;
+    round: Round,
+    heat: Heat
   };
 
   export function initial(): All {
@@ -63,14 +75,6 @@ export namespace Store {
     const cellSize = new Point(30, 30);
     const gridSize = new Point(26, 29);
 
-    const pacman: Pacman = {
-      eatAnimation: true,
-      mouthAngle: 90,
-      direction: Direction.Right,
-      position: def.pacmanInitPos,
-      moving: false,
-      speed: 0.2
-    };
     const maze: Maze = {
       cellSize: cellSize,
       borderWidth: borderWidth,
@@ -80,23 +84,50 @@ export namespace Store {
       gridOffset: new Point(borderWidth / 2, borderWidth / 2)
     };
 
+    const game: Game = {
+      maze: maze,
+      paused: false,
+      score: 0
+    }
+
+    const dots = def.passes.filter(c => c.kind === CellKind.Score).map(c => c.gridPos);
+    const pellets = def.passes.filter(c => c.kind === CellKind.Fruit).map(c => c.gridPos);
+
+
+
+    const round: Round = {
+      dots: dots,
+      pellets: pellets  
+    }
+
+
+    const pacman: Pacman = {
+      eatAnimation: true,
+      mouthAngle: 90,
+      direction: Direction.Right,
+      position: def.pacmanInitPos,
+      moving: false,
+      speed: 0.2
+    };
+
     const ghosts = [0, 1, 2, 3].map(i => {
       return {
         moving: true,
         direction: Direction.None,
         speed: 0.2,
         position: def.ghostInitPos[i]
-      }});
+      }
+    });
 
-    const game: Game = {
-      paused: false  
+    const heat: Heat = {
+      pacman: pacman,
+      ghosts: ghosts,
     }
 
     return {
-      pacman: pacman,
-      maze: maze,
-      ghosts: ghosts,
-      game: game
+      game: game,
+      round: round,
+      heat: heat
     }
   }
 }

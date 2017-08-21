@@ -21,4 +21,8 @@ export class Rectangle {
     moveBy(delta: Point): Rectangle {
         return new Rectangle(this.x + delta.x, this.y + delta.y, this.dx, this.dy);
     }
+
+  public get center(): Point {
+    return new Point(this.x + this.dx /2, this.y + this.dy / 2)
+  }
 }

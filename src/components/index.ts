@@ -1,3 +1,4 @@
 export * from './Wall';
 export * from './Border';
-export * from './Cell';
+export * from "./Dots";
+export * from "./Pellets";

@@ -4,6 +4,6 @@ import { createMazePath } from "./derivatives";
 
 
 export const getMazePath = createSelector(
-  (state: Store.All) => state.maze,
+  (state: Store.All) => state.game.maze,
   (maze) => createMazePath(maze)
 );

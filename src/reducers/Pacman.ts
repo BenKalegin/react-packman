@@ -3,7 +3,7 @@ import { Store } from "../model";
 import { IMazePath } from "../model/derivatives";
 import { Point, Direction } from "../geometry";
 
-export function pacmanReducer(state: Store.Pacman = Store.initial().pacman, action: Action, mazePath: IMazePath): Store.Pacman {
+export function pacmanReducer(state: Store.Pacman = Store.initial().heat.pacman, action: Action, mazePath: IMazePath): Store.Pacman {
   switch (action.type) {
   case ANIMATION_STEP_ACTION:
     const tick: number = action.tick;
@@ -59,9 +59,3 @@ export function pacmanReducer(state: Store.Pacman = Store.initial().pacman, acti
   }
 }
 
-export function mazeReducer(state: Store.Maze = Store.initial().maze, action: Action): Store.Maze {
-  switch (action.type) {
-  default:
-    return state;
-  }
-}

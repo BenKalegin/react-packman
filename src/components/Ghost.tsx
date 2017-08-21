@@ -18,10 +18,10 @@ type OwnProps = {
 }
 
 const mapStateToProps = (state: Store.All, ownProps: OwnProps): ConnectedState => ({
-  cellSize: state.maze.cellSize,
-  gridOffset: state.maze.gridOffset,
-  position: state.ghosts[ownProps.index].position,
-  direction: state.ghosts[ownProps.index].direction,
+  cellSize: state.game.maze.cellSize,
+  gridOffset: state.game.maze.gridOffset,
+  position: state.heat.ghosts[ownProps.index].position,
+  direction: state.heat.ghosts[ownProps.index].direction,
 });
 
 interface ConnectedDispatch {
