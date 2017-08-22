@@ -90,11 +90,10 @@ export namespace Store {
       score: 0
     }
 
-    const dots = def.passes.filter(c => c.kind === CellKind.Score).map(c => c.gridPos);
-    const pellets = def.passes.filter(c => c.kind === CellKind.Fruit).map(c => c.gridPos);
+    const dots = def.passes.filter(c => c.kind === CellKind.Score).map(c => c.gridPos).sort(Point.YXComparator);
+    const pellets = def.passes.filter(c => c.kind === CellKind.Fruit).map(c => c.gridPos).sort(Point.YXComparator);
 
-
-
+    
     const round: Round = {
       dots: dots,
       pellets: pellets  

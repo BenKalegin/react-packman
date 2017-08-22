@@ -62,6 +62,10 @@ export class Point {
     }
   }
 
+  public get negate(): Point {
+    return new Point(-this.x, -this.y);
+  }
+
   public round(exponent: number): Point {
     function expoRound(value: number) {
       return Math.round(value * exponent) / exponent;
@@ -69,4 +73,5 @@ export class Point {
     return new Point(expoRound(this.x), expoRound(this.y));
   }
 
+  public static YXComparator = (p1: Point, p2: Point): number => (p1.y - p2.y) * 1000 + (p1.x - p2.x)
 }

@@ -10,19 +10,19 @@ class Cell {
   }
 }
 
-export interface IMazePath {
+export interface IMazeNavigator {
   hasNeighbour(point: Point, direction: Direction, pacman: boolean) : boolean;    
   canEnter(point: Point): boolean;    
 };
 
-export const createMazePath = (model: Store.Maze): IMazePath => new MazePath(model);
+export const createMazeNavigator = (model: Store.Maze): IMazeNavigator => new MazeNavigator(model);
 
-export class MazePath implements IMazePath {
+export class MazeNavigator implements IMazeNavigator {
   private static hashFactor = 1000;
   private cells = new Map<number, Cell>();
 
   private sparseHash(point: Point) : number {
-    return Math.floor(Math.round(point.y * 1000) / 1000) * MazePath.hashFactor + Math.floor(Math.round(point.x * 1000) / 1000);
+    return Math.floor(Math.round(point.y * 1000) / 1000) * MazeNavigator.hashFactor + Math.floor(Math.round(point.x * 1000) / 1000);
   }
 
   constructor(model: Store.Maze) {
@@ -38,8 +38,8 @@ export class MazePath implements IMazePath {
 
       setNeighbour(Direction.Left, -1);
       setNeighbour(Direction.Right, 1);
-      setNeighbour(Direction.Up, -MazePath.hashFactor);
-      setNeighbour(Direction.Down, MazePath.hashFactor);
+      setNeighbour(Direction.Up, -MazeNavigator.hashFactor);
+      setNeighbour(Direction.Down, MazeNavigator.hashFactor);
     });
   }
 

@@ -1,9 +1,9 @@
 import { Action, ANIMATION_STEP_ACTION, CHANGE_DIRECTION_ACTION } from "../actions";
 import { Store } from "../model";
-import { IMazePath } from "../model/derivatives";
+import { IMazeNavigator } from "../model/MazeNavigator";
 import { Point, Direction } from "../geometry";
 
-export function pacmanReducer(state: Store.Pacman = Store.initial().heat.pacman, action: Action, mazePath: IMazePath): Store.Pacman {
+export function pacmanReducer(state: Store.Pacman, action: Action, mazePath: IMazeNavigator ): Store.Pacman {
   switch (action.type) {
   case ANIMATION_STEP_ACTION:
     const tick: number = action.tick;
@@ -31,7 +31,6 @@ export function pacmanReducer(state: Store.Pacman = Store.initial().heat.pacman,
         newPos = newPos.round(1);
       }
       result.position = newPos;
-
     }
     return result;
 

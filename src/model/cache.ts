@@ -1,9 +1,9 @@
 import { createSelector } from 'reselect';
 import { Store } from ".";
-import { createMazePath } from "./derivatives";
+import { createMazeNavigator } from "./MazeNavigator";
 
 
-export const getMazePath = createSelector(
+export const getMazeNavigator = createSelector(
   (state: Store.All) => state.game.maze,
-  (maze) => createMazePath(maze)
+  (maze) => createMazeNavigator(maze)
 );
