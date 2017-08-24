@@ -56,7 +56,7 @@ class MazeView extends React.Component<ConnectedState & ConnectedDispatch & OwnP
           <Pellets/>
         </Layer>
         <Layer>
-          {[0, 1, 2, 3].map(i => <Ghost index={i} />)}
+          {[0, 1, 2, 3].map(i => <Ghost key={i} index={i} />)}
           <Pacman />
         </Layer>
       </Stage>

@@ -6,7 +6,7 @@ import { Point, Direction } from "../geometry";
 export function pacmanReducer(state: Store.Pacman, action: Action, mazePath: IMazeNavigator ): Store.Pacman {
   switch (action.type) {
   case ANIMATION_STEP_ACTION:
-    const tick: number = action.tick;
+    const timestamp: number = action.timestamp;
     let result = {
       ...state,
       position: state.position,
@@ -14,8 +14,9 @@ export function pacmanReducer(state: Store.Pacman, action: Action, mazePath: IMa
     };
 
     if (state.eatAnimation) {
-      const eatAnimationSpan = 10;
-      let angle = 90 * Math.abs(tick % eatAnimationSpan - eatAnimationSpan / 2) / (eatAnimationSpan / 2);
+      const chompMillis = 200;
+      const ms = timestamp % chompMillis;
+      let angle = Math.round(90 * Math.abs(ms - chompMillis / 2) / (chompMillis / 2));
       // prevent flicking when angle reaches 0
       if (angle <= 0)
         angle = 0.1;
@@ -23,7 +24,8 @@ export function pacmanReducer(state: Store.Pacman, action: Action, mazePath: IMa
     }
 
     if (state.moving) {
-      let newPos = state.position.offset(Point.vector(state.direction).scale(state.speed)).round(10);
+      const delta = state.speed / 1000 * (action.period);
+      let newPos = state.position.offset(Point.vector(state.direction).scale(delta)).round(10);
       const bumped = (state.direction === Direction.Right || state.direction === Direction.Down) && !mazePath.hasNeighbour(newPos, state.direction, true) ||
         (state.direction === Direction.Left || state.direction === Direction.Up) && !mazePath.canEnter(newPos);
       if (bumped) {

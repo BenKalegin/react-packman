@@ -28,7 +28,8 @@ export function ghostReducer(states: Store.Ghost[], action: Action, mazeNavigato
               allDirections.filter(d => d != revertDirection(result.direction) && mazeNavigator.hasNeighbour(state.position, d, false));
             result.direction = possibleDirections[getRandomInt(possibleDirections.length)];
           }
-          result.position = state.position.offset(Point.vector(result.direction).scale(state.speed)).round(10);
+          const delta = state.speed / 1000 * (action.period);
+          result.position = state.position.offset(Point.vector(result.direction).scale(delta)).round(10);
         }
         results[i] = result;
       }

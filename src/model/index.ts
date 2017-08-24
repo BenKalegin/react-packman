@@ -19,7 +19,7 @@ export namespace Store {
     mouthAngle: number,
     direction: Direction,
     speed: number,
-    position: Point;
+    position: Point
   };
 
   export type Ghost = {
@@ -53,9 +53,14 @@ export namespace Store {
     paused: boolean;
   }
 
+  export type Loot = {
+    position: Point;
+    collected: boolean;
+  }
+
   export type Round = {
-    dots: Point[];
-    pellets: Point[];
+    dots: Loot[];
+    pellets: Loot[];
   }
 
   export type Heat = {
@@ -90,8 +95,14 @@ export namespace Store {
       score: 0
     }
 
-    const dots = def.passes.filter(c => c.kind === CellKind.Score).map(c => c.gridPos).sort(Point.YXComparator);
-    const pellets = def.passes.filter(c => c.kind === CellKind.Fruit).map(c => c.gridPos).sort(Point.YXComparator);
+    const dots = def.passes.filter(c => c.kind === CellKind.Score)
+      .map(c => c.gridPos)
+      .sort(Point.YXComparator)
+      .map(p => ({ position: p, collected: false }));
+    const pellets = def.passes.filter(c => c.kind === CellKind.Fruit)
+      .map(c => c.gridPos)
+      .sort(Point.YXComparator)
+      .map(p => ({ position: p, collected: false }));
 
     
     const round: Round = {
@@ -106,14 +117,14 @@ export namespace Store {
       direction: Direction.Right,
       position: def.pacmanInitPos,
       moving: false,
-      speed: 0.2
+      speed: 8 // cells per second
     };
 
     const ghosts = [0, 1, 2, 3].map(i => {
       return {
         moving: true,
         direction: Direction.None,
-        speed: 0.2,
+        speed: 8, // cells per second
         position: def.ghostInitPos[i]
       }
     });

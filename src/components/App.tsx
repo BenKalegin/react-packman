@@ -16,7 +16,7 @@ type ConnectedState = {
 }
 
 type ConnectedDispatch = {
-  animatedStep: () => void;
+  animatedStep: (timestamp: number, priorTimestamp: number) => void;
   changeDirection: (direction: Direction) => void;
   pause: () => void;
 };
@@ -25,11 +25,10 @@ const mapStateToProps = (state: Store.All, ownProps: OwnProps): ConnectedState =
   paused: state.game.paused
 });
 
-let tick = 0;
 function mapDispatchToProps(dispatch: redux.Dispatch<Store.All>): ConnectedDispatch
 {
   return {
-    animatedStep: () => dispatch(animatedStepAction(++tick)),
+    animatedStep: (timestamp: number, period: number) => dispatch(animatedStepAction(timestamp, period)),
     changeDirection: (direction) => dispatch(changeDirectionAction(direction)),
     pause: () => dispatch(pauseCommandAction())
   }
@@ -96,18 +95,26 @@ class AppView extends React.Component<OwnProps & ConnectedDispatch & ConnectedSt
   startTicker = () => {
     this.tickerStarted = true;
 
-    let ticker = () => {
+    let priorTimestamp = performance.now();
+
+    let ticker = (timestamp: number) => {
 
       if (this.tickerStarted) {
-        if (!this.props.paused)
-          this.props.animatedStep();
+        if (!this.props.paused) {
+          let period = timestamp - priorTimestamp;
+          if (period < 0)
+            period = 0;
+          if (period > 16)
+            period = 16;
 
+          this.props.animatedStep(timestamp, period);
+        }
+        priorTimestamp = timestamp;
         window.requestAnimationFrame(ticker);
       }
     };
 
-    ticker();
-
+    window.requestAnimationFrame(ticker);
   }
 //  startPacmanChomp = () => {
 //    const { store } = this.context; //todo make typed and move to member

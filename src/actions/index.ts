@@ -12,7 +12,8 @@ export type StartRoundAction =
 
 export type AnimatedStepAction  = {
     type: typeof ANIMATION_STEP_ACTION;
-    tick: number;
+    timestamp: number;
+    period: number;
 }
 
 export type ChangeDirectionAction = {
@@ -25,10 +26,11 @@ export type PauseCommandAction = {
 }
 
 
-export function animatedStepAction(tick: number): AnimatedStepAction {
+export function animatedStepAction(timestamp: number, period: number): AnimatedStepAction {
   return {
     type: ANIMATION_STEP_ACTION,
-    tick: tick
+    timestamp: timestamp,
+    period: period
   };
 }
 
