@@ -7,6 +7,7 @@ export function roundReducer(state: Store.Round, action: Action, heat: Store.Hea
     case ANIMATION_STEP_ACTION:
       let { dots, pellets } = state;
       const collisionDetector = createCollisionDetector();
+      console.log(heat.pacman.position);
       if (collisionDetector.tryLoot(heat.pacman.position, dots)) {
         dots = [...dots];
       } else if (collisionDetector.tryLoot(heat.pacman.position, pellets)){

@@ -18,6 +18,7 @@ export namespace Store {
     moving: boolean,
     mouthAngle: number,
     direction: Direction,
+    nextDirection: Direction,
     speed: number,
     position: Point
   };
@@ -114,7 +115,8 @@ export namespace Store {
     const pacman: Pacman = {
       eatAnimation: true,
       mouthAngle: 90,
-      direction: Direction.Right,
+      direction: Direction.Left,
+      nextDirection: Direction.None,
       position: def.pacmanInitPos,
       moving: false,
       speed: 8 // cells per second

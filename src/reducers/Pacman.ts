@@ -26,11 +26,21 @@ export function pacmanReducer(state: Store.Pacman, action: Action, mazePath: IMa
     if (state.moving) {
       const delta = state.speed / 1000 * (action.period);
       let newPos = state.position.offset(Point.vector(state.direction).scale(delta)).round(10);
-      const bumped = (state.direction === Direction.Right || state.direction === Direction.Down) && !mazePath.hasNeighbour(newPos, state.direction, true) ||
+
+      // check if need to turn because of preliminary arrow key press
+      if (newPos.equals(newPos.round(1)) && state.nextDirection !== Direction.None && mazePath.hasNeighbour(newPos, state.nextDirection, true)) {
+        result.direction = state.nextDirection;
+        state.nextDirection = Direction.None;
+        result.position = newPos;
+        return result;
+      }
+
+      const bumped = (state.direction === Direction.Right || state.direction === Direction.Down) &&
+        !mazePath.hasNeighbour(newPos, state.direction, true) ||
         (state.direction === Direction.Left || state.direction === Direction.Up) && !mazePath.canEnter(newPos);
       if (bumped) {
-        result.moving = false;
         newPos = newPos.round(1);
+        result.moving = false;
       }
       result.position = newPos;
     }
@@ -39,20 +49,26 @@ export function pacmanReducer(state: Store.Pacman, action: Action, mazePath: IMa
   case CHANGE_DIRECTION_ACTION:
     // ignore if key matches current direction
     if (action.direction === state.direction && state.moving === true)
-      return state;
+      return {
+        ...state,
+        nextDirection: Direction.None
+      }
 
-    // ignore movements to walls
-    let exactPos = state.position.round(1);
-    if (!mazePath.hasNeighbour(exactPos, action.direction, true))
-      return state;
+    // perform immediate turn if avaialble
+    const exactPos = state.position.round(1);
+    if ((exactPos.equals(state.position) || !state.moving) && mazePath.hasNeighbour(exactPos, action.direction, true)) {
+      const direction = action.direction;
+      return {
+        ...state,
+        direction: direction,
+        position: exactPos,
+        nextDirection: Direction.None,
+        moving: direction != Direction.None
+      };
+    }
 
-    const direction = action.direction;
-    return {
-      ...state,
-      direction: direction,
-      position: exactPos,
-      moving: direction != Direction.None
-    };
+    // 
+    return { ...state, nextDirection: action.direction  }
 
 
   default:
