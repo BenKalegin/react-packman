@@ -6,6 +6,9 @@ import { Maze } from './Maze';
 import { Store } from '../model';
 import { animatedStepAction, changeDirectionAction, pauseCommandAction } from '../actions/index';
 import { Direction } from '../geometry/';
+import * as Perf from 'react-addons-perf';
+
+
 type OwnProps = Store.All;
 
 type OwnState = {
@@ -22,7 +25,7 @@ type ConnectedDispatch = {
 };
 
 const mapStateToProps = (state: Store.All, ownProps: OwnProps): ConnectedState => ({
-  paused: state.game.paused
+  paused: state.game.paused 
 });
 
 function mapDispatchToProps(dispatch: redux.Dispatch<Store.All>): ConnectedDispatch
@@ -35,7 +38,13 @@ function mapDispatchToProps(dispatch: redux.Dispatch<Store.All>): ConnectedDispa
 };
 
 class AppView extends React.Component<OwnProps & ConnectedDispatch & ConnectedState, OwnState> {
-  tickerStarted: boolean; 
+  tickerStarted: boolean;
+
+  constructor() {
+    super();
+    var w: any = window;
+    w.Perf = Perf;
+  }
 
   addKeyboardListeners(): void {
       window.addEventListener('keydown', (e) => this.keydown(e));

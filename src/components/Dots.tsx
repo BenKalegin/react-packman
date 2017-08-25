@@ -27,25 +27,26 @@ const mapStateToProps = (state: Store.All): DotsProps => ({
   gridOffset: state.game.maze.gridOffset
 });
 
-const DotView = (props: DotProps) => {
-  return (
-    <Circle
-      x={props.center.x}
-      y={props.center.y}
-      visible={props.visible}
-      fill="darkgray"
-      stroke="darkgray"
-      radius={props.radius} />);
+class DotView extends React.Component<DotProps> {
+  public shouldComponentUpdate(nextProps: DotProps, nextState: {}) {
+    return nextProps.visible  !== this.props.visible;
+  }
+
+  render() {
+    return (
+      <Circle
+        x={this.props.center.x}
+        y={this.props.center.y}
+        visible={this.props.visible}
+        fill="darkgray"
+        stroke="darkgray"
+        radius={this.props.radius}/>);
+  }
 }
 
 class DotsView extends React.Component<DotsProps> {
   static countVisible = (props: DotsProps): number => props.dots.reduce((a, l) => a + (l.collected ? 0 : 1), 0);
  
-//  public shouldComponentUpdate(nextProps: DotsProps, nextState: {}) {
-//    const nextVisible = DotsView.countVisible(nextProps);
-//    return nextVisible === nextProps.dots.length && nextVisible != DotsView.countVisible(this.props);
-//  }
-
   render() {
     const dots =
       this.props.dots.map(p => ({
