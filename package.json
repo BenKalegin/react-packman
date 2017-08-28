@@ -9,6 +9,7 @@
     "@types/react-addons-perf": "^0.14.18",
     "@types/react-dom": "^15.5.1",
     "@types/react-redux": "^4.4.46",
+    "immutable-assign": "^1.0.36",
     "konva": "^1.6.3",
     "react": "^15.6.1",
     "react-addons-perf": "^15.4.2",

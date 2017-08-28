@@ -36,10 +36,12 @@ export class WallAggregator {
 
         let walls: Point[][] = [];
 
-        for (let seed = remaining.shift(); seed != undefined; seed = remaining.shift()) {
+        let seed = remaining.shift();
+        while(seed != undefined) {
             let wall: Point[] = [];
             appendAdjacentRecursively(wall, [seed]);
             walls.push(wall);
+          seed = remaining.shift();
         }
 
         return walls;
