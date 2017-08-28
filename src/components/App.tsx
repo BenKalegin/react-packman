@@ -3,6 +3,7 @@ import * as redux from 'redux';
 import { connect } from 'react-redux';
 import './App.css';
 import { Maze } from './Maze';
+import { Hud } from './Hud';
 import { Store } from '../model';
 import { animatedStepAction, changeDirectionAction, pauseCommandAction } from '../actions/index';
 import { Direction } from '../geometry/';
@@ -138,7 +139,8 @@ class AppView extends React.Component<OwnProps & ConnectedDispatch & ConnectedSt
   render() {
     return (
       <div className="App">
-        <Maze/>
+        <Maze />
+        <Hud />
         <br/>
       </div>
     );
