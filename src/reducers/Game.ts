@@ -1,26 +1,28 @@
 import { Action, PAUSE_COMMAND_ACTION } from '../actions';
 import { Store } from '../model';
 import * as iassign from 'immutable-assign';
-import { GameEvent, DOT_EATEN_EVENT } from "./Events";
+import { GameEvent, DOT_EATEN_EVENT, PELLET_EATEN_EVENT } from "./Events";
 
 
 export function gameReducer(state: Store.Game, action: Action, events: GameEvent[]): Store.Game {
 
   let result = state;
-  function update (proc: (game: Store.Game) => void) {
-    result = iassign(result, (r: Store.Game) => { proc(result); return r; });
-  }
 
   switch (action.type) {
     case PAUSE_COMMAND_ACTION:
-      update(r => { r.paused = !state.paused });
+      result = iassign(result, (r: Store.Game) => { r.paused = !r.paused; return r;});
   }
 
   // process events
   for (const ev of events) {
     switch (ev.type) {
       case DOT_EATEN_EVENT:
-        update(r => { r.score += 10; });
+        result = iassign(result, (r: Store.Game) => { r.score += 10; return r; });
+        break;
+
+      case PELLET_EATEN_EVENT:
+        result = iassign(result, (r: Store.Game) => { r.score += 50; return r; });
+        break;
       
     default:
     }

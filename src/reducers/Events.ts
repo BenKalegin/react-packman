@@ -1,6 +1,6 @@
 import { Point } from '../geometry/Point';
-export const DOT_EATEN_EVENT = "DOT_EATEN";
 
+export const DOT_EATEN_EVENT = "DOT_EATEN";
 
 export type DotEatenEvent = {
   type: typeof DOT_EATEN_EVENT;
@@ -15,4 +15,19 @@ export function dotEatenEvent(dotPosition: Point): DotEatenEvent {
   }
 }
 
-export type GameEvent = DotEatenEvent;
+export const PELLET_EATEN_EVENT = "PELLET_EATEN";
+
+export type PelletEatenEvent = {
+  type: typeof PELLET_EATEN_EVENT;
+  pelletPosition: Point;      
+
+}
+
+export function pelletEatenEvent(PelletPosition: Point): PelletEatenEvent {
+  return {
+    type: PELLET_EATEN_EVENT,
+    pelletPosition: PelletPosition
+  }
+}
+
+export type GameEvent = DotEatenEvent | PelletEatenEvent;
