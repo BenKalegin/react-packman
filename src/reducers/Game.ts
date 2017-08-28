@@ -1,21 +1,30 @@
-import { Action, PAUSE_COMMAND_ACTION } from "../actions";
-import { Store } from "../model";
+import { Action, PAUSE_COMMAND_ACTION } from '../actions';
+import { Store } from '../model';
+import * as iassign from 'immutable-assign';
+import { GameEvent, DOT_EATEN_EVENT } from "./Events";
 
-export function mazeReducer(state: Store.Maze, action: Action): Store.Maze {
-  switch (action.type) {
-  default:
-    return state;
+
+export function gameReducer(state: Store.Game, action: Action, events: GameEvent[]): Store.Game {
+
+  let result = state;
+  function update (proc: (game: Store.Game) => void) {
+    result = iassign(result, (r: Store.Game) => { proc(result); return r; });
   }
-}
 
-export function gameReducer(state: Store.Game, action: Action, heat: Store.Heat): Store.Game {
   switch (action.type) {
     case PAUSE_COMMAND_ACTION:
-      return {
-        ...state, paused: !state.paused, maze: mazeReducer(state.maze, action)
-      }
-
-    default:
-      return state;
+      update(r => { r.paused = !state.paused });
   }
+
+  // process events
+  for (const ev of events) {
+    switch (ev.type) {
+      case DOT_EATEN_EVENT:
+        update(r => { r.score += 10; });
+      
+    default:
+    }
+  }
+
+  return result;
 }

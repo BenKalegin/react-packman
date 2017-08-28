@@ -1,8 +1,9 @@
 import { Store } from '../model';
 import { Action, ANIMATION_STEP_ACTION } from "../actions/index";
 import { createCollisionDetector } from "../model/CollisionDetector";
+import { dotEatenEvent, GameEvent } from "./Events";
 
-export function roundReducer(state: Store.Round, action: Action, heat: Store.Heat): Store.Round {
+export function roundReducer(state: Store.Round, action: Action, heat: Store.Heat, events: GameEvent[]): Store.Round {
   switch (action.type) {
     case ANIMATION_STEP_ACTION:
       let { dots, pellets } = state;
@@ -10,8 +11,9 @@ export function roundReducer(state: Store.Round, action: Action, heat: Store.Hea
       console.log(heat.pacman.position);
       if (collisionDetector.tryLoot(heat.pacman.position, dots)) {
         dots = [...dots];
-      } else if (collisionDetector.tryLoot(heat.pacman.position, pellets)){
-        pellets = [...pellets]  
+        events.push(dotEatenEvent(heat.pacman.position.round(1)));
+      } else if (collisionDetector.tryLoot(heat.pacman.position, pellets)) {
+        pellets = [...pellets];
       }
 
       return {

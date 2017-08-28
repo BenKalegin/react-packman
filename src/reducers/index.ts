@@ -6,9 +6,11 @@ import { roundReducer } from './Round';
 import { Store } from '../model';
 import { Action } from "../actions/index";
 import { getMazeNavigator } from "../model/cache";
+import { GameEvent } from "./Events";
 
 export const rootReducer = (state: Store.All = Store.initial(), action: Action) : Store.All => {
   const mazeNavigator = getMazeNavigator(state);
+  let events: GameEvent[] = [];
 
   const pacman = pacmanReducer(state.heat.pacman, action, mazeNavigator);
   const ghosts = ghostReducer(state.heat.ghosts, action, mazeNavigator);
@@ -18,9 +20,9 @@ export const rootReducer = (state: Store.All = Store.initial(), action: Action) 
     ghosts: ghosts,
   };
 
-  const round = roundReducer(state.round, action, heat);
+  const round = roundReducer(state.round, action, heat, events);
 
-  const game = gameReducer(state.game, action, heat);
+  const game = gameReducer(state.game, action, events);
   return {
     heat: heat,
     game: game,
