@@ -27,7 +27,7 @@ const mapStateToProps = (state: Store.All): DotsProps => ({
   gridOffset: state.game.maze.gridOffset
 });
 
-class DotView extends React.Component<DotProps> {
+class DotView extends React.Component<DotProps, {}> {
   public shouldComponentUpdate(nextProps: DotProps, nextState: {}) {
     return nextProps.visible  !== this.props.visible;
   }
