@@ -22,6 +22,12 @@ export class Point {
     return Math.abs(p.x - this.x) + Math.abs(p.y - this.y);
   }
 
+  public euclidDistanceTo(p: Point): number {
+    var dx = p.x - this.x;
+    var dy = p.y - this.y;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
   public asRectangleSize(): Rectangle {
     return new Rectangle(0, 0, this.x, this.y);
   }

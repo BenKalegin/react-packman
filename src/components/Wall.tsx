@@ -11,21 +11,21 @@ export type WallProps = {
 
 export default class Wall extends Component<WallProps, {}> {
 
-    private getRandomColor() : string {
-        const letters = '0123456789ABCDEF';
-        let color = '#';
-        for (let i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    }
+//    private getRandomColor() : string {
+//        const letters = '0123456789ABCDEF';
+//        let color = '#';
+//        for (let i = 0; i < 6; i++) {
+//            color += letters[Math.floor(Math.random() * 16)];
+//        }
+//        return color;
+//    }
 
     render(): any {
         return (
           <Path data={PathGenerator.outlinePoints(this.props.points, this.props.gridOffset, this.props.cellSize)}
-                fill={this.getRandomColor()}
-                stroke="black" 
-            />
+            stroke="blue"
+           strokeWidth={3} 
+          />
      );
     }
 }
