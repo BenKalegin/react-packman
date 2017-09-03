@@ -87,7 +87,7 @@ export namespace Store {
       passes: def.passes,
       walls: def.walls,
       gridSize: gridSize,
-      gridOffset: new Point(borderWidth / 2, borderWidth / 2)
+      gridOffset: new Point(borderWidth * 2, borderWidth * 2)
     };
 
     const game: Game = {

@@ -1,4 +1,4 @@
-import { CellKind, Store } from '.';
+﻿import { CellKind, Store } from '.';
 import { WallAggregator, Point } from '../geometry';
 
 export const defaultMaze: () => CellKind[][] = () => {

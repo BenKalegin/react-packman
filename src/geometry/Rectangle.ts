@@ -14,8 +14,10 @@ export class Rectangle {
     public get dx(): number { return this.p2.x - this.p1.x};
     public get dy(): number { return this.p2.y - this.p1.y};
 
-    inflate(delta: number): Rectangle {
+    inflate(delta: number | Point): Rectangle {
+      if (typeof (delta) === "number")
         return new Rectangle(this.x - delta, this.y - delta, this.dx + delta + delta, this.dy + delta + delta);
+      return new Rectangle(this.x - delta.x, this.y - delta.y, this.dx + delta.x + delta.x, this.dy + delta.y + delta.y);
     }
 
     moveBy(delta: Point): Rectangle {

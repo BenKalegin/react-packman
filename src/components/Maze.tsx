@@ -9,7 +9,6 @@ import {Dots, Pellets} from ".";
 import { Pacman } from './Pacman';
 import { Ghost } from './Ghost';
 import { Store } from '../model';
-import { Point } from '../geometry';
 
 type ConnectedState = {
   maze: Store.Maze
@@ -34,15 +33,15 @@ class MazeView extends React.Component<ConnectedState & ConnectedDispatch & OwnP
 
   render() {
     const maze = this.props.maze;
-    const bounds = maze.gridSize.scale(maze.cellSize).asRectangleSize().inflate(maze.borderWidth).moveBy(new Point(maze.borderWidth, maze.borderWidth));
+    const fieldRect = maze.gridSize.scale(maze.cellSize).asRectangleSize().moveBy(maze.gridOffset);
+    const bounds = fieldRect.inflate(maze.borderWidth*2);
     const borderProps: BorderProps = { bounds: bounds, width: maze.borderWidth };
-    const fieldRect = bounds.inflate(-maze.borderWidth);
     const walls : WallProps[] = maze.walls.map((w,i) => {
       return {
         key: i,
         points: w.points,
         cellSize: maze.cellSize,
-        gridOffset: fieldRect.p1
+        gridOffset: maze.gridOffset
     }});
 
     return (
