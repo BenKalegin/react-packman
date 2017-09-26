@@ -63,36 +63,52 @@ export default class Wall extends Component<WallProps, {}> {
       case Store.WallType.se:return this.curve(x0, yc, xc, yc, xc, y0);
     }
 
-    const x1 = x0 + bounds.dx * 0.30;
-    const x2 = x0 + bounds.dx * 0.70;
-    const y1 = y0 + bounds.dy * 0.30;
-    const y2 = y0 + bounds.dy * 0.70;
+    const x1w = x0 + bounds.dx * 0.20;
+    const x2w = x0 + bounds.dx * 0.50;
+    const x1e = x0 + bounds.dx * 0.50;
+    const x2e = x0 + bounds.dx * 0.80;
+    const y1n = y0 + bounds.dy * 0.20;
+    const y2n = y0 + bounds.dy * 0.50;
+    const y1s = y0 + bounds.dy * 0.50;
+    const y2s = y0 + bounds.dy * 0.80;
 
     switch (this.props.type) {
-    case Store.WallType.W:
-        return this.line(x1, y0, x1, y3) + this.line(x2, y0, x2, y3);
+      case Store.WallType.W:
+        return this.line(x1w, y0, x1w, y3) + this.line(x2w, y0, x2w, y3);
+      case Store.WallType.E:
+        return this.line(x1e, y0, x1e, y3) + this.line(x2e, y0, x2e, y3);
       case Store.WallType.N:
-        return this.line(x0, y1, x3, y1) + this.line(x0, y2, x3, y2);
+        return this.line(x0, y1n, x3, y1n) + this.line(x0, y2n, x3, y2n);
+      case Store.WallType.S:
+        return this.line(x0, y1s, x3, y1s) + this.line(x0, y2s, x3, y2s);
       case Store.WallType.NW:
-        return this.curve(x1, y3, x1, y1, x3, y1) + this.curve(x2, y3, x2, y2, x3, y2);
+        return this.curve(x1w, y3, x1w, y1n, x3, y1n) + this.curve(x2w, y3, x2w, y2n, x3, y2n);
+      case Store.WallType.NW2:
+        return this.curve(x1e, y3, x1e, y1s, x3, y1s) + this.curve(x2e, y3, x2e, y2s, x3, y2s);
       case Store.WallType.NE:
-        return this.curve(x0, y1, x2, y1, x2, y3) + this.curve(x0, y2, x1, y2, x1, y3);
+        return this.curve(x0, y1n, x2e, y1n, x2e, y3) + this.curve(x0, y2n, x1e, y2n, x1e, y3);
+      case Store.WallType.NE2:
+        return this.curve(x0, y1s, x2w, y1s, x2w, y3) + this.curve(x0, y2s, x1w, y2s, x1w, y3);
       case Store.WallType.SW:
-        return this.curve(x1, y0, x1, y2, x3, y2) + this.curve(x2, y0, x2, y1, x3, y1);
+        return this.curve(x1w, y0, x1w, y2s, x3, y2s) + this.curve(x2w, y0, x2w, y1s, x3, y1s);
+      case Store.WallType.SW2:
+        return this.curve(x1e, y0, x1e, y2n, x3, y2n) + this.curve(x2e, y0, x2e, y1n, x3, y1n);
       case Store.WallType.SE:
-        return this.curve(x0, y1, x1, y1, x1, y0) + this.curve(x0, y2, x2, y2, x2, y0);
+        return this.curve(x0, y1s, x1e, y1s, x1e, y0) + this.curve(x0, y2s, x2e, y2s, x2e, y0);
+      case Store.WallType.SE2:
+        return this.curve(x0, y1n, x1w, y1n, x1w, y0) + this.curve(x0, y2n, x2w, y2n, x2w, y0);
       case Store.WallType.Ne:
-        return this.line(x0, y1, x3, y1) + this.curve(x0, y2, xc, y2, xc, y3);
+        return this.line(x0, y1n, x3, y1n) + this.curve(x0, y2n, xc, y2n, xc, y3);
       case Store.WallType.Nw:
-        return this.line(x3, y1, x0, y1) + this.curve(x3, y2, xc, y2, xc, y3);
+        return this.line(x3, y1n, x0, y1n) + this.curve(x3, y2n, xc, y2n, xc, y3);
       case Store.WallType.Ws:
-        return this.line(x1, y0, x1, y3) + this.curve(x2, y0, x2, yc, x3, yc);
+        return this.line(x1w, y0, x1w, y3) + this.curve(x2w, y0, x2w, yc, x3, yc);
       case Store.WallType.Wn:
-        return this.line(x1, y3, x1, y0) + this.curve(x2, y3, x2, yc, x3, yc);
+        return this.line(x1w, y3, x1w, y0) + this.curve(x2w, y3, x2w, yc, x3, yc);
       case Store.WallType.Es:
-        return this.line(x2, y0, x2, y3) + this.curve(x1, y0, x1, yc, x0, yc);
+        return this.line(x2e, y0, x2e, y3) + this.curve(x1e, y0, x1e, yc, x0, yc);
       case Store.WallType.En:
-        return this.line(x2, y3, x2, y0) + this.curve(x1, y3, x1, yc, x0, yc);
+        return this.line(x2e, y3, x2e, y0) + this.curve(x1e, y3, x1e, yc, x0, yc);
 
       default:
         return "";

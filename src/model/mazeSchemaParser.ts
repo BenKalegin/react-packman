@@ -102,7 +102,27 @@ export function parseMazeSchema(rows: string[]) {
 
         default:
           {
-            const wall = wallSymbols.get(row[x]);
+            let wall = wallSymbols.get(row[x]);
+            const isPassable = (x: number, y: number) => y >= 0 && y < rows.length && x >= 0 && x < rows[0].length && [Dot, Noscore, Fruit].indexOf(rows[y][x]) >= 0;
+
+            if (wall === Store.WallType.N && isPassable(x, y - 1)) {
+                wall = Store.WallType.S;
+            }
+            else if (wall === Store.WallType.W && isPassable(x-1, y)) {
+                wall = Store.WallType.E;
+            }
+            else if (wall === Store.WallType.NW && isPassable(x-1, y)) {
+                wall = Store.WallType.NW2;
+            }
+            else if (wall === Store.WallType.NE && isPassable(x+1, y)) {
+                wall = Store.WallType.NE2;
+            }
+            else if (wall === Store.WallType.SE && isPassable(x+1, y)) {
+                wall = Store.WallType.SE2;
+            }
+            else if (wall === Store.WallType.SW && isPassable(x-1, y)) {
+                wall = Store.WallType.SW2;
+            }
             if (wall != undefined)
               walls.push({
                 position: point,
