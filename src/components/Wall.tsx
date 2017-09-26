@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import * as React from 'react';
-import { Rectangle } from '../geometry';
+import { Rectangle, Point } from '../geometry';
 import { Path } from 'react-konva';
 import { Store } from "../model";
 
@@ -20,6 +20,30 @@ export default class Wall extends Component<WallProps, {}> {
 //        return color;
 //    }
 
+  line(x0: number, y0: number, x1: number, y1: number) : string {
+    return `M ${x0} ${y0} L${x1} ${y1}`
+  }
+
+
+  curve(x0: number, y0: number, x1: number, y1: number, x2: number, y2: number) : string {
+    function moveTowardsFractional(movingPoint: Point, targetPoint: Point, fraction: number): Point {
+      return movingPoint.offset(targetPoint.offset(movingPoint.negate).scale(fraction));
+    }
+    // The start and end of the curve are just our point moved towards the previous and neyt points, respectivly
+    const p0 = new Point(x0, y0);
+    const p1 = new Point(x1, y1);
+    const p2 = new Point(x2, y2);
+
+    let curveStart = moveTowardsFractional(p1, p0, .9);
+    let curveEnd = moveTowardsFractional(p1, p2, .9);
+
+    // The curve control points are halfway between the start/end of the curve and the original point
+    var startControl = moveTowardsFractional(curveStart, p1, .5);
+    var endControl = moveTowardsFractional(p1, curveEnd, .5);
+
+    return `M${p0.x} ${p0.y} L${curveStart.x} ${curveStart.y} C${startControl.x} ${startControl.y} ${endControl.x} ${endControl.y} ${curveEnd.x} ${curveEnd.y} L${p2.x} ${p2.y}`;
+  }
+
   generatePath() : string {
     const bounds = this.props.bounds;
     const x0 = bounds.x;
@@ -31,50 +55,44 @@ export default class Wall extends Component<WallProps, {}> {
     const xc = bounds.center.x;
 
     switch (this.props.type) {
-    case Store.WallType.n:
-      return `M ${x0} ${yc} L${x3} ${yc}`;
-    case Store.WallType.w:
-      return `M ${xc} ${y0} L${xc} ${y3}`;
-    case Store.WallType.nw:
-      return `M ${xc} ${y3} L${xc} ${yc} L${x3} ${yc}`;
-    case Store.WallType.ne:
-      return `M ${x0} ${yc} L${xc} ${yc} L${xc} ${y3}`;
-    case Store.WallType.sw:
-      return `M ${xc} ${y0} L${xc} ${yc} L${x3} ${yc}`;
-    case Store.WallType.se:
-      return `M ${x0} ${yc} L${xc} ${yc} L${xc} ${y0}`;
+      case Store.WallType.n: return this.line(x0, yc, x3, yc);
+      case Store.WallType.w: return this.line(xc, y0, xc, y3);
+      case Store.WallType.nw:return this.curve(xc, y3, xc, yc, x3, yc);
+      case Store.WallType.ne:return this.curve(x0, yc, xc, yc, xc, y3);
+      case Store.WallType.sw:return this.curve(xc, y0, xc, yc, x3, yc);
+      case Store.WallType.se:return this.curve(x0, yc, xc, yc, xc, y0);
     }
 
-    const x1 = x0 + Math.round(bounds.dx / 30) * 10;
-    const x2 = x0 + Math.round(bounds.dx / 30) * 20;
-    const y1 = y0 + Math.round(bounds.dy / 30) * 10;
-    const y2 = y0 + Math.round(bounds.dy / 30) * 20;
+    const x1 = x0 + bounds.dx * 0.30;
+    const x2 = x0 + bounds.dx * 0.70;
+    const y1 = y0 + bounds.dy * 0.30;
+    const y2 = y0 + bounds.dy * 0.70;
 
     switch (this.props.type) {
     case Store.WallType.W:
-        return `M ${x1} ${y0} L${x1} ${y3} M${x2} ${y0} L${x2} ${y3}`;
+        return this.line(x1, y0, x1, y3) + this.line(x2, y0, x2, y3);
       case Store.WallType.N:
-        return `M ${x0} ${y1} L${x3} ${y1} M${x0} ${y2} L${x3} ${y2}`;
+        return this.line(x0, y1, x3, y1) + this.line(x0, y2, x3, y2);
       case Store.WallType.NW:
-        return `M ${x1} ${y3} L${x1} ${y1} L${x3} ${y1} M ${x2} ${y3} L${x2} ${y2} L${x3} ${y2} `;
+        return this.curve(x1, y3, x1, y1, x3, y1) + this.curve(x2, y3, x2, y2, x3, y2);
       case Store.WallType.NE:
-        return `M ${x0} ${y1} L${x2} ${y1} L${x2} ${y3} M ${x0} ${y2} L${x1} ${y2} L${x1} ${y3}`;
+        return this.curve(x0, y1, x2, y1, x2, y3) + this.curve(x0, y2, x1, y2, x1, y3);
       case Store.WallType.SW:
-        return `M ${x1} ${y0} L${x1} ${y2} L${x3} ${y2} M ${x2} ${y0} L${x2} ${y1} L${x3} ${y1}`;
+        return this.curve(x1, y0, x1, y2, x3, y2) + this.curve(x2, y0, x2, y1, x3, y1);
       case Store.WallType.SE:
-        return `M ${x0} ${y1} L${x1} ${y1} L${x1} ${y0} M ${x0} ${y2} L${x2} ${y2} L${x2} ${y0}`;
+        return this.curve(x0, y1, x1, y1, x1, y0) + this.curve(x0, y2, x2, y2, x2, y0);
       case Store.WallType.Ne:
-        return `M ${x0} ${y1} L${x3} ${y1} M ${x0} ${y2} L${xc} ${y2} L${xc} ${y3}`;
+        return this.line(x0, y1, x3, y1) + this.curve(x0, y2, xc, y2, xc, y3);
       case Store.WallType.Nw:
-        return `M ${x3} ${y1} L${x0} ${y1} M ${x3} ${y2} L${xc} ${y2} L${xc} ${y3}`;
+        return this.line(x3, y1, x0, y1) + this.curve(x3, y2, xc, y2, xc, y3);
       case Store.WallType.Ws:
-        return `M ${x1} ${y0} L${x1} ${y3} M ${x2} ${y0} L${x2} ${yc} L${x3} ${yc}`;
+        return this.line(x1, y0, x1, y3) + this.curve(x2, y0, x2, yc, x3, yc);
       case Store.WallType.Wn:
-        return `M ${x1} ${y3} L${x1} ${y0} M ${x2} ${y3} L${x2} ${yc} L${x3} ${yc}`;
+        return this.line(x1, y3, x1, y0) + this.curve(x2, y3, x2, yc, x3, yc);
       case Store.WallType.Es:
-        return `M ${x2} ${y0} L${x2} ${y3} M ${x1} ${y0} L${x1} ${yc} L${x0} ${yc}`;
+        return this.line(x2, y0, x2, y3) + this.curve(x1, y0, x1, yc, x0, yc);
       case Store.WallType.En:
-        return `M ${x2} ${y3} L${x2} ${y0} M ${x1} ${y3} L${x1} ${yc} L${x0} ${yc}`;
+        return this.line(x2, y3, x2, y0) + this.curve(x1, y3, x1, yc, x0, yc);
 
       default:
         return "";
