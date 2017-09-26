@@ -1,12 +1,11 @@
 import { Store } from "./index";
 import { Direction, Point } from "../geometry";
-import { CellKind } from '.';
 
 class Cell {
   ghostsOnly: boolean;
   neighbours = new Map<Direction, Cell>();  
-  public constructor(kind :CellKind) {
-    this.ghostsOnly = kind === CellKind.GhostsOnly || kind === CellKind.Gate;
+  public constructor(ghostOnly: boolean) {
+    this.ghostsOnly = ghostOnly;
   }
 }
 
@@ -26,7 +25,7 @@ export class MazeNavigator implements IMazeNavigator {
   }
 
   constructor(model: Store.Maze) {
-    model.passes.forEach(p => this.cells.set(this.sparseHash(p.gridPos), new Cell(p.kind)));
+    model.passes.forEach(p => this.cells.set(this.sparseHash(p.gridPos), new Cell(p.ghostOnly)));
 
     this.cells.forEach((cell, hash, map) => {
         const setNeighbour = (direction: Direction, hashDelta: number) => {

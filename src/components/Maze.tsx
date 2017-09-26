@@ -2,8 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as redux from 'redux';
 import { Stage, Layer } from 'react-konva';
-import { WallProps, BorderProps } from ".";
-import Border from './Border';
+import { WallProps } from ".";
 import Wall from './Wall';
 import {Dots, Pellets} from ".";
 import { Pacman } from './Pacman';
@@ -33,21 +32,17 @@ class MazeView extends React.Component<ConnectedState & ConnectedDispatch & OwnP
 
   render() {
     const maze = this.props.maze;
-    const fieldRect = maze.gridSize.scale(maze.cellSize).asRectangleSize().moveBy(maze.gridOffset);
-    const bounds = fieldRect.inflate(maze.borderWidth*2);
-    const borderProps: BorderProps = { bounds: bounds, width: maze.borderWidth };
+    const bounds = maze.gridSize.scale(maze.cellSize).asRectangleSize();
     const walls : WallProps[] = maze.walls.map((w,i) => {
       return {
         key: i,
-        points: w.points,
-        cellSize: maze.cellSize,
-        gridOffset: maze.gridOffset
+        bounds: w.position.scale(maze.cellSize).toRectangle(maze.cellSize),
+        type: w.type
     }});
 
     return (
       <Stage width={bounds.dx} height={bounds.dy}>
         <Layer>
-          <Border {...borderProps}/>
           {walls.map(w => <Wall {...w} />)}
         </Layer>
         <Layer>

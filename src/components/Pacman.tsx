@@ -9,7 +9,6 @@ import { Store } from '../model';
 type ConnectedState = {
   cellSize: Point;
   position: Point;
-  gridOffset: Point;
   mouthAngle: number;
   direction: Direction;
 }
@@ -25,7 +24,6 @@ type OwnState = {
 
 const mapStateToProps = (state: Store.All, ownProps: OwnProps): ConnectedState => ({
   cellSize: state.game.maze.cellSize,
-  gridOffset: state.game.maze.gridOffset,
   position: state.heat.pacman.position,
   direction: state.heat.pacman.direction,
   mouthAngle: state.heat.pacman.mouthAngle
@@ -40,7 +38,7 @@ class PacmanView extends React.Component<ConnectedState, OwnState> {
 
   render() {
     const props = this.props;
-    const absPos = props.position.scale(props.cellSize).offset(props.gridOffset).offset(props.cellSize.scale(.5));
+    const absPos = props.position.scale(props.cellSize).offset(props.cellSize.scale(.5));
 
     const calcRotation = (dir: Direction) => {
       switch (dir) {

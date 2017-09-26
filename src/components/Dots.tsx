@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 export type DotsProps = {
   dots: Store.Loot[];
   cellSize: Point;
-  gridOffset: Point;
 }
 
 export type DotProps = {
@@ -24,7 +23,6 @@ type ConnectedDispatch = {
 const mapStateToProps = (state: Store.All): DotsProps => ({
   dots: state.round.dots,
   cellSize: state.game.maze.cellSize,
-  gridOffset: state.game.maze.gridOffset
 });
 
 class DotView extends React.Component<DotProps, {}> {
@@ -50,7 +48,7 @@ class DotsView extends React.Component<DotsProps> {
   render() {
     const dots =
       this.props.dots.map(p => ({
-        bounds: p.position.scale(this.props.cellSize).offset(this.props.gridOffset).toRectangle(this.props.cellSize),
+        bounds: p.position.scale(this.props.cellSize).toRectangle(this.props.cellSize),
         visible: !p.collected
       }));
 

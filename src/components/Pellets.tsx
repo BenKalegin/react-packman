@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 export type PelletProps = {
   pellets: Store.Loot[];
   cellSize: Point;
-  gridOffset: Point;
 };
 
 type ConnectedDispatch = {
@@ -17,7 +16,7 @@ type ConnectedDispatch = {
 const PelletsView = (props: PelletProps, disp: ConnectedDispatch) => {
   const bounds =
     props.pellets.map(p => ({
-      bounds: p.position.scale(props.cellSize).offset(props.gridOffset).toRectangle(props.cellSize),
+      bounds: p.position.scale(props.cellSize).toRectangle(props.cellSize),
       visible: !p.collected,
 }));
 
@@ -40,7 +39,6 @@ const PelletsView = (props: PelletProps, disp: ConnectedDispatch) => {
 const mapStateToProps = (state: Store.All): PelletProps => ({
   pellets: state.round.pellets,
   cellSize: state.game.maze.cellSize,
-  gridOffset: state.game.maze.gridOffset
 });
 
 const mapDispatchToProps = (dispatch: redux.Dispatch<Store.All>): ConnectedDispatch => ({

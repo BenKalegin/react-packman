@@ -9,7 +9,6 @@ import { Store } from '../model';
 type ConnectedState = {
   cellSize: Point;
   position: Point;
-  gridOffset: Point;
   direction: Direction;
 }
 
@@ -19,7 +18,6 @@ type OwnProps = {
 
 const mapStateToProps = (state: Store.All, ownProps: OwnProps): ConnectedState => ({
   cellSize: state.game.maze.cellSize,
-  gridOffset: state.game.maze.gridOffset,
   position: state.heat.ghosts[ownProps.index].position,
   direction: state.heat.ghosts[ownProps.index].direction,
 });
@@ -47,7 +45,7 @@ class GhostView extends React.Component<ConnectedState & OwnProps, {}> {
 
   render() {
     const props = this.props;
-    const absPos = props.position.scale(props.cellSize).offset(props.gridOffset).offset(props.cellSize.scale(.15));
+    const absPos = props.position.scale(props.cellSize).offset(props.cellSize.scale(.15));
 
     const eyeOffset = Point.vector(this.props.direction).scale(2);
     let leftEye = new Point(8, 13).offset(eyeOffset);

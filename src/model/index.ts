@@ -1,15 +1,6 @@
-import { initializeMaze, defaultMaze } from './mazeDefinition';
+import { parseMazeSchema } from './mazeSchemaParser';
 import { Direction, Point } from '../geometry';
-
-export enum CellKind {
-  Impassable,
-  Noscore,
-  Score,
-  Gate,
-  GhostsOnly,
-  Fruit,
-  Pacman
-};
+import { mazeSchema1 } from './mazeSchema';
 
 export namespace Store {
 
@@ -30,22 +21,42 @@ export namespace Store {
     position: Point;
   };
 
+  export enum WallType {
+    n,
+    nw,
+    w,
+    ne,
+    sw,
+    se,
+    N,
+    NW,
+    W,
+    NE,
+    SW,
+    SE,
+    Ne,
+    Nw,
+    Ws,
+    Wn,
+    Es,
+    En,
+  }
+
   export type Wall = {
-    points: Point[];
+    position: Point;
+    type: WallType;
   };
 
   export type Pass = {
-    kind: CellKind;
     gridPos: Point;
+    ghostOnly: boolean;
   };
 
   export type Maze = {
-    borderWidth: number;
     cellSize: Point;
     passes: Pass[];
     walls: Wall[];
     gridSize: Point;
-    gridOffset: Point;
   };
 
   export type Game = {
@@ -76,18 +87,14 @@ export namespace Store {
   };
 
   export function initial(): All {
-    const def = initializeMaze(defaultMaze());
-    const borderWidth = 8;
+    const schema = parseMazeSchema(mazeSchema1);
     const cellSize = new Point(30, 30);
-    const gridSize = new Point(26, 29);
 
     const maze: Maze = {
       cellSize: cellSize,
-      borderWidth: borderWidth,
-      passes: def.passes,
-      walls: def.walls,
-      gridSize: gridSize,
-      gridOffset: new Point(borderWidth * 2, borderWidth * 2)
+      passes: schema.passes,
+      walls: schema.walls,
+      gridSize: schema.gridSize,
     };
 
     const game: Game = {
@@ -96,13 +103,9 @@ export namespace Store {
       score: 0
     }
 
-    const dots = def.passes.filter(c => c.kind === CellKind.Score)
-      .map(c => c.gridPos)
-      .sort(Point.YXComparator)
+    const dots = schema.dots.sort(Point.YXComparator)
       .map(p => ({ position: p, collected: false }));
-    const pellets = def.passes.filter(c => c.kind === CellKind.Fruit)
-      .map(c => c.gridPos)
-      .sort(Point.YXComparator)
+    const pellets = schema.pellets.sort(Point.YXComparator)
       .map(p => ({ position: p, collected: false }));
 
     
@@ -117,7 +120,7 @@ export namespace Store {
       mouthAngle: 90,
       direction: Direction.Left,
       nextDirection: Direction.None,
-      position: def.pacmanInitPos,
+      position: schema.pacmanInitPos,
       moving: false,
       speed: 8 // cells per second
     };
@@ -127,7 +130,7 @@ export namespace Store {
         moving: true,
         direction: Direction.None,
         speed: 8, // cells per second
-        position: def.ghostInitPos[i]
+        position: schema.ghostInitPos[i]
       }
     });
 
