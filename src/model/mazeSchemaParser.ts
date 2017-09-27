@@ -4,6 +4,7 @@ import { Point } from '../geometry';
 
 const 
   Noscore = " ",
+  GhostSpawn = "-",
   Dot = "·",
   Gate = "g",
   Fruit = "●",
@@ -66,6 +67,10 @@ export function parseMazeSchema(rows: string[]) {
 
         case Pacman:
           pacman.push(point);
+          passes.push({
+            gridPos: point,
+            ghostOnly: false
+          });
           break;
 
         case Gate:
@@ -82,22 +87,44 @@ export function parseMazeSchema(rows: string[]) {
           });
           break;
 
-
+        case GhostSpawn:
+          passes.push({
+            gridPos: point,
+            ghostOnly: true
+          });
+          break;
 
         case Ghost1:
           ghostInitPos[0] = point;
+          passes.push({
+            gridPos: point,
+            ghostOnly: false
+          });
           break;
 
         case Ghost2:
           ghostInitPos[1] = point;
+          passes.push({
+            gridPos: point,
+            ghostOnly: true
+          });
+
           break;
 
         case Ghost3:
           ghostInitPos[2] = point;
+          passes.push({
+            gridPos: point,
+            ghostOnly: true
+          });
           break;
 
         case Ghost4:
           ghostInitPos[3] = point;
+          passes.push({
+            gridPos: point,
+            ghostOnly: true
+          });
           break;
 
         default:

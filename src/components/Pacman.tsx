@@ -61,7 +61,7 @@ class PacmanView extends React.Component<ConnectedState, OwnState> {
              angle={-props.mouthAngle}
              rotation={rotation}
              innerRadius={0}
-             outerRadius={props.cellSize.y-2 }
+             outerRadius={props.cellSize.y-4 }
              fill="yellow"
              stroke="red"/>;
   }
