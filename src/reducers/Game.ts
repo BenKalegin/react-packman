@@ -31,6 +31,7 @@ export function gameReducer(state: Store.Game, action: Action, events: GameEvent
           return r;
         });
         break;
+
     default:
     }
   }

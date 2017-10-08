@@ -13,7 +13,7 @@ export const rootReducer = (state: Store.App = Store.defaultApp(), action: Actio
   const mazeNavigator = getMazeNavigator(state);
   let events: GameEvent[] = [];
 
-  const pacman = pacmanReducer(state.heat.pacman, action, mazeNavigator);
+  const pacman = pacmanReducer(state.heat.pacman, action, state.round.dots, state.round.pellets, mazeNavigator, events);
   const ghosts = ghostReducer(state.heat.ghosts, action, pacman, mazeNavigator, events);
 
   const heat = heatReducer(state.heat, action, pacman, ghosts, events);

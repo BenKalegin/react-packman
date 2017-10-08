@@ -1,49 +1,31 @@
 import { Action, ANIMATION_STEP_ACTION, CHANGE_DIRECTION_ACTION } from "../actions";
-import { Store } from "../model";
-import { IMazeNavigator } from "../model/MazeNavigator";
-import { Point, Direction } from "../geometry";
+import { Store } from '../model';
+import { IMazeNavigator } from '../model/MazeNavigator';
+import { Direction } from "../geometry";
+import { dotEatenEvent, pelletEatenEvent } from './Events';
+import { PacmanAnimator } from '../domain/pacmanAnimator';
+import { GameEvent } from "./Events";
+import { createCollisionDetector } from '../model/CollisionDetector';
 
-export function pacmanReducer(state: Store.Pacman, action: Action, mazePath: IMazeNavigator ): Store.Pacman {
+export function pacmanReducer(state: Store.Pacman, action: Action, dots: Store.Loot[], pellets: Store.Loot[], mazePath: IMazeNavigator, events: GameEvent[]): Store.Pacman {
   switch (action.type) {
   case ANIMATION_STEP_ACTION:
-    const timestamp: number = action.timestamp;
     let result = {
-      ...state,
-      position: state.position,
-      mouthAngle: state.mouthAngle
+      ...state
     };
 
-    if (state.eatAnimation) {
-      const chompMillis = 200;
-      const ms = timestamp % chompMillis;
-      let angle = Math.round(90 * Math.abs(ms - chompMillis / 2) / (chompMillis / 2));
-      // prevent flicking when angle reaches 0
-      if (angle <= 0)
-        angle = 0.1;
-      result.mouthAngle = angle;
-    }
+    PacmanAnimator.step(result, action.timestamp, action.period, mazePath);
 
-    if (state.moving) {
-      const delta = state.speed / 1000 * (action.period);
-      let newPos = state.position.offset(Point.vector(state.direction).scale(delta)).round(10);
+    const collisionDetector = createCollisionDetector();
 
-      // check if need to turn because of preliminary arrow key press
-      if (newPos.equals(newPos.round(1)) && state.nextDirection !== Direction.None && mazePath.hasNeighbour(newPos, state.nextDirection, true)) {
-        result.direction = state.nextDirection;
-        state.nextDirection = Direction.None;
-        result.position = newPos;
-        return result;
-      }
+    const dotLooted = collisionDetector.checkLoot(state.position, dots);
+    if (dotLooted !== null)
+      events.push(dotEatenEvent(dotLooted));
 
-      const bumped = (state.direction === Direction.Right || state.direction === Direction.Down) &&
-        !mazePath.hasNeighbour(newPos, state.direction, true) ||
-        (state.direction === Direction.Left || state.direction === Direction.Up) && !mazePath.canEnter(newPos);
-      if (bumped) {
-        newPos = newPos.round(1);
-        result.moving = false;
-      }
-      result.position = newPos;
-    }
+    const pelletLooted = collisionDetector.checkLoot(state.position, pellets);
+    if (pelletLooted !== null)
+      events.push(pelletEatenEvent(pelletLooted));
+
     return result;
 
   case CHANGE_DIRECTION_ACTION:

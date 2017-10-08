@@ -3,11 +3,16 @@ import { Point } from '../geometry/Point';
 export const DOT_EATEN_EVENT = "DOT_EATEN";
 export const GHOST_BITTEN_EVENT = "GHOST_BITTEN";
 export const PELLET_EATEN_EVENT = "PELLET_EATEN";
+export const ROUND_COMPLETED_EVENT = "ROUND_COMPLETED";
 
 export type DotEatenEvent = {
   type: typeof DOT_EATEN_EVENT;
-  dotPosition: Point;      
+  index: number;
+}
 
+export type PelletEatenEvent = {
+  type: typeof PELLET_EATEN_EVENT;
+  index: number;
 }
 
 export type GhostBittenEvent = {
@@ -16,23 +21,21 @@ export type GhostBittenEvent = {
   ghostIndex: number;      
 }
 
-export type PelletEatenEvent = {
-  type: typeof PELLET_EATEN_EVENT;
-  pelletPosition: Point;
-
+export type RoundCompletedEvent = {
+  type: typeof ROUND_COMPLETED_EVENT;
 }
 
-export function dotEatenEvent(dotPosition: Point): DotEatenEvent {
+export function dotEatenEvent(index: number): DotEatenEvent {
   return {
     type: DOT_EATEN_EVENT,
-    dotPosition: dotPosition
+    index: index
   }
 }
 
-export function pelletEatenEvent(pelletPosition: Point): PelletEatenEvent {
+export function pelletEatenEvent(index: number): PelletEatenEvent {
   return {
     type: PELLET_EATEN_EVENT,
-    pelletPosition: pelletPosition
+    index: index
   }
 }
 
@@ -44,4 +47,10 @@ export function ghostBittenEvent(pacmanPos: Point, ghostIndex: number): GhostBit
   }
 }
 
-export type GameEvent = DotEatenEvent | PelletEatenEvent | GhostBittenEvent;
+export function roundCompletedEvent(): RoundCompletedEvent {
+  return {
+    type: ROUND_COMPLETED_EVENT,
+  }
+}
+
+export type GameEvent = DotEatenEvent | PelletEatenEvent | GhostBittenEvent | RoundCompletedEvent;

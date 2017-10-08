@@ -13,7 +13,7 @@ export type PelletProps = {
 type ConnectedDispatch = {
 }
 
-const PelletsView = (props: PelletProps, disp: ConnectedDispatch) => {
+const pelletsView = (props: PelletProps, disp: ConnectedDispatch) => {
   const bounds =
     props.pellets.map(p => ({
       bounds: p.position.scale(props.cellSize).toRectangle(props.cellSize),
@@ -45,5 +45,5 @@ const mapDispatchToProps = (dispatch: redux.Dispatch<Store.App>): ConnectedDispa
 });
 
 
-export const Pellets = connect(mapStateToProps, mapDispatchToProps)(PelletsView);
+export const Pellets = connect(mapStateToProps, mapDispatchToProps)(pelletsView);
 

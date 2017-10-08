@@ -28,7 +28,7 @@ export function ghostReducer(states: Store.Ghost[], action: Action, pacman: Stor
           const delta = state.speed / 1000 * (action.period);
           result = iassign(result, (g: Store.Ghost) => { g.position = state.position.offset(Point.vector(result.direction).scale(delta)).round(10); return g; });
         }
-        if (collisionDetector.tryBite(pacman.position, result.position)) {
+        if (collisionDetector.checkBite(pacman.position, result.position)) {
           events.push(ghostBittenEvent(pacman.position.round(10), states.indexOf(state)));
           break;
         }

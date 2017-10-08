@@ -1,26 +1,35 @@
 import { Store } from '../model';
-import { Action, ANIMATION_STEP_ACTION } from "../actions/index";
-import { createCollisionDetector } from "../model/CollisionDetector";
-import { dotEatenEvent, GameEvent, pelletEatenEvent} from "./Events";
+import { Action } from "../actions/index";
+import { GameEvent, DOT_EATEN_EVENT, PELLET_EATEN_EVENT, roundCompletedEvent} from "./Events";
 import * as iassign from 'immutable-assign';
 
 export function roundReducer(state: Store.Round, action: Action, heat: Store.Heat, events: GameEvent[]): Store.Round {
 
   let result = state;
 
-  switch (action.type) {
-    case ANIMATION_STEP_ACTION:
-      let { dots, pellets } = state;
-      const collisionDetector = createCollisionDetector();
-      if (collisionDetector.tryLoot(heat.pacman.position, dots)) {
+  for (const ev of events) {
+    switch (ev.type) {
+      case DOT_EATEN_EVENT:
+        let dots = result.dots;
+        dots[ev.index] = iassign(dots[ev.index], l => { l.collected = true; return l; });
         result = iassign(result, (r: Store.Round) => { r.dots = [...dots]; return r; });
-        events.push(dotEatenEvent(heat.pacman.position.round(1)));
-      } else if (collisionDetector.tryLoot(heat.pacman.position, pellets)) {
-        result = iassign(result, (r: Store.Round) => { pellets = [...pellets]; return r; });
-        events.push(pelletEatenEvent(heat.pacman.position.round(1)));
+        if (result.dots.every(d => d.collected) && result.pellets.every(p => p.collected)) {
+          events.push(roundCompletedEvent());
+          return Store.defaultApp().round;
+        }
+        break;
+
+      case PELLET_EATEN_EVENT:
+        let pellets = result.pellets;
+        pellets[ev.index] = iassign(pellets[ev.index], l => { l.collected = true; return l; });
+        result = iassign(result, (r: Store.Round) => { r.pellets = [...pellets]; return r; });
+          if (result.dots.every(d => d.collected) && result.pellets.every(p => p.collected)) {
+            events.push(roundCompletedEvent());
+            return Store.defaultApp().round;
+          }
+        break;
       }
   }
-
   return result;
 
 }
