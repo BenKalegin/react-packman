@@ -1,7 +1,7 @@
 import { Action, PAUSE_COMMAND_ACTION } from '../actions';
 import { Store } from '../model';
 import * as iassign from 'immutable-assign';
-import { GameEvent, DOT_EATEN_EVENT, PELLET_EATEN_EVENT } from "./Events";
+import { GameEvent, DOT_EATEN_EVENT, PELLET_EATEN_EVENT, GHOST_BITTEN_EVENT } from "./Events";
 
 
 export function gameReducer(state: Store.Game, action: Action, events: GameEvent[]): Store.Game {
@@ -23,7 +23,14 @@ export function gameReducer(state: Store.Game, action: Action, events: GameEvent
       case PELLET_EATEN_EVENT:
         result = iassign(result, (r: Store.Game) => { r.score += 50; return r; });
         break;
-      
+
+      case GHOST_BITTEN_EVENT:
+        result = iassign(result, (r: Store.Game) => {
+          if (r.lives > 0)
+            r.lives--;
+          return r;
+        });
+        break;
     default:
     }
   }

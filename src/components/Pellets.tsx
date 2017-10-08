@@ -36,12 +36,12 @@ const PelletsView = (props: PelletProps, disp: ConnectedDispatch) => {
   );
 }
 
-const mapStateToProps = (state: Store.All): PelletProps => ({
+const mapStateToProps = (state: Store.App): PelletProps => ({
   pellets: state.round.pellets,
   cellSize: state.game.maze.cellSize,
 });
 
-const mapDispatchToProps = (dispatch: redux.Dispatch<Store.All>): ConnectedDispatch => ({
+const mapDispatchToProps = (dispatch: redux.Dispatch<Store.App>): ConnectedDispatch => ({
 });
 
 

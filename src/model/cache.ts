@@ -4,6 +4,6 @@ import { createMazeNavigator } from "./MazeNavigator";
 
 
 export const getMazeNavigator = createSelector(
-  (state: Store.All) => state.game.maze,
+  (state: Store.App) => state.game.maze,
   (maze) => createMazeNavigator(maze)
 );

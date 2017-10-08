@@ -10,10 +10,10 @@ import { Store } from './model';
 
 let devtools: any = window['devToolsExtension'] ? window['devToolsExtension']() : (f: any) => f;
 
-const store = devtools(redux.createStore)(rootReducer,Store.initial());
+const store = devtools(redux.createStore)(rootReducer,Store.defaultApp());
 
 
-const Provider = createProvider<Store.All>();
+const Provider = createProvider<Store.App>();
 const AppContainer: React.StatelessComponent<{}> = () => (
     <Provider store={store} target={App} />
 );

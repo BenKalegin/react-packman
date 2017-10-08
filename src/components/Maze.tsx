@@ -20,11 +20,11 @@ type ConnectedDispatch = {
   load: () => void
 }
 
-const mapStateToProps = (state: Store.All, ownProps: OwnProps): ConnectedState => ({
+const mapStateToProps = (state: Store.App, ownProps: OwnProps): ConnectedState => ({
   maze: state.game.maze
 })
 
-const mapDispatchToProps = (dispatch: redux.Dispatch<Store.All>): ConnectedDispatch => ({
+const mapDispatchToProps = (dispatch: redux.Dispatch<Store.App>): ConnectedDispatch => ({
   load: () => {}
 });
 

@@ -10,7 +10,7 @@ import { Direction } from '../geometry/';
 import * as Perf from 'react-addons-perf';
 
 
-type OwnProps = Store.All;
+type OwnProps = Store.App;
 
 type OwnState = {
 };
@@ -25,11 +25,11 @@ type ConnectedDispatch = {
   pause: () => void;
 };
 
-const mapStateToProps = (state: Store.All, ownProps: OwnProps): ConnectedState => ({
+const mapStateToProps = (state: Store.App, ownProps: OwnProps): ConnectedState => ({
   paused: state.game.paused 
 });
 
-function mapDispatchToProps(dispatch: redux.Dispatch<Store.All>): ConnectedDispatch
+function mapDispatchToProps(dispatch: redux.Dispatch<Store.App>): ConnectedDispatch
 {
   return {
     animatedStep: (timestamp: number, period: number) => dispatch(animatedStepAction(timestamp, period)),

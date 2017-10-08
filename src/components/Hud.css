@@ -3,8 +3,21 @@
 }
 
 .score-label {
-    padding-right: 8px
+    padding-right: 8px;
+    position: relative
 }
 
 .score-value {
+    padding-right: 18px;
+    position: relative
+}
+
+.lives-label {
+    padding-right: 8px;
+    padding-right: 8px
+}
+
+.lives-value {
+    padding-right: 8px;
+    position: relative
 }

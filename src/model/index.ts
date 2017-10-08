@@ -68,6 +68,7 @@ export namespace Store {
   export type Game = {
     maze: Maze;
     score: number;
+    lives: number;
     paused: boolean;
   }
 
@@ -86,13 +87,13 @@ export namespace Store {
     ghosts: Ghost[],
   }
 
-  export type All = {
+  export type App = {
     game: Game,
     round: Round,
     heat: Heat
   };
 
-  export function initial(): All {
+  export function defaultApp(): Store.App {
     const schema = parseMazeSchema(mazeSchema1);
     const cellSize = new Point(30, 30);
 
@@ -106,7 +107,8 @@ export namespace Store {
     const game: Game = {
       maze: maze,
       paused: false,
-      score: 0
+      score: 0,
+      lives: 3
     }
 
     const dots = schema.dots.sort(Point.YXComparator)
@@ -119,7 +121,6 @@ export namespace Store {
       dots: dots,
       pellets: pellets  
     }
-
 
     const pacman: Pacman = {
       eatAnimation: true,

@@ -16,7 +16,7 @@ type OwnProps = {
   index: number
 }
 
-const mapStateToProps = (state: Store.All, ownProps: OwnProps): ConnectedState => ({
+const mapStateToProps = (state: Store.App, ownProps: OwnProps): ConnectedState => ({
   cellSize: state.game.maze.cellSize,
   position: state.heat.ghosts[ownProps.index].position,
   direction: state.heat.ghosts[ownProps.index].direction,
@@ -24,7 +24,7 @@ const mapStateToProps = (state: Store.All, ownProps: OwnProps): ConnectedState =
 
 interface ConnectedDispatch {
 }
-const mapDispatchToProps = (dispatch: redux.Dispatch<Store.All>): ConnectedDispatch => ({
+const mapDispatchToProps = (dispatch: redux.Dispatch<Store.App>): ConnectedDispatch => ({
 })
 
 class GhostView extends React.Component<ConnectedState & OwnProps, {}> {

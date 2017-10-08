@@ -20,7 +20,7 @@ type ConnectedDispatch = {
 }
 
 
-const mapStateToProps = (state: Store.All): DotsProps => ({
+const mapStateToProps = (state: Store.App): DotsProps => ({
   dots: state.round.dots,
   cellSize: state.game.maze.cellSize,
 });
@@ -60,7 +60,7 @@ class DotsView extends React.Component<DotsProps> {
   }
 }
 
-const mapDispatchToProps = (dispatch: redux.Dispatch<Store.All>): ConnectedDispatch => ({});
+const mapDispatchToProps = (dispatch: redux.Dispatch<Store.App>): ConnectedDispatch => ({});
 
 
 export const Dots = connect(mapStateToProps, mapDispatchToProps)(DotsView);
