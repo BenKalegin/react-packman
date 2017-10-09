@@ -69,6 +69,7 @@ export namespace Store {
     maze: Maze;
     score: number;
     lives: number;
+    modalText: string;
     paused: boolean;
   }
 
@@ -108,7 +109,8 @@ export namespace Store {
       maze: maze,
       paused: false,
       score: 0,
-      lives: 3
+      lives: 3,
+      modalText: 'GET READY!'
     }
 
     const dots = schema.dots.sort(Point.YXComparator)

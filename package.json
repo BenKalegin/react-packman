@@ -9,6 +9,7 @@
     "@types/react-addons-perf": "^0.14.18",
     "@types/react-dom": "^15.5.1",
     "@types/react-redux": "^4.4.46",
+    "@types/redux-saga": "^0.10.5",
     "immutable-assign": "^1.0.36",
     "konva": "^1.6.3",
     "react": "^15.6.1",
@@ -17,6 +18,7 @@
     "react-konva": "github:lavrton/react-konva",
     "react-redux": "^5.0.5",
     "react-scripts-ts": "2.3.2",
+    "redux-saga": "^0.15.6",
     "redux-shortcuts": "0.0.3",
     "reselect": "^3.0.1"
   },

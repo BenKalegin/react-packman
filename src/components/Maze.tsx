@@ -8,6 +8,7 @@ import {Dots, Pellets} from ".";
 import { Pacman } from './Pacman';
 import { Ghost } from './Ghost';
 import { Store } from '../model';
+import { ModalText } from "./ModalText";
 
 type ConnectedState = {
   maze: Store.Maze
@@ -52,6 +53,9 @@ class MazeView extends React.Component<ConnectedState & ConnectedDispatch & OwnP
         <Layer>
           {[0, 1, 2, 3].map(i => <Ghost key={i} index={i} />)}
           <Pacman />
+        </Layer>
+        <Layer>
+          <ModalText />
         </Layer>
       </Stage>
     );
