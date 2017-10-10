@@ -8,7 +8,7 @@ import { Store } from '../model';
 
 type ConnectedState = {
   mazeSize: Point;
-  text: string;
+  text?: string;
 }
 
 type ConnectedDispatch = {
@@ -39,8 +39,10 @@ class ModalTextView extends React.Component<ConnectedState, OwnState> {
              x={0}
              y={mazeSize.y / 2 - textHeight / 2}
              fill="yellow"
-             text={this.props.text}
+             text={this.props.text || ''}
+             visible={this.props.text != undefined}  
              fontSize={textHeight}
+             fontStyle="bold"
              fontFamily='Comic Sans MS'
              width = {mazeSize.x}
              padding = {0}

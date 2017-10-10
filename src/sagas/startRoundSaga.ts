@@ -1,7 +1,9 @@
-import { take } from 'redux-saga/effects';
-import { START_ROUND_ACTION } from "../actions";
+import { put } from 'redux-saga/effects';
+import { delay } from 'redux-saga';
+import { modalTextAction } from "../actions";
 
 export function* startRoundSaga() {
-  yield take(START_ROUND_ACTION);
-  //yield fork(fetchUser);
+  yield put(modalTextAction("GET READY!"));
+  yield delay(2000);
+  yield put(modalTextAction(undefined));
 }

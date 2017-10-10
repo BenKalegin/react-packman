@@ -1,4 +1,4 @@
-import { Action, PAUSE_COMMAND_ACTION } from '../actions';
+import { Action, PAUSE_COMMAND_ACTION, MODAL_TEXT_ACTION } from '../actions';
 import { Store } from '../model';
 import * as iassign from 'immutable-assign';
 import { GameEvent, DOT_EATEN_EVENT, PELLET_EATEN_EVENT, GHOST_BITTEN_EVENT } from "./Events";
@@ -10,7 +10,11 @@ export function gameReducer(state: Store.Game, action: Action, events: GameEvent
 
   switch (action.type) {
     case PAUSE_COMMAND_ACTION:
-      result = iassign(result, (r: Store.Game) => { r.paused = !r.paused; return r;});
+      result = iassign(result, (r: Store.Game) => { r.paused = !r.paused; return r; });
+      break;
+    case MODAL_TEXT_ACTION:
+      result = iassign(result, (r: Store.Game) => { r.modalText = action.text; return r; });
+      break;
   }
 
   // process events

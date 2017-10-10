@@ -1,4 +1,4 @@
-//import { combineReducers } from 'redux';
+  //import { combineReducers } from 'redux';
 import { pacmanReducer } from './Pacman';
 import { ghostReducer } from './Ghost';
 import { gameReducer } from './Game';

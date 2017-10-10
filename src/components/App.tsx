@@ -5,7 +5,7 @@ import './App.css';
 import { Maze } from './Maze';
 import { Hud } from './Hud';
 import { Store } from '../model';
-import { animatedStepAction, changeDirectionAction, pauseCommandAction } from '../actions/index';
+import { animatedStepAction, changeDirectionAction, pauseCommandAction, startApplicationAction } from '../actions';
 import { Direction } from '../geometry/';
 import * as Perf from 'react-addons-perf';
 
@@ -22,6 +22,7 @@ type ConnectedState = {
 type ConnectedDispatch = {
   animatedStep: (timestamp: number, priorTimestamp: number) => void;
   changeDirection: (direction: Direction) => void;
+  start : () => void;
   pause: () => void;
 };
 
@@ -34,7 +35,8 @@ function mapDispatchToProps(dispatch: redux.Dispatch<Store.App>): ConnectedDispa
   return {
     animatedStep: (timestamp: number, period: number) => dispatch(animatedStepAction(timestamp, period)),
     changeDirection: (direction) => dispatch(changeDirectionAction(direction)),
-    pause: () => dispatch(pauseCommandAction())
+    pause: () => dispatch(pauseCommandAction()),
+    start: () => dispatch(startApplicationAction()),
   }
 };
 
@@ -61,6 +63,7 @@ class AppView extends React.Component<OwnProps & ConnectedDispatch & ConnectedSt
   componentDidMount() {
     this.startTicker();
     this.addKeyboardListeners();
+    this.props.start();
   }
 
   componentWillUnmount() {
@@ -117,7 +120,7 @@ class AppView extends React.Component<OwnProps & ConnectedDispatch & ConnectedSt
           if (period > 16)
             period = 16;
 
-          this.props.animatedStep(timestamp, period);
+          //this.props.animatedStep(timestamp, period);
         }
         priorTimestamp = timestamp;
         window.requestAnimationFrame(ticker);
@@ -126,15 +129,6 @@ class AppView extends React.Component<OwnProps & ConnectedDispatch & ConnectedSt
 
     window.requestAnimationFrame(ticker);
   }
-//  startPacmanChomp = () => {
-//    const { store } = this.context; //todo make typed and move to member
-//    store.dispatch(startPacmanChomp());
-//  }
-
-//  stopPacmanChomp = () => {
-//    const { store } = this.context;
-//    store.dispatch(stopPacmanChomp());
-//  }
 
   render() {
     return (

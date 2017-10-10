@@ -69,7 +69,7 @@ export namespace Store {
     maze: Maze;
     score: number;
     lives: number;
-    modalText: string;
+    modalText?: string;
     paused: boolean;
   }
 
@@ -110,7 +110,7 @@ export namespace Store {
       paused: false,
       score: 0,
       lives: 3,
-      modalText: 'GET READY!'
+      modalText: undefined
     }
 
     const dots = schema.dots.sort(Point.YXComparator)
@@ -125,7 +125,7 @@ export namespace Store {
     }
 
     const pacman: Pacman = {
-      eatAnimation: true,
+      eatAnimation: false,
       mouthAngle: 90,
       direction: Direction.Left,
       nextDirection: Direction.None,
@@ -136,7 +136,7 @@ export namespace Store {
 
     const ghosts = [0, 1, 2, 3].map(i => {
       return {
-        moving: true,
+        moving: false,
         direction: Direction.None,
         speed: 8, // cells per second
         position: schema.ghostInitPos[i]

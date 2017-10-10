@@ -11,9 +11,13 @@ import createSagaMiddleware from 'redux-saga';
 import { rootSaga } from './sagas';
 
 const sagaMiddle = createSagaMiddleware();
-let devtools: any = window['devToolsExtension'] ? window['devToolsExtension']() : (f: any) => f;
-const store = devtools(redux.createStore)(rootReducer, Store.defaultApp(), redux.applyMiddleware(sagaMiddle));
 
+let devtools: redux.GenericStoreEnhancer = window['devToolsExtension'] ? window['devToolsExtension']() : (f: any) => f;
+const sagaEnhancer = redux.applyMiddleware(sagaMiddle);
+const enhancers = redux.compose(sagaEnhancer, devtools);
+
+const store = redux.createStore(rootReducer, Store.defaultApp(), enhancers as redux.GenericStoreEnhancer);
+sagaMiddle.run(rootSaga);
 
 const Provider = createProvider<Store.App>();
 const AppContainer: React.StatelessComponent<{}> = () => (
@@ -22,4 +26,3 @@ const AppContainer: React.StatelessComponent<{}> = () => (
 
 ReactDOM.render(<AppContainer/>, document.getElementById('root') as HTMLElement);
 registerServiceWorker();
-sagaMiddle.run(rootSaga);

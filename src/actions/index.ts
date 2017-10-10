@@ -4,6 +4,8 @@ export const START_ROUND_ACTION = "START_ROUND";
 export const ANIMATION_STEP_ACTION = "ANIMATION_STEP";
 export const CHANGE_DIRECTION_ACTION = "CHANGE_DIR";
 export const PAUSE_COMMAND_ACTION = "PAUSE";
+export const START_APPLICATION_ACTION = "StartApp";
+export const MODAL_TEXT_ACTION = "ModalText";
 
 export type StartRoundAction = 
 {
@@ -23,6 +25,15 @@ export type ChangeDirectionAction = {
 
 export type PauseCommandAction = {
   type: typeof PAUSE_COMMAND_ACTION;
+}
+
+export type StartApplicationAction = {
+  type: typeof START_APPLICATION_ACTION;
+}
+
+export type ModalTextAction = {
+  type: typeof MODAL_TEXT_ACTION;
+  text?: string;
 }
 
 
@@ -47,5 +58,18 @@ export function pauseCommandAction(): PauseCommandAction {
   };
 }
 
+export function startApplicationAction(): StartApplicationAction {
+  return {
+    type: START_APPLICATION_ACTION,
+  };
+}
 
-export type Action = StartRoundAction | AnimatedStepAction | ChangeDirectionAction | PauseCommandAction;
+export function modalTextAction(text?: string): ModalTextAction {
+  return {
+    type: MODAL_TEXT_ACTION,
+    text: text
+  };
+}
+
+
+export type Action = StartRoundAction | AnimatedStepAction | ChangeDirectionAction | PauseCommandAction | StartApplicationAction | ModalTextAction;
