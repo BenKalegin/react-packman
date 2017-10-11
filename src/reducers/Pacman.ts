@@ -1,4 +1,4 @@
-import { Action, ANIMATION_STEP_ACTION, CHANGE_DIRECTION_ACTION } from "../actions";
+import { Action, ANIMATION_STEP_ACTION, CHANGE_DIRECTION_ACTION, RELEASE_PACMAN_ACTION } from "../actions";
 import { Store } from '../model';
 import { IMazeNavigator } from '../model/MazeNavigator';
 import { Direction } from "../geometry";
@@ -8,13 +8,11 @@ import { GameEvent } from "./Events";
 import { createCollisionDetector } from '../model/CollisionDetector';
 
 export function pacmanReducer(state: Store.Pacman, action: Action, dots: Store.Loot[], pellets: Store.Loot[], mazePath: IMazeNavigator, events: GameEvent[]): Store.Pacman {
+
   switch (action.type) {
   case ANIMATION_STEP_ACTION:
-    let result = {
-      ...state
-    };
 
-    PacmanAnimator.step(result, action.timestamp, action.period, mazePath);
+    state = PacmanAnimator.step(state, action.timestamp, action.period, mazePath);
 
     const collisionDetector = createCollisionDetector();
 
@@ -26,7 +24,7 @@ export function pacmanReducer(state: Store.Pacman, action: Action, dots: Store.L
     if (pelletLooted !== null)
       events.push(pelletEatenEvent(pelletLooted));
 
-    return result;
+    return state;
 
   case CHANGE_DIRECTION_ACTION:
     // ignore if key matches current direction
@@ -51,6 +49,10 @@ export function pacmanReducer(state: Store.Pacman, action: Action, dots: Store.L
 
     // 
     return { ...state, nextDirection: action.direction  }
+
+
+  case RELEASE_PACMAN_ACTION:
+    return { ...state, moving: true, eatAnimation: true }
 
 
   default:

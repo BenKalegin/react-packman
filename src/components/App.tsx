@@ -120,7 +120,7 @@ class AppView extends React.Component<OwnProps & ConnectedDispatch & ConnectedSt
           if (period > 16)
             period = 16;
 
-          //this.props.animatedStep(timestamp, period);
+          this.props.animatedStep(timestamp, period);
         }
         priorTimestamp = timestamp;
         window.requestAnimationFrame(ticker);

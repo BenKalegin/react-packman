@@ -11,7 +11,6 @@ export function heatReducer(state: Store.Heat, action: Action, pacman: Store.Pac
     switch (ev.type) {
       case GHOST_BITTEN_EVENT:
         return Store.defaultApp().heat;      
-
     }
   }
 

@@ -1,4 +1,4 @@
-import { Action, ANIMATION_STEP_ACTION } from "../actions";
+import { Action, ANIMATION_STEP_ACTION, RELEASE_GHOST_ACTION } from "../actions";
 import { Store } from "../model";
 import { IMazeNavigator } from "../model/MazeNavigator";
 import { Point, allDirections, revertDirection } from '../geometry';
@@ -35,6 +35,15 @@ export function ghostReducer(states: Store.Ghost[], action: Action, pacman: Stor
         results.push(result);
       }
       return results;
+
+    case RELEASE_GHOST_ACTION:
+      states[action.index] = iassign(states[action.index], 
+        g => {
+          g.moving = true;
+          return g;
+        });
+
+      return states;
 
     default:
       return states;

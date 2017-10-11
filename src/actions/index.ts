@@ -1,10 +1,13 @@
 import { Direction } from '../geometry';
 
 export const START_ROUND_ACTION = "START_ROUND";
+export const RELEASE_PACMAN_ACTION = "ReleasePacman";
+export const RELEASE_GHOST_ACTION = "ReleaseGhost";
 export const ANIMATION_STEP_ACTION = "ANIMATION_STEP";
 export const CHANGE_DIRECTION_ACTION = "CHANGE_DIR";
 export const PAUSE_COMMAND_ACTION = "PAUSE";
 export const START_APPLICATION_ACTION = "StartApp";
+export const INTRO_HEAT_ACTION = "IntroHeat";
 export const MODAL_TEXT_ACTION = "ModalText";
 
 export type StartRoundAction = 
@@ -36,6 +39,19 @@ export type ModalTextAction = {
   text?: string;
 }
 
+export type ReleasePacmanAction = {
+  type: typeof RELEASE_PACMAN_ACTION;
+}
+
+export type ReleaseGhostAction = {
+  type: typeof RELEASE_GHOST_ACTION;
+  index: number;
+}
+
+export type IntroHeatAction = {
+  type: typeof INTRO_HEAT_ACTION;
+}
+
 
 export function animatedStepAction(timestamp: number, period: number): AnimatedStepAction {
   return {
@@ -64,6 +80,25 @@ export function startApplicationAction(): StartApplicationAction {
   };
 }
 
+export function releasePacmanAction(): ReleasePacmanAction {
+  return {
+    type: RELEASE_PACMAN_ACTION
+  };
+}
+
+export function releaseGhostAction(index: number): ReleaseGhostAction {
+  return {
+    type: RELEASE_GHOST_ACTION,
+    index: index
+  };
+}
+
+export function introHeatAction(): IntroHeatAction {
+  return {
+    type: INTRO_HEAT_ACTION,
+  };
+}
+
 export function modalTextAction(text?: string): ModalTextAction {
   return {
     type: MODAL_TEXT_ACTION,
@@ -72,4 +107,12 @@ export function modalTextAction(text?: string): ModalTextAction {
 }
 
 
-export type Action = StartRoundAction | AnimatedStepAction | ChangeDirectionAction | PauseCommandAction | StartApplicationAction | ModalTextAction;
+export type Action = StartRoundAction |
+                     AnimatedStepAction |
+                     ChangeDirectionAction |
+                     PauseCommandAction |
+                     StartApplicationAction |
+                     ReleasePacmanAction |
+                     ReleaseGhostAction |
+                     ModalTextAction |
+                     IntroHeatAction;
