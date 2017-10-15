@@ -1,16 +1,15 @@
-import { Action, ANIMATION_STEP_ACTION, RELEASE_GHOST_ACTION } from "../actions";
+import { Action, ANIMATION_STEP_ACTION, RELEASE_GHOST_ACTION, ghostBittenAction } from "../actions";
 import { Store } from "../model";
 import { IMazeNavigator } from "../model/MazeNavigator";
 import { Point, allDirections, revertDirection } from '../geometry';
 import { createCollisionDetector } from "../model/CollisionDetector";
-import { ghostBittenEvent, GameEvent} from "./Events";
 import * as iassign from 'immutable-assign';
 
 function getRandomInt(max: number) {
   return Math.floor(Math.random() * max);
 }
 
-export function ghostReducer(states: Store.Ghost[], action: Action, pacman: Store.Pacman, mazeNavigator: IMazeNavigator, events: GameEvent[]): Store.Ghost[] {
+export function ghostReducer(states: Store.Ghost[], action: Action, pacman: Store.Pacman, mazeNavigator: IMazeNavigator, events: Action[]): Store.Ghost[] {
   switch (action.type) {
     case ANIMATION_STEP_ACTION:
       let results = new Array<Store.Ghost>();
@@ -29,8 +28,7 @@ export function ghostReducer(states: Store.Ghost[], action: Action, pacman: Stor
           result = iassign(result, (g: Store.Ghost) => { g.position = state.position.offset(Point.vector(result.direction).scale(delta)).round(10); return g; });
         }
         if (collisionDetector.checkBite(pacman.position, result.position)) {
-          events.push(ghostBittenEvent(pacman.position.round(10), states.indexOf(state)));
-          break;
+          events.push(ghostBittenAction(pacman.position.round(10), states.indexOf(state)));
         }
         results.push(result);
       }

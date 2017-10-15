@@ -1,35 +1,38 @@
 import { Store } from '../model';
-import { Action } from "../actions/index";
-import { GameEvent, DOT_EATEN_EVENT, PELLET_EATEN_EVENT, roundCompletedEvent} from "./Events";
+import { Action, DOT_EATEN_ACTION, PELLET_EATEN_ACTION, roundCompletedAction } from '../actions';
 import * as iassign from 'immutable-assign';
 
-export function roundReducer(state: Store.Round, action: Action, heat: Store.Heat, events: GameEvent[]): Store.Round {
+export function roundReducer(state: Store.Round, action: Action, heat: Store.Heat, events: Action[]): Store.Round {
 
   let result = state;
+  
+  const checkRoundComplete = () => {
+    if (result.dots.every(d => d.collected) && result.pellets.every(p => p.collected))
+      events.push(roundCompletedAction());
+  }
 
-  for (const ev of events) {
-    switch (ev.type) {
-      case DOT_EATEN_EVENT:
-        let dots = result.dots;
-        dots[ev.index] = iassign(dots[ev.index], l => { l.collected = true; return l; });
-        result = iassign(result, (r: Store.Round) => { r.dots = [...dots]; return r; });
-        if (result.dots.every(d => d.collected) && result.pellets.every(p => p.collected)) {
-          events.push(roundCompletedEvent());
-          return Store.defaultApp().round;
-        }
-        break;
+  switch (action.type) {
+    case DOT_EATEN_ACTION:
+      let dots = result.dots;
+      dots[action.index] = iassign(dots[action.index],
+        l => {
+          l.collected = true;
+          return l;
+        });
+      result = iassign(result, r => { r.dots = [...dots]; return r;});
+      checkRoundComplete();
+      break;
 
-      case PELLET_EATEN_EVENT:
-        let pellets = result.pellets;
-        pellets[ev.index] = iassign(pellets[ev.index], l => { l.collected = true; return l; });
-        result = iassign(result, (r: Store.Round) => { r.pellets = [...pellets]; return r; });
-          if (result.dots.every(d => d.collected) && result.pellets.every(p => p.collected)) {
-            events.push(roundCompletedEvent());
-            return Store.defaultApp().round;
-          }
-        break;
-      }
+    case PELLET_EATEN_ACTION:
+      let pellets = result.pellets;
+      pellets[action.index] = iassign(pellets[action.index],
+        l => {
+          l.collected = true;
+          return l;
+        });
+      result = iassign(result, r => { r.pellets = [...pellets]; return r; });
+      checkRoundComplete();
+      break;
   }
   return result;
-
 }

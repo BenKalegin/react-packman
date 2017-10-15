@@ -1,10 +1,9 @@
-import { Action, PAUSE_COMMAND_ACTION, MODAL_TEXT_ACTION } from '../actions';
+import { Action, PAUSE_COMMAND_ACTION, MODAL_TEXT_ACTION, DOT_EATEN_ACTION, GHOST_BITTEN_ACTION, PELLET_EATEN_ACTION } from '../actions';
 import { Store } from '../model';
 import * as iassign from 'immutable-assign';
-import { GameEvent, DOT_EATEN_EVENT, PELLET_EATEN_EVENT, GHOST_BITTEN_EVENT } from "./Events";
 
 
-export function gameReducer(state: Store.Game, action: Action, events: GameEvent[]): Store.Game {
+export function gameReducer(state: Store.Game, action: Action, events: Action[]): Store.Game {
 
   let result = state;
 
@@ -20,20 +19,16 @@ export function gameReducer(state: Store.Game, action: Action, events: GameEvent
   // process events
   for (const ev of events) {
     switch (ev.type) {
-      case DOT_EATEN_EVENT:
-        result = iassign(result, (r: Store.Game) => { r.score += 10; return r; });
+      case DOT_EATEN_ACTION:
+        result = iassign(result, r => { r.score += 10; return r; });
         break;
 
-      case PELLET_EATEN_EVENT:
-        result = iassign(result, (r: Store.Game) => { r.score += 50; return r; });
+      case PELLET_EATEN_ACTION:
+        result = iassign(result, r => { r.score += 50; return r; });
         break;
 
-      case GHOST_BITTEN_EVENT:
-        result = iassign(result, (r: Store.Game) => {
-          if (r.lives > 0)
-            r.lives--;
-          return r;
-        });
+      case GHOST_BITTEN_ACTION:
+        result = iassign(result, r => { if (r.lives > 0) r.lives--; return r; });
         break;
 
     default:

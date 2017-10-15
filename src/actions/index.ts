@@ -1,4 +1,4 @@
-import { Direction } from '../geometry';
+import { Direction, Point } from '../geometry';
 
 export const START_ROUND_ACTION = "START_ROUND";
 export const RELEASE_PACMAN_ACTION = "ReleasePacman";
@@ -7,8 +7,12 @@ export const ANIMATION_STEP_ACTION = "ANIMATION_STEP";
 export const CHANGE_DIRECTION_ACTION = "CHANGE_DIR";
 export const PAUSE_COMMAND_ACTION = "PAUSE";
 export const START_APPLICATION_ACTION = "StartApp";
-export const INTRO_HEAT_ACTION = "IntroHeat";
+export const START_HEAT_ACTION = "IntroHeat";
 export const MODAL_TEXT_ACTION = "ModalText";
+export const DOT_EATEN_ACTION = "DotEaten";
+export const PELLET_EATEN_ACTION = "PelletEaten";
+export const GHOST_BITTEN_ACTION = "GhostBitten";
+export const ROUND_COMPLETED_ACTION = "RoundCompleted";
 
 export type StartRoundAction = 
 {
@@ -16,9 +20,9 @@ export type StartRoundAction =
 } 
 
 export type AnimatedStepAction  = {
-    type: typeof ANIMATION_STEP_ACTION;
-    timestamp: number;
-    period: number;
+  type: typeof ANIMATION_STEP_ACTION;
+  timestamp: number;
+  period: number;
 }
 
 export type ChangeDirectionAction = {
@@ -48,16 +52,35 @@ export type ReleaseGhostAction = {
   index: number;
 }
 
-export type IntroHeatAction = {
-  type: typeof INTRO_HEAT_ACTION;
+export type StartHeatAction = {
+  type: typeof START_HEAT_ACTION;
 }
 
+export type DotEatenAction = {
+  type: typeof DOT_EATEN_ACTION;
+  index: number;
+}
+
+export type PelletEatenAction = {
+  type: typeof PELLET_EATEN_ACTION;
+  index: number;
+}
+
+export type GhostBittenAction = {
+  type: typeof GHOST_BITTEN_ACTION;
+  pacmanPosition: Point;
+  ghostIndex: number;
+}
+
+export type RoundCompletedAction = {
+  type: typeof ROUND_COMPLETED_ACTION;
+}
 
 export function animatedStepAction(timestamp: number, period: number): AnimatedStepAction {
   return {
     type: ANIMATION_STEP_ACTION,
     timestamp: timestamp,
-    period: period
+    period: period,
   };
 }
 
@@ -93,9 +116,9 @@ export function releaseGhostAction(index: number): ReleaseGhostAction {
   };
 }
 
-export function introHeatAction(): IntroHeatAction {
+export function startHeatAction(): StartHeatAction {
   return {
-    type: INTRO_HEAT_ACTION,
+    type: START_HEAT_ACTION,
   };
 }
 
@@ -105,7 +128,34 @@ export function modalTextAction(text?: string): ModalTextAction {
     text: text
   };
 }
+  
+export function dotEatenAction(index: number): DotEatenAction {
+  return {
+    type: DOT_EATEN_ACTION,
+    index: index
+  }
+}
 
+export function pelletEatenAction(index: number): PelletEatenAction {
+  return {
+    type: PELLET_EATEN_ACTION,
+    index: index
+  }
+}
+
+export function ghostBittenAction(pacmanPos: Point, ghostIndex: number): GhostBittenAction {
+  return {
+    type: GHOST_BITTEN_ACTION,
+    pacmanPosition: pacmanPos,
+    ghostIndex: ghostIndex
+  }
+}
+
+export function roundCompletedAction(): RoundCompletedAction {
+  return {
+    type: ROUND_COMPLETED_ACTION,
+  }
+}
 
 export type Action = StartRoundAction |
                      AnimatedStepAction |
@@ -115,4 +165,12 @@ export type Action = StartRoundAction |
                      ReleasePacmanAction |
                      ReleaseGhostAction |
                      ModalTextAction |
-                     IntroHeatAction;
+                     StartHeatAction |
+                     DotEatenAction | 
+                     PelletEatenAction |
+                     GhostBittenAction |
+                     RoundCompletedAction;
+
+export interface IHasInducedActions {
+  asyncDispatch(actions: Action[]): void;
+}

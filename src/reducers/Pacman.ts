@@ -1,13 +1,11 @@
-import { Action, ANIMATION_STEP_ACTION, CHANGE_DIRECTION_ACTION, RELEASE_PACMAN_ACTION } from "../actions";
+import { Action, ANIMATION_STEP_ACTION, CHANGE_DIRECTION_ACTION, RELEASE_PACMAN_ACTION, dotEatenAction, pelletEatenAction } from "../actions";
 import { Store } from '../model';
 import { IMazeNavigator } from '../model/MazeNavigator';
 import { Direction } from "../geometry";
-import { dotEatenEvent, pelletEatenEvent } from './Events';
 import { PacmanAnimator } from '../domain/pacmanAnimator';
-import { GameEvent } from "./Events";
 import { createCollisionDetector } from '../model/CollisionDetector';
 
-export function pacmanReducer(state: Store.Pacman, action: Action, dots: Store.Loot[], pellets: Store.Loot[], mazePath: IMazeNavigator, events: GameEvent[]): Store.Pacman {
+export function pacmanReducer(state: Store.Pacman, action: Action, dots: Store.Loot[], pellets: Store.Loot[], mazePath: IMazeNavigator, events: Action[]): Store.Pacman {
 
   switch (action.type) {
   case ANIMATION_STEP_ACTION:
@@ -18,11 +16,11 @@ export function pacmanReducer(state: Store.Pacman, action: Action, dots: Store.L
 
     const dotLooted = collisionDetector.checkLoot(state.position, dots);
     if (dotLooted !== null)
-      events.push(dotEatenEvent(dotLooted));
+      events.push(dotEatenAction(dotLooted));
 
     const pelletLooted = collisionDetector.checkLoot(state.position, pellets);
     if (pelletLooted !== null)
-      events.push(pelletEatenEvent(pelletLooted));
+      events.push(pelletEatenAction(pelletLooted));
 
     return state;
 

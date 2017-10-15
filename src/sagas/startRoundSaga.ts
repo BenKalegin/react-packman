@@ -1,9 +1,9 @@
 import { put, fork, take } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
-import { modalTextAction, releasePacmanAction, releaseGhostAction, introHeatAction } from "../actions";
+import { modalTextAction, releasePacmanAction, releaseGhostAction, startHeatAction, GHOST_BITTEN_ACTION} from "../actions";
 
 export function* startApplicationSaga() {
-  yield put(introHeatAction());
+  yield put(startHeatAction());
 }
 
 export function* releaseGhostSaga(index: number, msdelay: number) {
@@ -23,5 +23,6 @@ export function* introduceHeatSaga() {
 
   yield put(releasePacmanAction());
 
-  yield take
+  yield take(GHOST_BITTEN_ACTION);
+  //yield put(freezeActorsAction());
 }
