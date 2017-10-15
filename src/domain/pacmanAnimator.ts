@@ -34,7 +34,7 @@ export class PacmanAnimator {
   }
 
   private static die(state: Store.Pacman, timestamp: number): Store.Pacman {
-    let angle = state.mouthAngle == 0 ? 0 : state.mouthAngle + 3;
+    let angle = state.mouthAngle == 0 ? 0 : state.mouthAngle + 4;
     return iassign(state, s => {
       if (angle < 360)
         s.mouthAngle = angle;

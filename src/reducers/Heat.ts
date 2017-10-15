@@ -1,5 +1,5 @@
 import { Store } from "../model";
-import { Action } from "../actions";
+import { Action, RESET_HEAT_ACTION } from "../actions";
 import * as iassign from 'immutable-assign';
 
 export function heatReducer(state: Store.Heat, action: Action, pacman: Store.Pacman, ghosts: Store.Ghost[], events: Action[]): Store.Heat {
@@ -11,6 +11,11 @@ export function heatReducer(state: Store.Heat, action: Action, pacman: Store.Pac
     r.pacman = pacman;
     return r;
   });
+
+  switch(action.type) {
+    case RESET_HEAT_ACTION:
+      return Store.defaultApp().heat;
+  } 
 
   return result;
 }

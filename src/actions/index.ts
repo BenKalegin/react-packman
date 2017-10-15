@@ -14,6 +14,7 @@ export const GHOST_BITTEN_ACTION = "GhostBitten";
 export const HEAT_END_ACTION = "HeatEnd";
 export const FREEZE_ACTORS_ACTION = "FreezeActors";
 export const KILL_PACMAN_ACTION = "KillPacman";
+export const RESET_HEAT_ACTION = "ResetHeat";
 
 export type StartRoundAction = 
 {
@@ -80,6 +81,10 @@ export type FreezeActorsAction = {
 
 export type KillPacmanAction = {
   type: typeof KILL_PACMAN_ACTION;
+}
+
+export type ResetHeatAction = {
+  type: typeof RESET_HEAT_ACTION;
 }
 
 export function animatedStepAction(timestamp: number, period: number): AnimatedStepAction {
@@ -170,6 +175,12 @@ export function killPacmanAction(): KillPacmanAction {
   }
 }
 
+export function resetHeatAction(): ResetHeatAction {
+  return {
+    type: RESET_HEAT_ACTION,
+  }
+}
+
 export type Action = StartRoundAction |
                      AnimatedStepAction |
                      ChangeDirectionAction |
@@ -183,7 +194,8 @@ export type Action = StartRoundAction |
                      GhostBittenAction |
                      FreezeActorsAction |
                      KillPacmanAction |
-                     HeatEndAction;
+                     HeatEndAction |
+                     ResetHeatAction;
 
 export interface IHasInducedActions {
   asyncDispatch(actions: Action[]): void;
