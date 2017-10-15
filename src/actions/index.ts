@@ -7,12 +7,12 @@ export const ANIMATION_STEP_ACTION = "ANIMATION_STEP";
 export const CHANGE_DIRECTION_ACTION = "CHANGE_DIR";
 export const PAUSE_COMMAND_ACTION = "PAUSE";
 export const START_APPLICATION_ACTION = "StartApp";
-export const START_HEAT_ACTION = "IntroHeat";
 export const MODAL_TEXT_ACTION = "ModalText";
 export const DOT_EATEN_ACTION = "DotEaten";
 export const PELLET_EATEN_ACTION = "PelletEaten";
 export const GHOST_BITTEN_ACTION = "GhostBitten";
-export const ROUND_COMPLETED_ACTION = "RoundCompleted";
+export const HEAT_END_ACTION = "HeatEnd";
+export const FREEZE_ACTORS_ACTION = "FreezeActors";
 
 export type StartRoundAction = 
 {
@@ -52,10 +52,6 @@ export type ReleaseGhostAction = {
   index: number;
 }
 
-export type StartHeatAction = {
-  type: typeof START_HEAT_ACTION;
-}
-
 export type DotEatenAction = {
   type: typeof DOT_EATEN_ACTION;
   index: number;
@@ -72,8 +68,13 @@ export type GhostBittenAction = {
   ghostIndex: number;
 }
 
-export type RoundCompletedAction = {
-  type: typeof ROUND_COMPLETED_ACTION;
+export type HeatEndAction = {
+  type: typeof HEAT_END_ACTION;
+  lost: boolean;
+}
+
+export type FreezeActorsAction = {
+  type: typeof FREEZE_ACTORS_ACTION;
 }
 
 export function animatedStepAction(timestamp: number, period: number): AnimatedStepAction {
@@ -116,12 +117,6 @@ export function releaseGhostAction(index: number): ReleaseGhostAction {
   };
 }
 
-export function startHeatAction(): StartHeatAction {
-  return {
-    type: START_HEAT_ACTION,
-  };
-}
-
 export function modalTextAction(text?: string): ModalTextAction {
   return {
     type: MODAL_TEXT_ACTION,
@@ -151,9 +146,16 @@ export function ghostBittenAction(pacmanPos: Point, ghostIndex: number): GhostBi
   }
 }
 
-export function roundCompletedAction(): RoundCompletedAction {
+export function heatEndAction(lost: boolean): HeatEndAction {
   return {
-    type: ROUND_COMPLETED_ACTION,
+    type: HEAT_END_ACTION,
+    lost: lost
+  }
+}
+
+export function freezeActorsAction(): FreezeActorsAction {
+  return {
+    type: FREEZE_ACTORS_ACTION,
   }
 }
 
@@ -165,11 +167,11 @@ export type Action = StartRoundAction |
                      ReleasePacmanAction |
                      ReleaseGhostAction |
                      ModalTextAction |
-                     StartHeatAction |
                      DotEatenAction | 
                      PelletEatenAction |
                      GhostBittenAction |
-                     RoundCompletedAction;
+                     FreezeActorsAction |
+                     HeatEndAction;
 
 export interface IHasInducedActions {
   asyncDispatch(actions: Action[]): void;

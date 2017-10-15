@@ -1,4 +1,4 @@
-import { Action, PAUSE_COMMAND_ACTION, MODAL_TEXT_ACTION, DOT_EATEN_ACTION, GHOST_BITTEN_ACTION, PELLET_EATEN_ACTION } from '../actions';
+import { Action, PAUSE_COMMAND_ACTION, MODAL_TEXT_ACTION, DOT_EATEN_ACTION, GHOST_BITTEN_ACTION, PELLET_EATEN_ACTION, heatEndAction } from '../actions';
 import { Store } from '../model';
 import * as iassign from 'immutable-assign';
 
@@ -29,6 +29,7 @@ export function gameReducer(state: Store.Game, action: Action, events: Action[])
 
       case GHOST_BITTEN_ACTION:
         result = iassign(result, r => { if (r.lives > 0) r.lives--; return r; });
+        events.push(heatEndAction(true));
         break;
 
     default:

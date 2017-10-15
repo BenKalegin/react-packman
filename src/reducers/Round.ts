@@ -1,5 +1,5 @@
 import { Store } from '../model';
-import { Action, DOT_EATEN_ACTION, PELLET_EATEN_ACTION, roundCompletedAction } from '../actions';
+import { Action, DOT_EATEN_ACTION, PELLET_EATEN_ACTION } from '../actions';
 import * as iassign from 'immutable-assign';
 
 export function roundReducer(state: Store.Round, action: Action, heat: Store.Heat, events: Action[]): Store.Round {
@@ -7,8 +7,8 @@ export function roundReducer(state: Store.Round, action: Action, heat: Store.Hea
   let result = state;
   
   const checkRoundComplete = () => {
-    if (result.dots.every(d => d.collected) && result.pellets.every(p => p.collected))
-      events.push(roundCompletedAction());
+//    if (result.dots.every(d => d.collected) && result.pellets.every(p => p.collected))
+//      events.push(roundCompletedAction());
   }
 
   switch (action.type) {
