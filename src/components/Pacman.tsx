@@ -63,7 +63,7 @@ class PacmanView extends React.Component<ConnectedState, OwnState> {
              innerRadius={0}
              outerRadius={props.cellSize.y-4 }
              fill="yellow"
-             stroke="red"/>;
+           />;
   }
 }
 

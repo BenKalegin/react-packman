@@ -7,11 +7,14 @@ export class PacmanAnimator {
 
   public static step(state: Store.Pacman, timestamp: number, period: number, mazePath: IMazeNavigator): Store.Pacman  {
 
-    if (state.eatAnimation)
+    if (state.chomping)
       state = PacmanAnimator.chomp(state, timestamp);
 
     if (state.moving)
       state = PacmanAnimator.move(state, period, mazePath);
+
+    if (state.dying)
+      state = PacmanAnimator.die(state, timestamp);
 
     return state;
   }
@@ -28,6 +31,17 @@ export class PacmanAnimator {
         s.mouthAngle = angle;
         return s;
       });
+  }
+
+  private static die(state: Store.Pacman, timestamp: number): Store.Pacman {
+    let angle = state.mouthAngle == 0 ? 0 : state.mouthAngle + 3;
+    return iassign(state, s => {
+      if (angle < 360)
+        s.mouthAngle = angle;
+      else
+        s.mouthAngle = 0
+      return s;
+    });
   }
 
   private static move(state: Store.Pacman, period: number, mazePath: IMazeNavigator): Store.Pacman {

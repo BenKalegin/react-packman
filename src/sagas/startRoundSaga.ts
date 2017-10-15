@@ -1,6 +1,7 @@
 import { put, fork, take, call } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
-import { modalTextAction, releasePacmanAction, releaseGhostAction, HEAT_END_ACTION, freezeActorsAction } from "../actions";
+import { modalTextAction, releasePacmanAction, releaseGhostAction, HEAT_END_ACTION, freezeActorsAction, killPacmanAction
+  } from "../actions";
 
 export function* startApplicationSaga() {
   yield call(startRoundSaga);
@@ -27,12 +28,12 @@ export function* startHeatSaga() {
 
   yield put(releasePacmanAction());
 
-  //const result =
-  yield take(HEAT_END_ACTION);
+  const { lost } = yield take(HEAT_END_ACTION);
 
   yield put(freezeActorsAction());
 
-//  if (result.lost)
-//    yield put(freezeActorsAction());
-
+  if (lost) {
+    yield put(killPacmanAction());
+    yield delay(1000);
+  }
 }

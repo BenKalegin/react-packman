@@ -13,6 +13,7 @@ export const PELLET_EATEN_ACTION = "PelletEaten";
 export const GHOST_BITTEN_ACTION = "GhostBitten";
 export const HEAT_END_ACTION = "HeatEnd";
 export const FREEZE_ACTORS_ACTION = "FreezeActors";
+export const KILL_PACMAN_ACTION = "KillPacman";
 
 export type StartRoundAction = 
 {
@@ -75,6 +76,10 @@ export type HeatEndAction = {
 
 export type FreezeActorsAction = {
   type: typeof FREEZE_ACTORS_ACTION;
+}
+
+export type KillPacmanAction = {
+  type: typeof KILL_PACMAN_ACTION;
 }
 
 export function animatedStepAction(timestamp: number, period: number): AnimatedStepAction {
@@ -159,6 +164,12 @@ export function freezeActorsAction(): FreezeActorsAction {
   }
 }
 
+export function killPacmanAction(): KillPacmanAction {
+  return {
+    type: KILL_PACMAN_ACTION,
+  }
+}
+
 export type Action = StartRoundAction |
                      AnimatedStepAction |
                      ChangeDirectionAction |
@@ -171,6 +182,7 @@ export type Action = StartRoundAction |
                      PelletEatenAction |
                      GhostBittenAction |
                      FreezeActorsAction |
+                     KillPacmanAction |
                      HeatEndAction;
 
 export interface IHasInducedActions {

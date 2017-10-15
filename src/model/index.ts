@@ -5,8 +5,9 @@ import { mazeSchema1 } from './mazeSchema';
 export namespace Store {
 
   export type Pacman = {
-    eatAnimation: boolean,
+    chomping: boolean,
     moving: boolean,
+    dying: boolean,
     mouthAngle: number,
     direction: Direction,
     nextDirection: Direction,
@@ -125,12 +126,13 @@ export namespace Store {
     }
 
     const pacman: Pacman = {
-      eatAnimation: false,
+      chomping: false,
+      moving: false,
+      dying: false,
       mouthAngle: 90,
       direction: Direction.Left,
       nextDirection: Direction.None,
       position: schema.pacmanInitPos,
-      moving: false,
       speed: 8 // cells per second
     };
 
