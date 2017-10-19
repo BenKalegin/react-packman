@@ -66,6 +66,7 @@ export namespace Store {
     passes: Pass[];
     walls: Wall[];
     gridSize: Point;
+    textPos: Point;
   };
 
   export type Game = {
@@ -107,6 +108,7 @@ export namespace Store {
       passes: schema.passes,
       walls: schema.walls,
       gridSize: schema.gridSize,
+      textPos: schema.textCenter
     };
 
     const game: Game = {

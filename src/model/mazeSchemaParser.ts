@@ -12,7 +12,9 @@ const
   Ghost1 = "1",
   Ghost2 = "2",
   Ghost3 = "3",
-  Ghost4 = "4";
+  Ghost4 = "4",
+  Textbox = "T";
+
 // Chars avaialable: ┐│┘└ ║╔╗═╚╝╧╤
 
 export function parseMazeSchema(rows: string[]) {
@@ -43,6 +45,8 @@ export function parseMazeSchema(rows: string[]) {
   const pacman = new Array<Point>();
   let walls: Store.Wall[] = [];
   let ghostInitPos : Point[] = [];
+  let textPos: Point[] = [];
+
 
   for (let y = 0; y < rows.length; y++) {
     const row = rows[y];
@@ -85,6 +89,14 @@ export function parseMazeSchema(rows: string[]) {
             gridPos: point,
             ghostOnly: false
           });
+          break;
+
+        case Textbox:
+          passes.push({
+            gridPos: point,
+            ghostOnly: false
+          });
+          textPos.push(point);
           break;
 
         case GhostSpawn:
@@ -164,9 +176,10 @@ export function parseMazeSchema(rows: string[]) {
 
   const pacmanInitPos = pacman.reduce((a, c) => a.offset(c), new Point(0, 0))
     .scale(1 / pacman.length);
+  const textCenter = textPos.reduce((a, c) => a.offset(c), new Point(0, 0))
+    .scale(1 / textPos.length);
 
   const gridSize = new Point(rows[0].length, rows.length);
-
   return {
       pellets,
       dots,
@@ -174,6 +187,7 @@ export function parseMazeSchema(rows: string[]) {
       walls,
       pacmanInitPos,
       ghostInitPos,
-      gridSize
+      gridSize,
+      textCenter
   }
 }

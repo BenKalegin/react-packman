@@ -8,6 +8,8 @@ import { Store } from '../model';
 
 type ConnectedState = {
   mazeSize: Point;
+  textCenter: Point;
+  cellSize: Point;
   text?: string;
 }
 
@@ -22,6 +24,8 @@ type OwnState = {
 
 const mapStateToProps = (state: Store.App, ownProps: OwnProps): ConnectedState => ({
   mazeSize: state.game.maze.gridSize.scale(state.game.maze.cellSize),
+  textCenter: state.game.maze.textPos,
+  cellSize: state.game.maze.cellSize,
   text: state.game.modalText
 });
 
@@ -33,17 +37,16 @@ const mapDispatchToProps = (dispatch: redux.Dispatch<Store.App>): ConnectedDispa
 class ModalTextView extends React.Component<ConnectedState, OwnState> {
   render() {
     const mazeSize = this.props.mazeSize;
-    const textHeight = mazeSize.y / 20;
 
     return <Text
              x={0}
-             y={mazeSize.y / 2 - textHeight / 2}
+             y={this.props.textCenter.scale(this.props.cellSize).y}
              fill="yellow"
              text={this.props.text || ''}
              visible={this.props.text != undefined}  
-             fontSize={textHeight}
+             fontSize={this.props.cellSize.y * 1.5}
              fontStyle="bold"
-             fontFamily='Comic Sans MS'
+             fontFamily='fantasy'
              width = {mazeSize.x}
              padding = {0}
              align = 'center'
