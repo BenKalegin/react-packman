@@ -1,4 +1,4 @@
-import { Action, ANIMATION_STEP_ACTION, RELEASE_GHOST_ACTION, FREEZE_ACTORS_ACTION, ghostBittenAction } from "../actions";
+import { Action, ANIMATION_STEP_ACTION, RELEASE_GHOST_ACTION, FREEZE_ACTORS_ACTION, ghostBittenAction, HIDE_ACTORS_ACTION } from "../actions";
 import { Store } from "../model";
 import { IMazeNavigator } from "../model/MazeNavigator";
 import { Point, allDirections, revertDirection } from '../geometry';
@@ -46,6 +46,14 @@ export function ghostReducer(states: Store.Ghost[], action: Action, pacman: Stor
       states = states.map(state => iassign(state, 
         g => {
           g.moving = false;
+          return g;
+        }));
+      break;
+
+    case HIDE_ACTORS_ACTION:
+      states = states.map(state => iassign(state, 
+        g => {
+          g.hidden = true;
           return g;
         }));
       break;

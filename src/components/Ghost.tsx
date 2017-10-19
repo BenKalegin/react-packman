@@ -10,6 +10,7 @@ type ConnectedState = {
   cellSize: Point;
   position: Point;
   direction: Direction;
+  visible: boolean;
 }
 
 type OwnProps = {
@@ -20,6 +21,7 @@ const mapStateToProps = (state: Store.App, ownProps: OwnProps): ConnectedState =
   cellSize: state.game.maze.cellSize,
   position: state.heat.ghosts[ownProps.index].position,
   direction: state.heat.ghosts[ownProps.index].direction,
+  visible: !state.heat.ghosts[ownProps.index].hidden
 });
 
 interface ConnectedDispatch {
@@ -57,7 +59,7 @@ class GhostView extends React.Component<ConnectedState & OwnProps, {}> {
     const scaleY = 2 * (props.cellSize.y - padding) / 28;
 
     return (
-      <Group x={absPos.x + padding} y={absPos.y + padding} scaleX={scaleX} scaleY={ scaleY}>
+      <Group visible={props.visible} x={absPos.x + padding} y={absPos.y + padding} scaleX={scaleX} scaleY={ scaleY}>
       <Path data="M0 28 L0 14 C0 6 6 0 14 0 C22 0 28 6 28 14 L28 28 L23.333 23.333 L18.666 28 L14 23.333 L9.333 28 L4.666 23.333 L0 28"
         fill={this.color()}
         stroke="black" strokeWidth={1/scaleX} />

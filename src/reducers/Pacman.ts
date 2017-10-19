@@ -1,4 +1,4 @@
-import { Action, ANIMATION_STEP_ACTION, CHANGE_DIRECTION_ACTION, RELEASE_PACMAN_ACTION, dotEatenAction, pelletEatenAction, FREEZE_ACTORS_ACTION, KILL_PACMAN_ACTION } from "../actions";
+import { Action, ANIMATION_STEP_ACTION, CHANGE_DIRECTION_ACTION, RELEASE_PACMAN_ACTION, dotEatenAction, pelletEatenAction, FREEZE_ACTORS_ACTION, KILL_PACMAN_ACTION, HIDE_ACTORS_ACTION } from "../actions";
 import { Store } from '../model';
 import { IMazeNavigator } from '../model/MazeNavigator';
 import { Direction } from "../geometry";
@@ -54,6 +54,9 @@ export function pacmanReducer(state: Store.Pacman, action: Action, dots: Store.L
 
   case FREEZE_ACTORS_ACTION:
     return { ...state, moving: false, chomping: false }
+
+  case HIDE_ACTORS_ACTION:
+    return { ...state, hidden: true }
 
   case KILL_PACMAN_ACTION:
     return { ...state, dying: true, chomping: false }

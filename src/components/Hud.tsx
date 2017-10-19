@@ -31,10 +31,14 @@ class HudView extends React.Component<ConnectedState, OwnState> {
   render(): any {
     return (
       <div className="hud">
-        <span className="score-label">Score</span>
-        <span className="score-value">{this.props.score}</span>
-        <span className="lives-label">Lives</span>
-        <span className="lives-value">{this.props.lives}</span>
+        <div className="score">
+          <span className="label">Score</span>
+          <span className="value">{this.props.score}</span>
+        </div>
+        <div className="lives">
+          <span className="label">Lives</span>
+          <span className="value">{this.props.lives}</span>
+        </div>
       </div>
     );
   }

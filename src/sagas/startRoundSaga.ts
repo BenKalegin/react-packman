@@ -1,11 +1,24 @@
 import { put, fork, take, call } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import {
-  modalTextAction, releasePacmanAction, releaseGhostAction, HEAT_END_ACTION, freezeActorsAction, killPacmanAction, resetHeatAction
-  } from "../actions";
+  modalTextAction, releasePacmanAction, releaseGhostAction, HEAT_END_ACTION, freezeActorsAction, killPacmanAction, resetHeatAction,
+  resetRoundAction, hideActorsAction, showLevelAction, increaseLevelAction } from "../actions";
 
 export function* startApplicationSaga() {
-  yield call(startRoundSaga);
+  yield call(startGameSaga);
+}
+
+export function* startGameSaga() {
+  let roundOutcome = yield call(startRoundSaga);
+  while (!roundOutcome.lost) {
+    yield put(hideActorsAction());
+    yield delay(500);
+    yield put(resetRoundAction());
+    yield delay(500);
+    yield put(showLevelAction());
+    yield delay(500);
+    roundOutcome = yield call(startRoundSaga);
+  }
 }
 
 export function* startRoundSaga() {
@@ -14,6 +27,7 @@ export function* startRoundSaga() {
     yield put(resetHeatAction());
     heatOutcome = yield call(startHeatSaga);
   }
+  return { lost: heatOutcome.lost }
 }
 
 export function* releaseGhostSaga(index: number, msdelay: number) {
@@ -40,6 +54,8 @@ export function* startHeatSaga() {
   if (lost) {
     yield put(killPacmanAction());
     yield delay(1000);
+  } else {
+    yield put(increaseLevelAction());
   }
   return {
     lost: lost

@@ -3,6 +3,10 @@
   background-color: #222222 
 }
 
+.App > div {
+    display: inline-block;    
+}
+
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 80px;

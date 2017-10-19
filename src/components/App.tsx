@@ -133,9 +133,14 @@ class AppView extends React.Component<OwnProps & ConnectedDispatch & ConnectedSt
   render() {
     return (
       <div className="App">
-        <Maze />
-        <Hud />
-        <br/>
+        <table>
+          <tr>
+            <Maze />
+          </tr>
+          <tr>
+            <Hud />
+          </tr>
+        </table>
       </div>
     );
   }

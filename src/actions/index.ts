@@ -13,8 +13,12 @@ export const PELLET_EATEN_ACTION = "PelletEaten";
 export const GHOST_BITTEN_ACTION = "GhostBitten";
 export const HEAT_END_ACTION = "HeatEnd";
 export const FREEZE_ACTORS_ACTION = "FreezeActors";
+export const HIDE_ACTORS_ACTION = "HideActors";
 export const KILL_PACMAN_ACTION = "KillPacman";
 export const RESET_HEAT_ACTION = "ResetHeat";
+export const RESET_ROUND_ACTION = "ResetRound";
+export const SHOW_LEVEL_ACTION = "ShowLevel";
+export const INCREASE_LEVEL_ACTION = "IncreaseLevel";
 
 export type StartRoundAction = 
 {
@@ -79,12 +83,28 @@ export type FreezeActorsAction = {
   type: typeof FREEZE_ACTORS_ACTION;
 }
 
+export type HideActorsAction = {
+  type: typeof HIDE_ACTORS_ACTION;
+}
+
 export type KillPacmanAction = {
   type: typeof KILL_PACMAN_ACTION;
 }
 
 export type ResetHeatAction = {
   type: typeof RESET_HEAT_ACTION;
+}
+
+export type ResetRoundAction = {
+  type: typeof RESET_ROUND_ACTION;
+}
+
+export type ShowLevelAction = {
+  type: typeof SHOW_LEVEL_ACTION;
+}
+
+export type IncreaseLevelAction = {
+  type: typeof INCREASE_LEVEL_ACTION;
 }
 
 export function animatedStepAction(timestamp: number, period: number): AnimatedStepAction {
@@ -169,6 +189,12 @@ export function freezeActorsAction(): FreezeActorsAction {
   }
 }
 
+export function hideActorsAction(): HideActorsAction {
+  return {
+    type: HIDE_ACTORS_ACTION,
+  }
+}
+
 export function killPacmanAction(): KillPacmanAction {
   return {
     type: KILL_PACMAN_ACTION,
@@ -178,6 +204,24 @@ export function killPacmanAction(): KillPacmanAction {
 export function resetHeatAction(): ResetHeatAction {
   return {
     type: RESET_HEAT_ACTION,
+  }
+}
+
+export function resetRoundAction(): ResetRoundAction {
+  return {
+    type: RESET_ROUND_ACTION,
+  }
+}
+
+export function showLevelAction(): ShowLevelAction {
+  return {
+    type: SHOW_LEVEL_ACTION,
+  }
+}
+
+export function increaseLevelAction(): IncreaseLevelAction {
+  return {
+    type: INCREASE_LEVEL_ACTION,
   }
 }
 
@@ -193,9 +237,13 @@ export type Action = StartRoundAction |
                      PelletEatenAction |
                      GhostBittenAction |
                      FreezeActorsAction |
+                     HideActorsAction |
                      KillPacmanAction |
                      HeatEndAction |
-                     ResetHeatAction;
+                     ResetHeatAction |
+                     ResetRoundAction |
+                     ShowLevelAction | 
+                     IncreaseLevelAction;
 
 export interface IHasInducedActions {
   asyncDispatch(actions: Action[]): void;

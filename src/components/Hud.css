@@ -1,23 +1,24 @@
 .hud {
-    text-align: left
+    text-align: left;
+    color: yellow;
+    font-family: fantasy;
+    font-size: 40px;
+    width: 100%;
 }
 
-.score-label {
-    padding-right: 8px;
-    position: relative
+.label {
+    padding-right: 1em;
 }
 
-.score-value {
-    padding-right: 18px;
-    position: relative
+.lives, .score {
+    display: inline-block;
 }
 
-.lives-label {
-    padding-right: 8px;
-    padding-right: 8px
+.score {
+    padding-left: 1em;
 }
 
-.lives-value {
-    padding-right: 8px;
-    position: relative
+.lives {
+    float: right;
+    padding-right: 1em;
 }

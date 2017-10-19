@@ -11,6 +11,7 @@ type ConnectedState = {
   position: Point;
   mouthAngle: number;
   direction: Direction;
+  visible: boolean;
 }
 
 type ConnectedDispatch = {
@@ -26,7 +27,8 @@ const mapStateToProps = (state: Store.App, ownProps: OwnProps): ConnectedState =
   cellSize: state.game.maze.cellSize,
   position: state.heat.pacman.position,
   direction: state.heat.pacman.direction,
-  mouthAngle: state.heat.pacman.mouthAngle
+  mouthAngle: state.heat.pacman.mouthAngle,
+  visible: !state.heat.pacman.hidden
 
 });
 
@@ -56,7 +58,8 @@ class PacmanView extends React.Component<ConnectedState, OwnState> {
 
     const rotation = calcRotation(props.direction) + props.mouthAngle / 2;
     return <Arc
-             x={absPos.x}
+            visible={props.visible} 
+            x={absPos.x}
              y={absPos.y}
              angle={-props.mouthAngle}
              rotation={rotation}

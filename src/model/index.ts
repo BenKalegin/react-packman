@@ -8,6 +8,7 @@ export namespace Store {
     chomping: boolean,
     moving: boolean,
     dying: boolean,
+    hidden: boolean,
     mouthAngle: number,
     direction: Direction,
     nextDirection: Direction,
@@ -17,6 +18,7 @@ export namespace Store {
 
   export type Ghost = {
     moving: boolean,
+    hidden: boolean,
     direction: Direction,
     speed: number,
     position: Point;
@@ -70,6 +72,7 @@ export namespace Store {
     maze: Maze;
     score: number;
     lives: number;
+    level: number;
     modalText?: string;
     paused: boolean;
   }
@@ -97,7 +100,7 @@ export namespace Store {
 
   export function defaultApp(): Store.App {
     const schema = parseMazeSchema(mazeSchema1);
-    const cellSize = new Point(30, 30);
+    const cellSize = new Point(28, 28);
 
     const maze: Maze = {
       cellSize: cellSize,
@@ -111,6 +114,7 @@ export namespace Store {
       paused: false,
       score: 0,
       lives: 3,
+      level: 1,
       modalText: undefined
     }
 
@@ -129,6 +133,7 @@ export namespace Store {
       chomping: false,
       moving: false,
       dying: false,
+      hidden: false,
       mouthAngle: 90,
       direction: Direction.Left,
       nextDirection: Direction.None,
@@ -139,6 +144,7 @@ export namespace Store {
     const ghosts = [0, 1, 2, 3].map(i => {
       return {
         moving: false,
+        hidden: false,
         direction: Direction.None,
         speed: 8, // cells per second
         position: schema.ghostInitPos[i]
