@@ -16,7 +16,7 @@ export namespace Store {
     position: Point
   };
 
-  export type Ghost = {
+  export interface Ghost {
     moving: boolean,
     hidden: boolean,
     direction: Direction,
@@ -88,9 +88,9 @@ export namespace Store {
     pellets: Loot[];
   }
 
-  export type Heat = {
-    pacman: Pacman,
-    ghosts: Ghost[],
+  export interface Heat {
+    pacman: Pacman;
+    ghosts: Ghost[];
   }
 
   export type App = {

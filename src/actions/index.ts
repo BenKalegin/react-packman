@@ -28,6 +28,9 @@ export type StartRoundAction =
 export type AnimatedStepAction  = {
   type: typeof ANIMATION_STEP_ACTION;
   timestamp: number;
+  /**
+   * Milliseconds elapsed since previous animation tick
+   */
   period: number;
 }
 
