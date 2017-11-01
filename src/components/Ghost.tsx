@@ -36,11 +36,11 @@ class GhostView extends React.Component<ConnectedState & OwnProps, {}> {
       case 0:
         return "red"; // blinky
       case 1:
-        return "orange"; // clyde
+        return "cyan"; // inky
       case 2:
         return "pink"; // pinky
       case 3:
-        return "cyan"; // inky
+      return "orange"; // clyde
     }
     return "";
   } 
