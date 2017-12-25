@@ -1,5 +1,5 @@
-import { put, fork, take, call } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
+import { put, fork, take, call, cancel } from 'redux-saga/effects';
+import { delay, Task } from 'redux-saga';
 import {
   modalTextAction, releasePacmanAction, releaseGhostAction, HEAT_END_ACTION, freezeActorsAction, killPacmanAction, resetHeatAction,
   resetRoundAction, hideActorsAction, showLevelAction, increaseLevelAction, bounceGhostAction, bringGhostOutAction, GHOST_LEFT_BOX_ACTION, Action } from "../actions";
@@ -49,14 +49,18 @@ export function* startHeatSaga() {
   yield delay(2000);
   yield put(modalTextAction(undefined));
 
-  yield fork(releaseGhostSaga, 0, 0);
-  yield fork(bounceGhostSaga, 2, 0)
-  yield fork(bounceGhostSaga, 1, 2000);
-  yield fork(bounceGhostSaga, 3, 3000);
+  const ghost1: Task = yield fork(releaseGhostSaga, 0, 0);
+  const ghost2: Task = yield fork(bounceGhostSaga, 2, 0)
+  const ghost3: Task = yield fork(bounceGhostSaga, 1, 2000);
+  const ghost4: Task = yield fork(bounceGhostSaga, 3, 3000);
 
   yield put(releasePacmanAction());
 
   const { lost } = yield take(HEAT_END_ACTION);
+  yield cancel(ghost1);
+  yield cancel(ghost2);
+  yield cancel(ghost3);
+  yield cancel(ghost4);
 
   yield put(freezeActorsAction());
 

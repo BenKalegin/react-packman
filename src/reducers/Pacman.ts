@@ -25,6 +25,9 @@ export function pacmanReducer(state: Store.Pacman, action: Action, dots: Store.L
     return state;
 
   case CHANGE_DIRECTION_ACTION:
+    if (!state.running)
+      return state;
+
     // ignore if key matches current direction
     if (action.direction === state.direction && state.running === true)
       return {
