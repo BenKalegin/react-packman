@@ -6,7 +6,7 @@ export namespace Store {
 
   export type Pacman = {
     chomping: boolean,
-    moving: boolean,
+    running: boolean,
     dying: boolean,
     hidden: boolean,
     mouthAngle: number,
@@ -16,9 +16,16 @@ export namespace Store {
     position: Point
   };
 
+  export enum GhostState {
+    running,
+    bouncing,
+    hidden,
+    frozen,
+    leavingBox
+  }
+
   export interface Ghost {
-    moving: boolean,
-    hidden: boolean,
+    state: GhostState;
     direction: Direction,
     speed: number,
     position: Point;
@@ -67,6 +74,7 @@ export namespace Store {
     walls: Wall[];
     gridSize: Point;
     textPos: Point;
+    gate: Point;
   };
 
   export type Game = {
@@ -108,7 +116,8 @@ export namespace Store {
       passes: schema.passes,
       walls: schema.walls,
       gridSize: schema.gridSize,
-      textPos: schema.textCenter
+      textPos: schema.textCenter,
+      gate: schema.gate
     };
 
     const game: Game = {
@@ -133,7 +142,7 @@ export namespace Store {
 
     const pacman: Pacman = {
       chomping: false,
-      moving: false,
+      running: false,
       dying: false,
       hidden: false,
       mouthAngle: 90,
@@ -145,7 +154,8 @@ export namespace Store {
 
     const ghosts = [0, 1, 2, 3].map(i => {
       return {
-        moving: false,
+        state: GhostState.frozen,
+        running: false,
         hidden: false,
         direction: Direction.None,
         speed: 8, // cells per second

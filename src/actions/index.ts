@@ -3,6 +3,7 @@ import { Direction, Point } from '../geometry';
 export const START_ROUND_ACTION = "START_ROUND";
 export const RELEASE_PACMAN_ACTION = "ReleasePacman";
 export const RELEASE_GHOST_ACTION = "ReleaseGhost";
+export const BRING_GHOST_OUT_ACTION = "BringHostOut";
 export const ANIMATION_STEP_ACTION = "ANIMATION_STEP";
 export const CHANGE_DIRECTION_ACTION = "CHANGE_DIR";
 export const PAUSE_COMMAND_ACTION = "PAUSE";
@@ -11,6 +12,7 @@ export const MODAL_TEXT_ACTION = "ModalText";
 export const DOT_EATEN_ACTION = "DotEaten";
 export const PELLET_EATEN_ACTION = "PelletEaten";
 export const GHOST_BITTEN_ACTION = "GhostBitten";
+export const GHOST_LEFT_BOX_ACTION = "GhostLeftBox";
 export const HEAT_END_ACTION = "HeatEnd";
 export const FREEZE_ACTORS_ACTION = "FreezeActors";
 export const HIDE_ACTORS_ACTION = "HideActors";
@@ -19,7 +21,8 @@ export const RESET_HEAT_ACTION = "ResetHeat";
 export const RESET_ROUND_ACTION = "ResetRound";
 export const SHOW_LEVEL_ACTION = "ShowLevel";
 export const INCREASE_LEVEL_ACTION = "IncreaseLevel";
-
+export const BOUNCE_GHOST_ACTION = "BounceGhost";
+  
 export type StartRoundAction = 
 {
     type: typeof START_ROUND_ACTION;
@@ -61,6 +64,16 @@ export type ReleaseGhostAction = {
   index: number;
 }
 
+export type BringGhostOutAction = {
+  type: typeof BRING_GHOST_OUT_ACTION;
+  index: number;
+}
+
+export type BounceGhostAction = {
+  type: typeof BOUNCE_GHOST_ACTION;
+  index: number;
+}
+
 export type DotEatenAction = {
   type: typeof DOT_EATEN_ACTION;
   index: number;
@@ -74,6 +87,11 @@ export type PelletEatenAction = {
 export type GhostBittenAction = {
   type: typeof GHOST_BITTEN_ACTION;
   pacmanPosition: Point;
+  ghostIndex: number;
+}
+
+export type GhostLeftBoxAction = {
+  type: typeof GHOST_LEFT_BOX_ACTION;
   ghostIndex: number;
 }
 
@@ -150,6 +168,20 @@ export function releaseGhostAction(index: number): ReleaseGhostAction {
   };
 }
 
+export function bringGhostOutAction(index: number): BringGhostOutAction {
+  return {
+    type: BRING_GHOST_OUT_ACTION,
+    index: index
+  };
+}
+
+export function bounceGhostAction(index: number): BounceGhostAction {
+  return {
+    type: BOUNCE_GHOST_ACTION,
+    index: index
+  };
+}
+
 export function modalTextAction(text?: string): ModalTextAction {
   return {
     type: MODAL_TEXT_ACTION,
@@ -175,6 +207,13 @@ export function ghostBittenAction(pacmanPos: Point, ghostIndex: number): GhostBi
   return {
     type: GHOST_BITTEN_ACTION,
     pacmanPosition: pacmanPos,
+    ghostIndex: ghostIndex
+  }
+}
+
+export function ghostLeftBoxAction(ghostIndex: number): GhostLeftBoxAction {
+  return {
+    type: GHOST_LEFT_BOX_ACTION,
     ghostIndex: ghostIndex
   }
 }
@@ -235,10 +274,13 @@ export type Action = StartRoundAction |
                      StartApplicationAction |
                      ReleasePacmanAction |
                      ReleaseGhostAction |
+                     BounceGhostAction |
+                     BringGhostOutAction |
                      ModalTextAction |
                      DotEatenAction | 
                      PelletEatenAction |
                      GhostBittenAction |
+                     GhostLeftBoxAction |
                      FreezeActorsAction |
                      HideActorsAction |
                      KillPacmanAction |

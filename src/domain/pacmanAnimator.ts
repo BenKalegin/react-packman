@@ -10,7 +10,7 @@ export class PacmanAnimator {
     if (state.chomping)
       state = PacmanAnimator.chomp(state, timestamp);
 
-    if (state.moving)
+    if (state.running)
       state = PacmanAnimator.move(state, period, mazePath);
 
     if (state.dying)
@@ -69,7 +69,7 @@ export class PacmanAnimator {
       newPos = newPos.round(1);
       state = iassign(state,
         (s: Store.Pacman) => {
-          state.moving = false;
+          state.running = false;
           return s;
         });
     }

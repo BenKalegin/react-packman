@@ -11,7 +11,10 @@ class Cell {
 
 export interface IMazeNavigator {
   hasNeighbour(point: Point, direction: Direction, pacman: boolean) : boolean;    
-  canEnter(point: Point): boolean;    
+  canEnter(point: Point): boolean;
+  canGhostBounceUp(point: Point): boolean;
+  isGhostOutOfTheBox(point: Point): boolean;
+  directionTowardsGate(point: Point): Direction;
 };
 
 export const createMazeNavigator = (model: Store.Maze): IMazeNavigator => new MazeNavigator(model);
@@ -19,13 +22,19 @@ export const createMazeNavigator = (model: Store.Maze): IMazeNavigator => new Ma
 export class MazeNavigator implements IMazeNavigator {
   private static hashFactor = 1000;
   private cells = new Map<number, Cell>();
+  private gate: Point;
 
-  private sparseHash(point: Point) : number {
-    return Math.floor(Math.round(point.y * 1000) / 1000) * MazeNavigator.hashFactor + Math.floor(Math.round(point.x * 1000) / 1000);
+  private coordinateToCell(xOrY: number) : number {
+    return Math.floor(Math.round(xOrY * 1000) / 1000)
+  }
+
+  private sparseHash(point: Point): number {
+    return this.coordinateToCell(point.y) * MazeNavigator.hashFactor + this.coordinateToCell(point.x);
   }
 
   constructor(model: Store.Maze) {
     model.passes.forEach(p => this.cells.set(this.sparseHash(p.gridPos), new Cell(p.ghostOnly)));
+    this.gate = model.gate;
 
     this.cells.forEach((cell, hash, map) => {
         const setNeighbour = (direction: Direction, hashDelta: number) => {
@@ -56,5 +65,23 @@ export class MazeNavigator implements IMazeNavigator {
     const hash = this.sparseHash(point);
     const cell = this.cells.get(hash);
     return cell != null && !cell.ghostsOnly;
+  }
+
+  canGhostBounceUp(point: Point): boolean {
+    return this.coordinateToCell(point.y) > this.gate.y + 1;
+  }
+
+  isGhostOutOfTheBox(point: Point): boolean {
+    return this.coordinateToCell(point.y) <= this.gate.y;
+  };
+
+  directionTowardsGate(point: Point): Direction {
+    const cellX = this.coordinateToCell(point.x);
+    if (cellX <= this.gate.x)
+      return Direction.Right;
+    else if (cellX > this.gate.x + 1)
+      return Direction.Left;
+    else
+      return Direction.Up;
   }
 }

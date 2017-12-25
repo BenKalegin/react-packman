@@ -26,7 +26,7 @@ export function pacmanReducer(state: Store.Pacman, action: Action, dots: Store.L
 
   case CHANGE_DIRECTION_ACTION:
     // ignore if key matches current direction
-    if (action.direction === state.direction && state.moving === true)
+    if (action.direction === state.direction && state.running === true)
       return {
         ...state,
         nextDirection: Direction.None
@@ -34,14 +34,14 @@ export function pacmanReducer(state: Store.Pacman, action: Action, dots: Store.L
 
     // perform immediate turn if avaialble
     const exactPos = state.position.round(1);
-    if ((exactPos.equals(state.position) || !state.moving) && mazePath.hasNeighbour(exactPos, action.direction, true)) {
+    if ((exactPos.equals(state.position) || !state.running) && mazePath.hasNeighbour(exactPos, action.direction, true)) {
       const direction = action.direction;
       return {
         ...state,
         direction: direction,
         position: exactPos,
         nextDirection: Direction.None,
-        moving: direction != Direction.None
+        running: direction != Direction.None
       };
     }
 
@@ -50,10 +50,10 @@ export function pacmanReducer(state: Store.Pacman, action: Action, dots: Store.L
 
 
   case RELEASE_PACMAN_ACTION:
-    return { ...state, moving: true, chomping: true }
+    return { ...state, running: true, chomping: true }
 
   case FREEZE_ACTORS_ACTION:
-    return { ...state, moving: false, chomping: false }
+    return { ...state, running: false, chomping: false }
 
   case HIDE_ACTORS_ACTION:
     return { ...state, hidden: true }

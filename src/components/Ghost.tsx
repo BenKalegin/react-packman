@@ -21,7 +21,7 @@ const mapStateToProps = (state: Store.App, ownProps: OwnProps): ConnectedState =
   cellSize: state.game.maze.cellSize,
   position: state.heat.ghosts[ownProps.index].position,
   direction: state.heat.ghosts[ownProps.index].direction,
-  visible: !state.heat.ghosts[ownProps.index].hidden
+  visible: state.heat.ghosts[ownProps.index].state != Store.GhostState.hidden
 });
 
 interface ConnectedDispatch {

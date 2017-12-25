@@ -2,7 +2,7 @@ import { put, fork, take, call } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import {
   modalTextAction, releasePacmanAction, releaseGhostAction, HEAT_END_ACTION, freezeActorsAction, killPacmanAction, resetHeatAction,
-  resetRoundAction, hideActorsAction, showLevelAction, increaseLevelAction } from "../actions";
+  resetRoundAction, hideActorsAction, showLevelAction, increaseLevelAction, bounceGhostAction, bringGhostOutAction, GHOST_LEFT_BOX_ACTION, Action } from "../actions";
 
 export function* startApplicationSaga() {
   yield call(startGameSaga);
@@ -30,8 +30,17 @@ export function* startRoundSaga() {
   return { lost: heatOutcome.lost }
 }
 
+
 export function* releaseGhostSaga(index: number, msdelay: number) {
   yield delay(msdelay);
+  yield put(releaseGhostAction(index));
+}
+
+export function* bounceGhostSaga(index: number, msDelay: number) {
+  yield put(bounceGhostAction(index));
+  yield delay(msDelay);
+  yield put(bringGhostOutAction(index));
+  yield take((action: Action) => action.type == GHOST_LEFT_BOX_ACTION && action.ghostIndex == index);
   yield put(releaseGhostAction(index));
 }
 
@@ -41,9 +50,9 @@ export function* startHeatSaga() {
   yield put(modalTextAction(undefined));
 
   yield fork(releaseGhostSaga, 0, 0);
-  yield fork(releaseGhostSaga, 1, 0);
-  yield fork(releaseGhostSaga, 2, 2000);
-  yield fork(releaseGhostSaga, 3, 3000);
+  yield fork(bounceGhostSaga, 2, 0)
+  yield fork(bounceGhostSaga, 1, 2000);
+  yield fork(bounceGhostSaga, 3, 3000);
 
   yield put(releasePacmanAction());
 

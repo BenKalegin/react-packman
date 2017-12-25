@@ -43,6 +43,7 @@ export function parseMazeSchema(rows: string[]) {
   const dots = new Array<Point>();
   const passes = new Array<Store.Pass>();
   const pacman = new Array<Point>();
+  let gate: Point = new Point(0,0);
   let walls: Store.Wall[] = [];
   let ghostInitPos : Point[] = [];
   let textPos: Point[] = [];
@@ -78,9 +79,12 @@ export function parseMazeSchema(rows: string[]) {
           break;
 
         case Gate:
+          if (gate.x == 0)
+            gate = point;
+
           passes.push({
             gridPos: point,
-            ghostOnly: true
+            ghostOnly: true,
           });
           break;
 
@@ -188,6 +192,7 @@ export function parseMazeSchema(rows: string[]) {
       pacmanInitPos,
       ghostInitPos,
       gridSize,
-      textCenter
+      textCenter,
+      gate
   }
 }
