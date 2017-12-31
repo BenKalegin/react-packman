@@ -21,7 +21,8 @@ export namespace Store {
     bouncing,
     hidden,
     frozen,
-    leavingBox
+    leavingBox,
+    scared
   }
 
   export interface Ghost {

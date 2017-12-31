@@ -22,6 +22,7 @@ export const RESET_ROUND_ACTION = "ResetRound";
 export const SHOW_LEVEL_ACTION = "ShowLevel";
 export const INCREASE_LEVEL_ACTION = "IncreaseLevel";
 export const BOUNCE_GHOST_ACTION = "BounceGhost";
+export const START_BLUE_MODE_ACTION = "StartBlueMode";
   
 export type StartRoundAction = 
 {
@@ -126,6 +127,10 @@ export type ShowLevelAction = {
 
 export type IncreaseLevelAction = {
   type: typeof INCREASE_LEVEL_ACTION;
+}
+
+export type StartBlueModeAction = {
+  type: typeof START_BLUE_MODE_ACTION;  
 }
 
 export function animatedStepAction(timestamp: number, period: number): AnimatedStepAction {
@@ -267,6 +272,13 @@ export function increaseLevelAction(): IncreaseLevelAction {
   }
 }
 
+export function startBlueModeAction(): StartBlueModeAction {
+  return {
+    type: START_BLUE_MODE_ACTION,
+  }
+}
+
+
 export type Action = StartRoundAction |
                      AnimatedStepAction |
                      ChangeDirectionAction |
@@ -288,7 +300,8 @@ export type Action = StartRoundAction |
                      ResetHeatAction |
                      ResetRoundAction |
                      ShowLevelAction | 
-                     IncreaseLevelAction;
+                     IncreaseLevelAction |
+                     StartBlueModeAction;
 
 export interface IHasInducedActions {
   asyncDispatch(actions: Action[]): void;

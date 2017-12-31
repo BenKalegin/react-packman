@@ -1,4 +1,4 @@
-import { Action, ANIMATION_STEP_ACTION, RELEASE_GHOST_ACTION, FREEZE_ACTORS_ACTION, ghostBittenAction, HIDE_ACTORS_ACTION, BOUNCE_GHOST_ACTION, ghostLeftBoxAction, BRING_GHOST_OUT_ACTION } from "../actions";
+import { Action, ANIMATION_STEP_ACTION, RELEASE_GHOST_ACTION, FREEZE_ACTORS_ACTION, ghostBittenAction, HIDE_ACTORS_ACTION, BOUNCE_GHOST_ACTION, ghostLeftBoxAction, BRING_GHOST_OUT_ACTION, START_BLUE_MODE_ACTION } from "../actions";
 import { Store } from "../model";
 import { IMazeNavigator } from "../model/MazeNavigator";
 import { Point, allDirections, revertDirection, Direction } from '../geometry';
@@ -45,17 +45,15 @@ class GhostMutator extends Mutator<Store.Ghost, MutableGhost> {
     this.mutable.state = Store.GhostState.hidden;
   }
 
-  /**
-   * turn to the only direction allowed by the maze
-   */
+  public startBlueMode(): void {
+    this.mutable.state = Store.GhostState.scared;
+  }
+
   public coerceDirection(direction: Direction): void {
     this.mutable.direction = direction;
   }
 
-  /**
-    * Decide what direction to go based on current moving mode
-    */
-  public decideDirection(allowedDirections: Direction[], pacmanPosition: Point, ghostIndex: number, pacmanDirection: Direction, blinkyPosition: Point): void {
+  public decideChasingDirection(allowedDirections: Direction[], pacmanPosition: Point, ghostIndex: number, pacmanDirection: Direction, blinkyPosition: Point): void {
     let decision: number = 0;
     switch (ghostIndex) {
       case 0:
@@ -69,6 +67,18 @@ class GhostMutator extends Mutator<Store.Ghost, MutableGhost> {
         break;
       default:
         decision = getRandomInt(allowedDirections.length);
+    }
+    this.mutable.direction = allowedDirections[decision];
+  }
+
+  public decideRunawayDirection(allowedDirections: Direction[], pacmanPosition: Point): void {
+    let decision: number = 0;
+    if (allowedDirections.length == 1)
+      decision = 0;
+    else {
+      allowedDirections = allowedDirections.filter(d => d != revertDirection(this.state.direction));
+      const distances = allowedDirections.map(d => this.mutable.position.offset(Point.vector(d)).euclidDistanceTo(pacmanPosition));
+      decision = distances.reduce((closestIndex, distance, i) => distance > distances[closestIndex] ? i : closestIndex, 0);
     }
     this.mutable.direction = allowedDirections[decision];
   }
@@ -108,37 +118,40 @@ export function ghostReducer(states: Store.Ghost[], action: Action, pacman: Stor
         if (ghost.state.state != Store.GhostState.frozen && ghost.state.state != Store.GhostState.hidden) {
           if (ghost.state.position.equals(ghost.state.position.round(1))) {
             switch (ghost.state.state) {
-            case Store.GhostState.running:
-              const possibleDirections =
-                allDirections.filter(d => mazeNavigator.hasNeighbour(ghost.state.position, d, true));
-              if (possibleDirections.length === 1) {
-                if (ghost.state.direction != possibleDirections[0])
-                  ghost.coerceDirection(possibleDirections[0]);
-              } else
-                ghost.decideDirection(possibleDirections.filter(d => d != revertDirection(ghost.state.direction)),
-                  pacman.position,
-                  index,
-                  pacman.direction,
-                  ghosts[0].state.position);
-              break;
+              case Store.GhostState.running:
+                const possibleDirections = allDirections.filter(d => mazeNavigator.hasNeighbour(ghost.state.position, d, true));
+                if (possibleDirections.length === 1) {
+                  if (ghost.state.direction != possibleDirections[0])
+                    ghost.coerceDirection(possibleDirections[0]);
+                } else
+                  ghost.decideChasingDirection(possibleDirections.filter(d => d != revertDirection(ghost.state.direction)),
+                    pacman.position,
+                    index,
+                    pacman.direction,
+                    ghosts[0].state.position);
+                break;
 
-            case Store.GhostState.bouncing:
-              if (!mazeNavigator.hasNeighbour(ghost.state.position, ghost.state.direction, false) ||
-                (ghost.state.direction == Direction.Up && !mazeNavigator.canGhostBounceUp(ghost.state.position)))
-                ghost.coerceDirection(revertDirection(ghost.state.direction));
-              break;
+              case Store.GhostState.bouncing:
+                if (!mazeNavigator.hasNeighbour(ghost.state.position, ghost.state.direction, false) ||
+                  (ghost.state.direction == Direction.Up && !mazeNavigator.canGhostBounceUp(ghost.state.position)))
+                  ghost.coerceDirection(revertDirection(ghost.state.direction));
+                break;
 
-            case Store.GhostState.leavingBox:
-              if (mazeNavigator.isGhostOutOfTheBox(ghost.state.position))
-                events.push(ghostLeftBoxAction(index));
-              else {
-                const exitDirection = mazeNavigator.directionTowardsGate(ghost.state.position);
-                if (exitDirection != ghost.state.direction)
-                  ghost.coerceDirection(exitDirection);
-              }
-              break;
+              case Store.GhostState.leavingBox:
+                if (mazeNavigator.isGhostOutOfTheBox(ghost.state.position))
+                  events.push(ghostLeftBoxAction(index));
+                else {
+                  const exitDirection = mazeNavigator.directionTowardsGate(ghost.state.position);
+                  if (exitDirection != ghost.state.direction)
+                    ghost.coerceDirection(exitDirection);
+                }
+                break;
+              case Store.GhostState.scared:
+                ghost.decideRunawayDirection(allDirections.filter(d => mazeNavigator.hasNeighbour(ghost.state.position, d, true)), pacman.position);
+                break;
             }
-          }
+          } else if (ghost.state.state == Store.GhostState.scared && ghost.state.direction )
+
           ghost.advance(action.period);
           if (!biteEventPosted && collisionDetector.checkBite(pacman.position, ghost.state.position)) {
             events.push(ghostBittenAction(pacman.position, index));
@@ -167,6 +180,10 @@ export function ghostReducer(states: Store.Ghost[], action: Action, pacman: Stor
 
     case HIDE_ACTORS_ACTION:
       ghosts.forEach(ghost => ghost.hide());
+      break;
+
+    case START_BLUE_MODE_ACTION:
+      ghosts.forEach(ghost => ghost.startBlueMode());
       break;
   }
   return ghosts.map(m => m.state);

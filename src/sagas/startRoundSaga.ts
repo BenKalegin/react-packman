@@ -2,7 +2,7 @@ import { put, fork, take, call, cancel } from 'redux-saga/effects';
 import { delay, Task } from 'redux-saga';
 import {
   modalTextAction, releasePacmanAction, releaseGhostAction, HEAT_END_ACTION, freezeActorsAction, killPacmanAction, resetHeatAction,
-  resetRoundAction, hideActorsAction, showLevelAction, increaseLevelAction, bounceGhostAction, bringGhostOutAction, GHOST_LEFT_BOX_ACTION, Action } from "../actions";
+  resetRoundAction, hideActorsAction, showLevelAction, increaseLevelAction, bounceGhostAction, bringGhostOutAction, GHOST_LEFT_BOX_ACTION, Action, PELLET_EATEN_ACTION, startBlueModeAction } from "../actions";
 
 export function* startApplicationSaga() {
   yield call(startGameSaga);
@@ -56,7 +56,24 @@ export function* startHeatSaga() {
 
   yield put(releasePacmanAction());
 
-  const { lost } = yield take(HEAT_END_ACTION);
+  let heatComplete = false;
+  let lost: boolean = false;
+  //let blueModeTimer: Task;
+
+  while (!heatComplete) {
+    const result = yield take([HEAT_END_ACTION, PELLET_EATEN_ACTION]);
+    switch (result.type) {
+    case HEAT_END_ACTION:
+      lost = result.payload;
+      heatComplete = true;
+      break;
+    case PELLET_EATEN_ACTION:
+      yield put(startBlueModeAction());
+      //blueModeTimer = yield fork(delay);  
+      break;
+    }
+  }
+
   yield cancel(ghost1);
   yield cancel(ghost2);
   yield cancel(ghost3);

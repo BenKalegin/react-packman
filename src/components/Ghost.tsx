@@ -10,6 +10,7 @@ type ConnectedState = {
   cellSize: Point;
   position: Point;
   direction: Direction;
+  scared: boolean;
   visible: boolean;
 }
 
@@ -21,7 +22,8 @@ const mapStateToProps = (state: Store.App, ownProps: OwnProps): ConnectedState =
   cellSize: state.game.maze.cellSize,
   position: state.heat.ghosts[ownProps.index].position,
   direction: state.heat.ghosts[ownProps.index].direction,
-  visible: state.heat.ghosts[ownProps.index].state != Store.GhostState.hidden
+  visible: state.heat.ghosts[ownProps.index].state != Store.GhostState.hidden,
+  scared: state.heat.ghosts[ownProps.index].state == Store.GhostState.scared
 });
 
 interface ConnectedDispatch {
@@ -31,18 +33,20 @@ const mapDispatchToProps = (dispatch: redux.Dispatch<Store.App>): ConnectedDispa
 
 class GhostView extends React.Component<ConnectedState & OwnProps, {}> {
 
-  color() : string {
-    switch(this.props.index) {
-      case 0:
-        return "red"; // blinky
-      case 1:
-        return "cyan"; // inky
-      case 2:
-        return "pink"; // pinky
-      case 3:
-      return "orange"; // clyde
-    }
-    return "";
+    color(): string {
+      if (this.props.scared)
+        return "blue";
+      switch(this.props.index) {
+        case 0:
+          return "red"; // blinky
+        case 1:
+          return "cyan"; // inky
+        case 2:
+          return "pink"; // pinky
+        case 3:
+        return "orange"; // clyde
+      }
+      return "";
   } 
 
   render() {
