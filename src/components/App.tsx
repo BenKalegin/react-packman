@@ -7,7 +7,7 @@ import { Hud } from './Hud';
 import { Store } from '../model';
 import { animatedStepAction, changeDirectionAction, pauseCommandAction, startApplicationAction } from '../actions';
 import { Direction } from '../geometry/';
-import * as Perf from 'react-addons-perf';
+//import * as Perf from 'react-addons-perf';
 
 
 type OwnProps = Store.App;
@@ -46,7 +46,7 @@ class AppView extends React.Component<OwnProps & ConnectedDispatch & ConnectedSt
   constructor() {
     super();
     var w: any = window;
-    w.Perf = Perf;
+    //w.Perf = Perf;
   }
 
   addKeyboardListeners(): void {

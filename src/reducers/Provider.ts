@@ -8,9 +8,9 @@ export default function createProvider<P>() {
   };
 
   return class Provider extends React.Component<ProviderProps<P>, any> {
-    static childContextTypes = {
-      store: React.PropTypes.object.isRequired
-    };
+//    static childContextTypes = {
+//      store: React.PropTypes.object.isRequired
+//    };
 
     getChildContext() {
       return { store: this.props.store };

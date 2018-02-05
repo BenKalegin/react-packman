@@ -60,6 +60,7 @@ export function* startHeatSaga() {
   let lost: boolean = false;
   //let blueModeTimer: Task;
 
+
   while (!heatComplete) {
     const result = yield take([HEAT_END_ACTION, PELLET_EATEN_ACTION]);
     switch (result.type) {

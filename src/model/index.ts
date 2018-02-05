@@ -17,12 +17,12 @@ export namespace Store {
   };
 
   export enum GhostState {
-    running,
-    bouncing,
-    hidden,
-    frozen,
-    leavingBox,
-    scared
+    running = 'running',
+    bouncing = 'bouncing',
+    hidden = 'hidden',
+    frozen = 'frozen',
+    leavingBox = 'spawning',
+    scared = 'scared'
   }
 
   export interface Ghost {

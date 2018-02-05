@@ -150,7 +150,7 @@ export function ghostReducer(states: Store.Ghost[], action: Action, pacman: Stor
                 ghost.decideRunawayDirection(allDirections.filter(d => mazeNavigator.hasNeighbour(ghost.state.position, d, true)), pacman.position);
                 break;
             }
-          } else if (ghost.state.state == Store.GhostState.scared && ghost.state.direction )
+          }
 
           ghost.advance(action.period);
           if (!biteEventPosted && collisionDetector.checkBite(pacman.position, ghost.state.position)) {

@@ -1,9 +1,9 @@
 export enum Direction {
-    None,
-    Up,
-    Left,
-    Down,
-    Right
+    None = "none",
+    Up = "up",
+    Left = "left",
+    Down = "down",
+    Right = "right"
 }
 
 export function revertDirection(direction: Direction) : Direction

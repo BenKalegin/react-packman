@@ -8,7 +8,7 @@ import { Store } from '../model';
 import { Action, IHasInducedActions } from "../actions/index";
 import { getMazeNavigator } from "../model/cache";
 
-export const rootReducer = (state: Store.App = Store.defaultApp(), action: Action) : Store.App => {
+export const rootReducer = (state: Store.App, action: Action) : Store.App => {
   const mazeNavigator = getMazeNavigator(state);
   let events: Action[] = [];
 

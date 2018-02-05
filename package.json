@@ -6,31 +6,33 @@
     "@types/jest": "^20.0.2",
     "@types/node": "^8.0.7",
     "@types/react": "^15.0.34",
-    "@types/react-addons-perf": "^0.14.18",
     "@types/react-dom": "^15.5.1",
     "@types/react-redux": "^4.4.46",
     "@types/redux-saga": "^0.10.5",
     "immutable-assign": "^1.0.36",
     "konva": "^1.6.3",
-    "react": "^15.6.1",
-    "react-addons-perf": "^15.4.2",
-    "react-dom": "^15.6.1",
+    "react": "^16.1.0",
+    "react-dom": "^16.1.0",
     "react-konva": "github:lavrton/react-konva",
     "react-redux": "^5.0.5",
-    "react-scripts-ts": "2.3.2",
+    "react-scripts-ts": "2.8.0",
     "redux-saga": "^0.15.6",
     "redux-shortcuts": "0.0.3",
     "reselect": "^3.0.1"
   },
-  "devDependencies": {
-    "@types/redux": "^3.6.0",
-    "react-addons-perf": "^15.4.2",
-    "redux": "^3.7.2"
+  "commentedDependencies": {
+    "@types/react-addons-perf": "^0.14.18",
+    "react-addons-perf": "^15.4.2"
   },
-  "scripts": {
-    "start": "react-scripts-ts start",
-    "build": "react-scripts-ts build",
-    "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
+  "devDependencies": {
+      "@types/redux": "^3.6.0",
+      "react-addons-perf": "^15.4.2",
+      "redux": "^3.7.2"
+    },
+    "scripts": {
+      "start": "react-scripts-ts start",
+      "build": "react-scripts-ts build",
+      "test": "react-scripts-ts test --env=jsdom",
+      "eject": "react-scripts-ts eject"
+    }
   }
-}
