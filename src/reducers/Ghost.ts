@@ -45,7 +45,9 @@ class GhostMutator extends Mutator<Store.Ghost, MutableGhost> {
     this.mutable.state = Store.GhostState.hidden;
   }
 
-  public startBlueMode(): void {
+  public startBlueMode(pacmanPosition: Point): void {
+    if (this.state.state == Store.GhostState.running)
+      this.mutable.direction = revertDirection(this.mutable.direction); 
     this.mutable.state = Store.GhostState.scared;
   }
 
@@ -183,7 +185,7 @@ export function ghostReducer(states: Store.Ghost[], action: Action, pacman: Stor
       break;
 
     case START_BLUE_MODE_ACTION:
-      ghosts.forEach(ghost => ghost.startBlueMode());
+      ghosts.forEach(ghost => ghost.startBlueMode(pacman.position));
       break;
   }
   return ghosts.map(m => m.state);

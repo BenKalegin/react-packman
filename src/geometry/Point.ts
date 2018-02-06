@@ -36,6 +36,10 @@ export class Point {
     return new Rectangle(this.x, this.y, size.x, size.y);
   }
 
+  public toVector(): Point {
+    return new Point(Math.sign(this.x), Math.sign(this.y));
+  }
+
   public static boundingRect(points: Point[]) {
     const bigNumber = 100000;
     const edgePoints = points.reduce((bounds, p) => {
