@@ -23,6 +23,8 @@ export const SHOW_LEVEL_ACTION = 'ShowLevel';
 export const INCREASE_LEVEL_ACTION = 'IncreaseLevel';
 export const BOUNCE_GHOST_ACTION = 'BounceGhost';
 export const START_BLUE_MODE_ACTION = 'StartBlueMode';
+export const END_BLUE_MODE_ACTION = 'EndBlueMode';
+export const BLUE_MODE_TIMEOVER_ACTION = 'BlueModeTimeOver';
 
 export type StartRoundAction =
 {
@@ -131,6 +133,14 @@ export type IncreaseLevelAction = {
 
 export type StartBlueModeAction = {
   type: typeof START_BLUE_MODE_ACTION;
+};
+
+export type EndBlueModeAction = {
+  type: typeof END_BLUE_MODE_ACTION;
+};
+
+export type BlueModeTimeOverAction = {
+  type: typeof BLUE_MODE_TIMEOVER_ACTION;
 };
 
 export function animatedStepAction(timestamp: number, period: number): AnimatedStepAction {
@@ -278,6 +288,18 @@ export function startBlueModeAction(): StartBlueModeAction {
   }
 }
 
+export function endBlueModeAction(): EndBlueModeAction {
+  return {
+    type: END_BLUE_MODE_ACTION,
+  }
+}
+
+export function blueModeTimeOverAction(): BlueModeTimeOverAction {
+  return {
+    type: BLUE_MODE_TIMEOVER_ACTION,
+  }
+}
+
 
 export type Action = StartRoundAction |
                      AnimatedStepAction |
@@ -301,7 +323,9 @@ export type Action = StartRoundAction |
                      ResetRoundAction |
                      ShowLevelAction | 
                      IncreaseLevelAction |
-                     StartBlueModeAction;
+                     StartBlueModeAction |
+                     EndBlueModeAction |
+                     BlueModeTimeOverAction;
 
 export interface IHasInducedActions {
   asyncDispatch(actions: Action[]): void;

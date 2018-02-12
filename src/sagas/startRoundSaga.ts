@@ -2,7 +2,7 @@ import { put, fork, take, call, cancel } from 'redux-saga/effects';
 import { delay, Task } from 'redux-saga';
 import {
   modalTextAction, releasePacmanAction, releaseGhostAction, HEAT_END_ACTION, freezeActorsAction, killPacmanAction, resetHeatAction,
-  resetRoundAction, hideActorsAction, showLevelAction, increaseLevelAction, bounceGhostAction, bringGhostOutAction, GHOST_LEFT_BOX_ACTION, Action, PELLET_EATEN_ACTION, startBlueModeAction } from "../actions";
+  resetRoundAction, hideActorsAction, showLevelAction, increaseLevelAction, bounceGhostAction, bringGhostOutAction, GHOST_LEFT_BOX_ACTION, Action, PELLET_EATEN_ACTION, startBlueModeAction, endBlueModeAction, BLUE_MODE_TIMEOVER_ACTION } from "../actions";
 
 export function* startApplicationSaga() {
   yield call(startGameSaga);
@@ -44,6 +44,12 @@ export function* bounceGhostSaga(index: number, msDelay: number) {
   yield put(releaseGhostAction(index));
 }
 
+export function* blueModeSaga(msDuration: number) {
+  yield put(startBlueModeAction());
+  yield call(delay, msDuration);
+  yield put(endBlueModeAction());
+}
+
 export function* startHeatSaga() {
   yield put(modalTextAction("GET READY!"));
   yield delay(2000);
@@ -58,22 +64,27 @@ export function* startHeatSaga() {
 
   let heatComplete = false;
   let lost: boolean = false;
-  //let blueModeTimer: Task;
+  let blueMode: Task | undefined;
 
 
   while (!heatComplete) {
-    const result = yield take([HEAT_END_ACTION, PELLET_EATEN_ACTION]);
+    const result = yield take([HEAT_END_ACTION, PELLET_EATEN_ACTION, BLUE_MODE_TIMEOVER_ACTION]);
     switch (result.type) {
     case HEAT_END_ACTION:
       lost = result.payload;
       heatComplete = true;
       break;
     case PELLET_EATEN_ACTION:
-      yield put(startBlueModeAction());
-      //blueModeTimer = yield fork(delay);  
+      blueMode = yield fork(blueModeSaga, 5000);
+      break;
+
+    case BLUE_MODE_TIMEOVER_ACTION:
+      yield put(endBlueModeAction());
       break;
     }
   }
+  if (blueMode != undefined)
+    yield cancel(blueMode);
 
   yield cancel(ghost1);
   yield cancel(ghost2);

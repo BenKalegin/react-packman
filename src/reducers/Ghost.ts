@@ -1,4 +1,4 @@
-import { Action, ANIMATION_STEP_ACTION, RELEASE_GHOST_ACTION, FREEZE_ACTORS_ACTION, ghostBittenAction, HIDE_ACTORS_ACTION, BOUNCE_GHOST_ACTION, ghostLeftBoxAction, BRING_GHOST_OUT_ACTION, START_BLUE_MODE_ACTION } from "../actions";
+import { Action, ANIMATION_STEP_ACTION, RELEASE_GHOST_ACTION, FREEZE_ACTORS_ACTION, ghostBittenAction, HIDE_ACTORS_ACTION, BOUNCE_GHOST_ACTION, ghostLeftBoxAction, BRING_GHOST_OUT_ACTION, START_BLUE_MODE_ACTION, END_BLUE_MODE_ACTION } from "../actions";
 import { Store } from "../model";
 import { IMazeNavigator } from "../model/MazeNavigator";
 import { Point, allDirections, revertDirection, Direction } from '../geometry';
@@ -49,6 +49,11 @@ class GhostMutator extends Mutator<Store.Ghost, MutableGhost> {
     if (this.state.state == Store.GhostState.running)
       this.mutable.direction = revertDirection(this.mutable.direction); 
     this.mutable.state = Store.GhostState.scared;
+  }
+
+  public endBlueMode(): void {
+    if (this.state.state == Store.GhostState.scared)
+      this.mutable.state = Store.GhostState.running;
   }
 
   public coerceDirection(direction: Direction): void {
@@ -186,6 +191,10 @@ export function ghostReducer(states: Store.Ghost[], action: Action, pacman: Stor
 
     case START_BLUE_MODE_ACTION:
       ghosts.forEach(ghost => ghost.startBlueMode(pacman.position));
+      break;
+
+    case END_BLUE_MODE_ACTION:
+      ghosts.forEach(ghost => ghost.endBlueMode());
       break;
   }
   return ghosts.map(m => m.state);
