@@ -9,7 +9,7 @@ import { rootReducer } from './reducers';
 import { Store } from './model';
 import createSagaMiddleware from 'redux-saga';
 import { rootSaga } from './sagas';
-import { Action, Dispatch, MiddlewareAPI, Middleware } from "redux";
+import { Action, Dispatch, MiddlewareAPI, Middleware } from 'redux';
 import { Provider } from 'react-redux';
 
 const sagaMiddle = createSagaMiddleware();
@@ -57,6 +57,6 @@ const enhancers = redux.compose(asyncDispatchEnhancer, sagaEnhancer, devtools);
 const store = redux.createStore(rootReducer, Store.defaultApp(), enhancers as redux.GenericStoreEnhancer);
 sagaMiddle.run(rootSaga);
 
-ReactDOM.render(<Provider store={store}><App {...Store.defaultApp() } /></Provider>,
+ReactDOM.render(<Provider store={store}><App {...Store.defaultApp()} /></Provider>,
   document.getElementById('root') as HTMLElement);
 registerServiceWorker();

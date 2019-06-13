@@ -79,7 +79,7 @@ export function parseMazeSchema(rows: string[]) {
           break;
 
         case Gate:
-          if (gate.x == 0)
+          if (gate.x === 0)
             gate = point;
 
           passes.push({
@@ -166,7 +166,7 @@ export function parseMazeSchema(rows: string[]) {
             else if (wall === Store.WallType.SW && isPassable(x-1, y)) {
                 wall = Store.WallType.SW2;
             }
-            if (wall != undefined)
+            if (wall !== undefined)
               walls.push({
                 position: point,
                 type: wall

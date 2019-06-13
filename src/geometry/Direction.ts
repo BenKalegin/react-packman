@@ -1,13 +1,12 @@
 export enum Direction {
-    None = "none",
-    Up = "up",
-    Left = "left",
-    Down = "down",
-    Right = "right"
+    None = 'none',
+    Up = 'up',
+    Left = 'left',
+    Down = 'down',
+    Right = 'right'
 }
 
-export function revertDirection(direction: Direction) : Direction
-{
+export function revertDirection(direction: Direction): Direction {
   switch (direction) {
   case Direction.Down:
     return Direction.Up;
@@ -27,7 +26,7 @@ export function rotateDirection(direction: Direction, clockwise: boolean): Direc
   case Direction.Down:
     return clockwise ? Direction.Left : Direction.Right;
   case Direction.Up:
-      return clockwise ? Direction.Right: Direction.Left;
+      return clockwise ? Direction.Right : Direction.Left;
   case Direction.Left:
     return clockwise ? Direction.Up : Direction.Down;
   case Direction.Right:

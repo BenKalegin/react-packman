@@ -7,8 +7,7 @@ export class WallAggregator {
         var remaining = cells.sort((p1, p2) => { return (p1.x - p2.x) + (p1.y - p2.y)});
 
 
-        let extractAdjacent = (seed: Point) =>
-        {
+        let extractAdjacent = (seed: Point) => {
             let result: Point[] = [];
             let lastDistance = 10000; // large enough for any maze
             for(let i = 0; i < remaining.length; ) {
@@ -37,11 +36,11 @@ export class WallAggregator {
         let walls: Point[][] = [];
 
         let seed = remaining.shift();
-        while(seed != undefined) {
+        while(seed !== undefined) {
             let wall: Point[] = [];
             appendAdjacentRecursively(wall, [seed]);
             walls.push(wall);
-          seed = remaining.shift();
+            seed = remaining.shift();
         }
 
         return walls;

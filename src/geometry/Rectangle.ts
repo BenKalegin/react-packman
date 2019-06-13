@@ -15,7 +15,7 @@ export class Rectangle {
     public get dy(): number { return this.p2.y - this.p1.y};
 
     inflate(delta: number | Point): Rectangle {
-      if (typeof (delta) === "number")
+      if (typeof (delta) === 'number')
         return new Rectangle(this.x - delta, this.y - delta, this.dx + delta + delta, this.dy + delta + delta);
       return new Rectangle(this.x - delta.x, this.y - delta.y, this.dx + delta.x + delta.x, this.dy + delta.y + delta.y);
     }

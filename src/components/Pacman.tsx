@@ -5,23 +5,22 @@ import { Arc } from 'react-konva';
 import { connect } from 'react-redux';
 import { Store } from '../model';
 
-
 type ConnectedState = {
   cellSize: Point;
   position: Point;
   mouthAngle: number;
   direction: Direction;
   visible: boolean;
-}
+};
 
 type ConnectedDispatch = {
-}
+};
 
 type OwnProps = {
-}
+};
 
 type OwnState = {
-}
+};
 
 const mapStateToProps = (state: Store.App, ownProps: OwnProps): ConnectedState => ({
   cellSize: state.game.maze.cellSize,
@@ -34,7 +33,6 @@ const mapStateToProps = (state: Store.App, ownProps: OwnProps): ConnectedState =
 
 const mapDispatchToProps = (dispatch: redux.Dispatch<Store.App>): ConnectedDispatch => ({
 });
-
 
 class PacmanView extends React.Component<ConnectedState, OwnState> {
 
@@ -54,19 +52,21 @@ class PacmanView extends React.Component<ConnectedState, OwnState> {
       default:
         return 0;
       }
-    }
+    };
 
     const rotation = calcRotation(props.direction) + props.mouthAngle / 2;
-    return <Arc
-            visible={props.visible} 
-            x={absPos.x}
-             y={absPos.y}
-             angle={-props.mouthAngle}
-             rotation={rotation}
-             innerRadius={0}
-             outerRadius={props.cellSize.y-4 }
-             fill="yellow"
-           />;
+    return (
+      <Arc
+        visible={props.visible} 
+        x={absPos.x}
+        y={absPos.y}
+        angle={-props.mouthAngle}
+        rotation={rotation}
+        innerRadius={0}
+        outerRadius={props.cellSize.y - 4}
+        fill="yellow"
+      />
+    );
   }
 }
 

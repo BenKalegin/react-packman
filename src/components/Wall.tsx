@@ -2,12 +2,13 @@ import { Component } from 'react';
 import * as React from 'react';
 import { Rectangle, Point } from '../geometry';
 import { Path } from 'react-konva';
-import { Store } from "../model";
+import { Store } from '../model';
 
 export type WallProps = {
+  key: number;
   bounds: Rectangle;
   type: Store.WallType;
-}
+};
 
 export default class Wall extends Component<WallProps, {}> {
 
@@ -20,12 +21,11 @@ export default class Wall extends Component<WallProps, {}> {
 //        return color;
 //    }
 
-  line(x0: number, y0: number, x1: number, y1: number) : string {
-    return `M ${x0} ${y0} L${x1} ${y1}`
+  line(x0: number, y0: number, x1: number, y1: number): string {
+    return `M ${x0} ${y0} L${x1} ${y1}`;
   }
 
-
-  curve(x0: number, y0: number, x1: number, y1: number, x2: number, y2: number) : string {
+  curve(x0: number, y0: number, x1: number, y1: number, x2: number, y2: number): string {
     function moveTowardsFractional(movingPoint: Point, targetPoint: Point, fraction: number): Point {
       return movingPoint.offset(targetPoint.offset(movingPoint.negate).scale(fraction));
     }
@@ -44,7 +44,7 @@ export default class Wall extends Component<WallProps, {}> {
     return `M${p0.x} ${p0.y} L${curveStart.x} ${curveStart.y} C${startControl.x} ${startControl.y} ${endControl.x} ${endControl.y} ${curveEnd.x} ${curveEnd.y} L${p2.x} ${p2.y}`;
   }
 
-  generatePath() : string {
+  generatePath(): string {
     const bounds = this.props.bounds;
     const x0 = bounds.x;
     const y0 = bounds.y;
@@ -55,12 +55,12 @@ export default class Wall extends Component<WallProps, {}> {
     const xc = bounds.center.x;
 
     switch (this.props.type) {
-      case Store.WallType.n: return this.line(x0, yc, x3, yc);
-      case Store.WallType.w: return this.line(xc, y0, xc, y3);
-      case Store.WallType.nw:return this.curve(xc, y3, xc, yc, x3, yc);
-      case Store.WallType.ne:return this.curve(x0, yc, xc, yc, xc, y3);
-      case Store.WallType.sw:return this.curve(xc, y0, xc, yc, x3, yc);
-      case Store.WallType.se:return this.curve(x0, yc, xc, yc, xc, y0);
+      case Store.WallType.n:  return this.line(x0, yc, x3, yc);
+      case Store.WallType.w:  return this.line(xc, y0, xc, y3);
+      case Store.WallType.nw: return this.curve(xc, y3, xc, yc, x3, yc);
+      case Store.WallType.ne: return this.curve(x0, yc, xc, yc, xc, y3);
+      case Store.WallType.sw: return this.curve(xc, y0, xc, yc, x3, yc);
+      case Store.WallType.se: return this.curve(x0, yc, xc, yc, xc, y0);
     }
 
     const x1w = x0 + bounds.dx * 0.20;
@@ -111,17 +111,16 @@ export default class Wall extends Component<WallProps, {}> {
         return this.line(x2e, y3, x2e, y0) + this.curve(x1e, y3, x1e, yc, x0, yc);
 
       default:
-        return "";
+        return '';
     }  
   }
-  render(): any {
-      
+  render() {
         return (
-          <Path data={this.generatePath()}
+          <Path 
+            data={this.generatePath()}
             stroke="blue"
-           strokeWidth={3} 
+            strokeWidth={3} 
           />
      );
     }
 }
-

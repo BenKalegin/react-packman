@@ -1,3 +1,3 @@
 export * from './Wall';
-export * from "./Dots";
-export * from "./Pellets";
+export * from './Dots';
+export * from './Pellets';

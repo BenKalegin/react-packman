@@ -2,31 +2,31 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as redux from 'redux';
 import { Stage, Layer } from 'react-konva';
-import { WallProps } from ".";
+import { WallProps } from '.';
 import Wall from './Wall';
-import {Dots, Pellets} from ".";
+import { Dots, Pellets } from '.';
 import { Pacman } from './Pacman';
 import { Ghost } from './Ghost';
 import { Store } from '../model';
-import { ModalText } from "./ModalText";
+import { ModalText } from './ModalText';
 
 type ConnectedState = {
   maze: Store.Maze
-}
+};
 
 type OwnProps = {
-}
+};
 
 type ConnectedDispatch = {
   load: () => void
-}
+};
 
 const mapStateToProps = (state: Store.App, ownProps: OwnProps): ConnectedState => ({
   maze: state.game.maze
-})
+});
 
 const mapDispatchToProps = (dispatch: redux.Dispatch<Store.App>): ConnectedDispatch => ({
-  load: () => {}
+  load: () => {/**/}
 });
 
 class MazeView extends React.Component<ConnectedState & ConnectedDispatch & OwnProps, {}> {
@@ -34,17 +34,18 @@ class MazeView extends React.Component<ConnectedState & ConnectedDispatch & OwnP
   render() {
     const maze = this.props.maze;
     const bounds = maze.gridSize.scale(maze.cellSize).asRectangleSize();
-    const walls : WallProps[] = maze.walls.map((w,i) => {
+    const walls: WallProps[] = maze.walls.map((w, i) => {
       return {
         key: i,
         bounds: w.position.scale(maze.cellSize).toRectangle(maze.cellSize),
         type: w.type
-    }});
+      }; 
+    });
 
     return (
       <Stage width={bounds.dx} height={bounds.dy}>
         <Layer>
-          {walls.map(w => <Wall {...w} />)}
+          {walls.map(w => <Wall key={w.key} {...w} />)}
         </Layer>
         <Layer>
           <Dots />
@@ -62,4 +63,4 @@ class MazeView extends React.Component<ConnectedState & ConnectedDispatch & OwnP
   }
 }
 
-export const Maze: React.ComponentClass<OwnProps> = connect(mapStateToProps, mapDispatchToProps)(MazeView)
+export const Maze: React.ComponentClass<OwnProps> = connect(mapStateToProps, mapDispatchToProps)(MazeView);

@@ -4,7 +4,7 @@ export class PathGenerator {
 
   public static outlinePoints(points: Point[], gridOffset: Point, cellSize: Point): string {
 
-    let sparseHash = (point: Point) => point.y * 1000 + point.x;
+    let sparseHash = (p: Point) => p.y * 1000 + p.x;
     let pixels = new Map<number, boolean>();
     let startPoint: Point = new Point(0, 0);
     let minHash: number = 100000;
@@ -39,9 +39,8 @@ export class PathGenerator {
       }
     } while (!point.equals(startPoint));
 
-    return outline.reduce((acc, p, i, arr) => acc + this.renderPoint(i, arr, 0.4), "");
+    return outline.reduce((acc, p, i, arr) => acc + this.renderPoint(i, arr, 0.4), '');
   }
-
 
   private static renderPoint(i: number, outline: Point[], radius: number): string {
 
@@ -50,12 +49,12 @@ export class PathGenerator {
     }
 
     const p1 = outline[i];
-    const p0 = outline[i == 0 ? outline.length-1 : i - 1];
-    const p2 = (i == outline.length - 1)
+    const p0 = outline[i === 0 ? outline.length - 1 : i - 1];
+    const p2 = (i === outline.length - 1)
       ? outline[0]
       : outline[i + 1];
 
-    let result = "";
+    let result = '';
 
     // The start and end of the curve are just our point moved towards the previous and neyt points, respectivly
     let curveStart = moveTowardsFractional(p1, p0, radius);
@@ -65,14 +64,14 @@ export class PathGenerator {
     var startControl = moveTowardsFractional(curveStart, p1, .5);
     var endControl = moveTowardsFractional(p1, curveEnd, .5);
 
-    if ((p0.x == p1.x && p1.x == p2.x) || (p0.y == p1.y && p1.y == p2.y))
+    if ((p0.x === p1.x && p1.x === p2.x) || (p0.y === p1.y && p1.y === p2.y))
       // straight line, no adjustments
-      result += `${i == 0 ? "M" : "L"}${p1.x} ${p1.y}`;
+      result += `${i === 0 ? 'M' : 'L'}${p1.x} ${p1.y}`;
     else {
       result = `L${curveStart.x} ${curveStart.y} C${startControl.x} ${startControl.y} ${endControl.x} ${endControl.y} ${curveEnd.x} ${curveEnd.y}`;
     }
 
-    if (i == outline.length - 1) {
+    if (i === outline.length - 1) {
       const close = moveTowardsFractional(p2, p1, radius);
       result += `L${close.x} ${close.y}`;
     }

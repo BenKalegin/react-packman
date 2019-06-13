@@ -26,8 +26,7 @@ export const START_BLUE_MODE_ACTION = 'StartBlueMode';
 export const END_BLUE_MODE_ACTION = 'EndBlueMode';
 export const BLUE_MODE_TIMEOVER_ACTION = 'BlueModeTimeOver';
 
-export type StartRoundAction =
-{
+export type StartRoundAction = {
   type: typeof START_ROUND_ACTION;
 };
 
@@ -149,7 +148,7 @@ export function animatedStepAction(timestamp: number, period: number): AnimatedS
     timestamp: timestamp,
     period: period,
   };
-};
+}
 
 export function changeDirectionAction(direction: Direction): ChangeDirectionAction {
   return {
@@ -205,101 +204,100 @@ export function modalTextAction(text?: string): ModalTextAction {
 }
   
 export function dotEatenAction(index: number): DotEatenAction {
-  return {
-    type: DOT_EATEN_ACTION,
-    index: index
-  }
+    return {
+        type: DOT_EATEN_ACTION,
+        index: index
+    };
 }
 
 export function pelletEatenAction(index: number): PelletEatenAction {
-  return {
-    type: PELLET_EATEN_ACTION,
-    index: index
-  }
+    return {
+        type: PELLET_EATEN_ACTION,
+        index: index
+    };
 }
 
 export function ghostBittenAction(pacmanPos: Point, ghostIndex: number): GhostBittenAction {
-  return {
-    type: GHOST_BITTEN_ACTION,
-    pacmanPosition: pacmanPos,
-    ghostIndex: ghostIndex
-  }
+    return {
+        type: GHOST_BITTEN_ACTION,
+        pacmanPosition: pacmanPos,
+        ghostIndex: ghostIndex
+    };
 }
 
 export function ghostLeftBoxAction(ghostIndex: number): GhostLeftBoxAction {
-  return {
-    type: GHOST_LEFT_BOX_ACTION,
-    ghostIndex: ghostIndex
-  }
+    return {
+        type: GHOST_LEFT_BOX_ACTION,
+        ghostIndex: ghostIndex
+    };
 }
 
 export function heatEndAction(lost: boolean): HeatEndAction {
-  return {
-    type: HEAT_END_ACTION,
-    lost: lost
-  }
+    return {
+        type: HEAT_END_ACTION,
+        lost: lost
+    };
 }
 
 export function freezeActorsAction(): FreezeActorsAction {
-  return {
-    type: FREEZE_ACTORS_ACTION,
-  }
+    return {
+        type: FREEZE_ACTORS_ACTION,
+    };
 }
 
 export function hideActorsAction(): HideActorsAction {
-  return {
-    type: HIDE_ACTORS_ACTION,
-  }
+    return {
+        type: HIDE_ACTORS_ACTION,
+    };
 }
 
 export function killPacmanAction(): KillPacmanAction {
-  return {
-    type: KILL_PACMAN_ACTION,
-  }
+    return {
+        type: KILL_PACMAN_ACTION,
+    };
 }
 
 export function resetHeatAction(): ResetHeatAction {
-  return {
-    type: RESET_HEAT_ACTION,
-  }
+    return {
+        type: RESET_HEAT_ACTION,
+    };
 }
 
 export function resetRoundAction(): ResetRoundAction {
-  return {
-    type: RESET_ROUND_ACTION,
-  }
+    return {
+        type: RESET_ROUND_ACTION,
+    };
 }
 
 export function showLevelAction(): ShowLevelAction {
-  return {
-    type: SHOW_LEVEL_ACTION,
-  }
+    return {
+        type: SHOW_LEVEL_ACTION,
+    };
 }
 
 export function increaseLevelAction(): IncreaseLevelAction {
-  return {
-    type: INCREASE_LEVEL_ACTION,
-  }
+    return {
+        type: INCREASE_LEVEL_ACTION,
+    };
 }
 
 export function startBlueModeAction(): StartBlueModeAction {
-  return {
-    type: START_BLUE_MODE_ACTION,
-  }
+    return {
+        type: START_BLUE_MODE_ACTION,
+    };
 }
 
 export function endBlueModeAction(): EndBlueModeAction {
-  return {
-    type: END_BLUE_MODE_ACTION,
-  }
+    return {
+        type: END_BLUE_MODE_ACTION,
+    };
 }
 
 export function blueModeTimeOverAction(): BlueModeTimeOverAction {
-  return {
-    type: BLUE_MODE_TIMEOVER_ACTION,
-  }
+    return {
+        type: BLUE_MODE_TIMEOVER_ACTION,
+    };
 }
-
 
 export type Action = StartRoundAction |
                      AnimatedStepAction |
@@ -327,6 +325,6 @@ export type Action = StartRoundAction |
                      EndBlueModeAction |
                      BlueModeTimeOverAction;
 
-export interface IHasInducedActions {
+export interface HasInducedActions {
   asyncDispatch(actions: Action[]): void;
 }

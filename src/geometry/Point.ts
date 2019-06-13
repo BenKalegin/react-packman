@@ -1,6 +1,23 @@
 import { Rectangle, Direction } from '.';
 
 export class Point {
+  public static boundingRect(points: Point[]) {
+    const bigNumber = 100000;
+    const edgePoints = points.reduce((bounds, p) => {
+        if (bounds.x0 > p.x)
+          bounds.x0 = p.x;
+        if (bounds.y0 > p.y)
+          bounds.y0 = p.y;
+        if (bounds.x1 < p.x)
+          bounds.x1 = p.x;
+        if (bounds.y1 < p.y)
+          bounds.y1 = p.y;
+        return bounds;
+      },
+      { x0: bigNumber, y0: bigNumber, x1: -bigNumber, y1: -bigNumber });
+    return new Rectangle(edgePoints.x0, edgePoints.y0, edgePoints.x1 - edgePoints.x0, edgePoints.y1 - edgePoints.y0);
+  }
+
   constructor(public x: number, public y: number) {}
 
   public offset(by: Point): Point {
@@ -8,12 +25,11 @@ export class Point {
   }
 
   public equals(to: Point): boolean {
-    return this.x == to.x && this.y == to.y;
+    return this.x === to.x && this.y === to.y;
   }
 
-
   public scale(by: Point | number): Point {
-    if (typeof (by) === "number")
+    if (typeof (by) === 'number')
       return new Point(this.x * by, this.y * by);
     return new Point(this.x * by.x, this.y * by.y);
   }
@@ -38,23 +54,6 @@ export class Point {
 
   public toVector(): Point {
     return new Point(Math.sign(this.x), Math.sign(this.y));
-  }
-
-  public static boundingRect(points: Point[]) {
-    const bigNumber = 100000;
-    const edgePoints = points.reduce((bounds, p) => {
-        if (bounds.x0 > p.x)
-          bounds.x0 = p.x;
-        if (bounds.y0 > p.y)
-          bounds.y0 = p.y;
-        if (bounds.x1 < p.x)
-          bounds.x1 = p.x;
-        if (bounds.y1 < p.y)
-          bounds.y1 = p.y;
-        return bounds;
-      },
-      { x0: bigNumber, y0: bigNumber, x1: -bigNumber, y1: -bigNumber });
-    return new Rectangle(edgePoints.x0, edgePoints.y0, edgePoints.x1 - edgePoints.x0, edgePoints.y1 - edgePoints.y0);
   }
 
   public static vector(towards: Direction): Point {

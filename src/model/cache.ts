@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
-import { Store } from ".";
-import { createMazeNavigator } from "./MazeNavigator";
+import { Store } from '.';
+import { createMazeNavigator } from './MazeNavigator';
 
 
 export const getMazeNavigator = createSelector(

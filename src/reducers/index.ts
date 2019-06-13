@@ -5,7 +5,7 @@ import { gameReducer } from './Game';
 import { roundReducer } from './Round';
 import { heatReducer } from './Heat';
 import { Store } from '../model';
-import { Action, IHasInducedActions } from "../actions/index";
+import { Action, HasInducedActions as IHasInducedActions } from "../actions/index";
 import { getMazeNavigator } from "../model/cache";
 
 export const rootReducer = (state: Store.App, action: Action) : Store.App => {

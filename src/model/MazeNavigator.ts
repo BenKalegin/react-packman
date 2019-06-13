@@ -1,5 +1,5 @@
-import { Store } from "./index";
-import { Direction, Point } from "../geometry";
+import { Store } from './index';
+import { Direction, Point } from '../geometry';
 
 class Cell {
   ghostsOnly: boolean;
@@ -10,7 +10,7 @@ class Cell {
 }
 
 export interface IMazeNavigator {
-  hasNeighbour(point: Point, direction: Direction, pacman: boolean) : boolean;    
+  hasNeighbour(point: Point, direction: Direction, pacman: boolean): boolean;    
   canEnter(point: Point): boolean;
   canGhostBounceUp(point: Point): boolean;
   isGhostOutOfTheBox(point: Point): boolean;

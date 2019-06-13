@@ -5,34 +5,43 @@
   "dependencies": {
     "@types/jest": "^20.0.2",
     "@types/node": "^8.0.7",
-    "@types/react": "^15.0.34",
+    "@types/react": "^15.6.25",
     "@types/react-dom": "^15.5.1",
     "@types/react-redux": "^4.4.46",
     "@types/redux-saga": "^0.10.5",
     "immutable-assign": "^1.0.36",
-    "konva": "^1.6.3",
-    "react": "^16.1.0",
-    "react-dom": "^16.1.0",
-    "react-konva": "github:lavrton/react-konva",
+    "konva": "3.2.5",
+    "react": "16.8.x",
+    "react-dom": "16.8.x",
+    "react-konva": "^16.8.7-2",
     "react-redux": "^5.0.5",
-    "react-scripts-ts": "2.8.0",
     "redux-saga": "^0.15.6",
     "redux-shortcuts": "0.0.3",
     "reselect": "^3.0.1"
   },
   "commentedDependencies": {
     "@types/react-addons-perf": "^0.14.18",
-    "react-addons-perf": "^15.4.2"
+    "react-addons-perf": "16.8.x"
   },
   "devDependencies": {
-      "@types/redux": "^3.6.0",
-      "react-addons-perf": "^15.4.2",
-      "redux": "^3.7.2"
-    },
-    "scripts": {
-      "start": "react-scripts-ts start",
-      "build": "react-scripts-ts build",
-      "test": "react-scripts-ts test --env=jsdom",
-      "eject": "react-scripts-ts eject"
-    }
-  }
+    "@types/redux": "^3.6.31",
+    "fork-ts-checker-webpack-plugin": "^1.3.5",
+    "react-addons-perf": "16.8.x",
+    "react-scripts-ts": "^4.0.8",
+    "redux": "^3.7.2",
+    "tsconfig-paths": "^3.8.0",
+    "typescript": "^3.5.1"
+  },
+  "scripts": {
+    "start": "react-scripts-ts start",
+    "build": "react-scripts-ts build",
+    "test": "react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}

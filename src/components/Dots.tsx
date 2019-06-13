@@ -2,23 +2,22 @@ import * as React from 'react';
 import * as redux from 'redux';
 import { Point } from '../geometry';
 import { Circle, Group } from 'react-konva';
-import { Store } from "../model";
+import { Store } from '../model';
 import { connect } from 'react-redux';
 
 export type DotsProps = {
-  dots: Store.Loot[];
-  cellSize: Point;
-}
+    dots: Store.Loot[];
+    cellSize: Point;
+};
 
 export type DotProps = {
-  center: Point;
-  radius: number;
-  visible: boolean;
-}
+    center: Point;
+    radius: number;
+    visible: boolean;
+};
 
 type ConnectedDispatch = {
-}
-
+};
 
 const mapStateToProps = (state: Store.App): DotsProps => ({
   dots: state.round.dots,
@@ -38,7 +37,9 @@ class DotView extends React.Component<DotProps, {}> {
         visible={this.props.visible}
         fill="darkgray"
         stroke="darkgray"
-        radius={this.props.radius}/>);
+        radius={this.props.radius}
+      />
+    );
   }
 }
 
@@ -62,6 +63,4 @@ class DotsView extends React.Component<DotsProps> {
 
 const mapDispatchToProps = (dispatch: redux.Dispatch<Store.App>): ConnectedDispatch => ({});
 
-
 export const Dots = connect(mapStateToProps, mapDispatchToProps)(DotsView);
-

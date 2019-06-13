@@ -7,16 +7,16 @@ import './Hud.css';
 type ConnectedState = {
   score: number;
   lives: number;
-}
+};
 
 type ConnectedDispatch = {
-}
+};
 
 type OwnProps = {
-}
+};
 
 type OwnState = {
-}
+};
 
 const mapStateToProps = (state: Store.App, ownProps: OwnProps): ConnectedState => ({
   score: state.game.score,
@@ -28,7 +28,7 @@ const mapDispatchToProps = (dispatch: redux.Dispatch<Store.App>): ConnectedDispa
 
 class HudView extends React.Component<ConnectedState, OwnState> {
 
-  render(): any {
+  render() {
     return (
       <div className="hud">
         <div className="score">

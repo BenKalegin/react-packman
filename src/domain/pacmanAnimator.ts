@@ -26,7 +26,8 @@ export class PacmanAnimator {
     // prevent flicking when angle reaches 0
     if (angle <= 0)
       angle = 0.1;
-    return iassign(state,
+    return iassign(
+      state,
       (s: Store.Pacman) => {
         s.mouthAngle = angle;
         return s;
@@ -34,12 +35,12 @@ export class PacmanAnimator {
   }
 
   private static die(state: Store.Pacman, timestamp: number): Store.Pacman {
-    let angle = state.mouthAngle == 0 ? 0 : state.mouthAngle + 4;
+    let angle = state.mouthAngle === 0 ? 0 : state.mouthAngle + 4;
     return iassign(state, s => {
       if (angle < 360)
         s.mouthAngle = angle;
       else
-        s.mouthAngle = 0
+        s.mouthAngle = 0;
       return s;
     });
   }
@@ -52,7 +53,8 @@ export class PacmanAnimator {
     if (newPos.equals(newPos.round(1)) &&
       state.nextDirection !== Direction.None &&
       mazePath.hasNeighbour(newPos, state.nextDirection, true)) {
-      state = iassign(state,
+      state = iassign(
+        state,
         (s: Store.Pacman) => {
           s.direction = state.nextDirection;
           s.nextDirection = Direction.None;
@@ -67,14 +69,16 @@ export class PacmanAnimator {
       (state.direction === Direction.Left || state.direction === Direction.Up) && !mazePath.canEnter(newPos);
     if (bumped) {
       newPos = newPos.round(1);
-      state = iassign(state,
+      state = iassign(
+        state,
         (s: Store.Pacman) => {
           state.running = false;
           return s;
         });
     }
 
-    state = iassign(state,
+    state = iassign(
+      state,
       (s: Store.Pacman) => {
         s.position = newPos;
         return s;

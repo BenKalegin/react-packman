@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as redux from 'redux';
 import { Point } from '../geometry';
 import { Circle, Group } from 'react-konva';
-import { Store } from "../model";
+import { Store } from '../model';
 import { connect } from 'react-redux';
 
 export type PelletProps = {
@@ -11,7 +11,7 @@ export type PelletProps = {
 };
 
 type ConnectedDispatch = {
-}
+};
 
 const pelletsView = (props: PelletProps, disp: ConnectedDispatch) => {
   const bounds =
@@ -30,11 +30,12 @@ const pelletsView = (props: PelletProps, disp: ConnectedDispatch) => {
             y={b.bounds.center.y}
             fill="darkgray"
             stroke="none"
-            radius={b.bounds.dx / 3} />
+            radius={b.bounds.dx / 3} 
+        />
       )}
     </Group>
   );
-}
+};
 
 const mapStateToProps = (state: Store.App): PelletProps => ({
   pellets: state.round.pellets,
@@ -44,6 +45,4 @@ const mapStateToProps = (state: Store.App): PelletProps => ({
 const mapDispatchToProps = (dispatch: redux.Dispatch<Store.App>): ConnectedDispatch => ({
 });
 
-
 export const Pellets = connect(mapStateToProps, mapDispatchToProps)(pelletsView);
-

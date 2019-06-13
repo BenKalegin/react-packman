@@ -196,6 +196,9 @@ export function ghostReducer(states: Store.Ghost[], action: Action, pacman: Stor
     case END_BLUE_MODE_ACTION:
       ghosts.forEach(ghost => ghost.endBlueMode());
       break;
+      
+     default:
+       break; 
   }
   return ghosts.map(m => m.state);
 }
