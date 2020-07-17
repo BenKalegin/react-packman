@@ -1,4 +1,5 @@
 {
+  "homepage": "https://benkalegin.github.io/react-packman",
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
@@ -26,6 +27,7 @@
   "devDependencies": {
     "@types/redux": "^3.6.31",
     "fork-ts-checker-webpack-plugin": "^1.3.5",
+    "gh-pages": "^3.1.0",
     "react-addons-perf": "16.8.x",
     "react-scripts-ts": "^4.0.8",
     "redux": "^3.7.2",
@@ -36,7 +38,7 @@
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
+    "eject": "react-scripts-ts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
